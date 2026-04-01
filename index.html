@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
-<meta content="Sheep Tracker" name="apple-mobile-web-app-title"/>
-<meta content="#2d5a1b" name="theme-color"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sheep Tracker">
+<meta name="theme-color" content="#2d5a1b">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Sheep Tracker</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Courier+Prime:wght@400;700&display=swap');
@@ -40,14 +41,23 @@
   /* HEADER */
   header {
     background:linear-gradient(160deg,var(--green-mid),var(--green-dark));
-    padding:16px 20px 12px;
+    padding:14px 16px 11px;
     display:flex; align-items:center; justify-content:space-between;
     border-bottom:2px solid var(--green-light);
     position:sticky; top:0; z-index:100;
   }
   .htitle { display:flex; align-items:center; gap:10px; }
+  .hlogo  { width:38px; height:38px; border-radius:10px; object-fit:cover; }
   .htitle h1 { font-size:19px; font-weight:900; color:var(--cream); }
   .htitle p  { font-size:11px; color:var(--green-pale); font-weight:600; }
+  .hright { display:flex; align-items:center; gap:12px; }
+  .share-btn {
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+    border-radius:10px; padding:7px 12px; color:var(--cream);
+    font-family:'Nunito',sans-serif; font-size:12px; font-weight:800;
+    cursor:pointer; display:flex; align-items:center; gap:5px;
+  }
+  .share-btn:active { background:rgba(255,255,255,.2); }
 
   /* NAV */
   nav { background:var(--green-dark); display:flex; border-bottom:2px solid var(--green-mid); }
@@ -136,8 +146,8 @@
     padding:10px 16px; border:none; border-radius:8px;
     font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; cursor:pointer;
   }
-  .btn-ok  { background:var(--amber); color:var(--green-dark); }
-  .btn-cx  { background:rgba(255,255,255,.15); color:var(--green-pale); }
+  .btn-ok { background:var(--amber); color:var(--green-dark); }
+  .btn-cx { background:rgba(255,255,255,.15); color:var(--green-pale); }
 
   /* Tag input row */
   .tag-row {
@@ -231,131 +241,148 @@
   .empty .ei { font-size:50px; margin-bottom:12px; }
   .empty p { font-weight:600; font-size:14px; }
 
-  /* iOS hint */
-  .hint { background:var(--green-pale); border-radius:12px; padding:12px; margin-bottom:14px; font-size:13px; color:var(--green-dark); font-weight:600; line-height:1.5; display:flex; gap:10px; align-items:flex-start; }
-  .hint .hi { font-size:20px; flex-shrink:0; }
+  /* Last updated bar */
+  .last-updated {
+    text-align:center; font-size:11px; color:var(--text-muted);
+    padding:6px; background:var(--green-pale); border-radius:8px;
+    margin-bottom:12px; font-weight:600;
+  }
 </style>
-<link href="manifest.json" rel="manifest"/><link href="icon-192.png" rel="apple-touch-icon"/><meta content="#2d5a1b" name="theme-color"/></head>
-<body><div id="lastUpdated" style="font-size:12px;color:#ccc;text-align:center;margin:5px;"></div>
+</head>
+<body>
+
 <div id="toast"></div>
+
 <header>
-<div class="htitle">
-<span style="font-size:26px;">🐑</span>
-<div>
-<h1>Sheep Tracker</h1>
-<p id="hDate"></p>
-</div>
-</div>
-<div style="text-align:right;">
-<div id="hCount" style="font-size:22px;font-weight:900;color:var(--amber);">0</div>
-<div style="font-size:10px;color:var(--green-pale);font-weight:700;">SHEEP</div>
-</div>
+  <div class="htitle">
+    <img src="icon-192.png" class="hlogo" alt="Sheep">
+    <div>
+      <h1>Sheep Tracker</h1>
+      <p id="hDate"></p>
+    </div>
+  </div>
+  <div class="hright">
+    <button class="share-btn" onclick="quickShare()">📤 Share</button>
+    <div style="text-align:right;">
+      <div id="hCount" style="font-size:22px;font-weight:900;color:var(--amber);">0</div>
+      <div style="font-size:10px;color:var(--green-pale);font-weight:700;">SHEEP</div>
+    </div>
+  </div>
 </header>
+
 <nav>
-<button class="active" id="tab-record" onclick="showPanel('record')"><span class="ni">➕</span>Record</button>
-<button id="tab-flock" onclick="showPanel('flock')"><span class="ni">🐑</span>Flock</button>
-<button id="tab-stats" onclick="showPanel('stats')"><span class="ni">📊</span>Stats</button>
-<button id="tab-export" onclick="showPanel('export')"><span class="ni">📤</span>Export</button>
+  <button class="active" id="tab-record" onclick="showPanel('record')"><span class="ni">➕</span>Record</button>
+  <button id="tab-flock"  onclick="showPanel('flock')"><span class="ni">🐑</span>Flock</button>
+  <button id="tab-stats"  onclick="showPanel('stats')"><span class="ni">📊</span>Stats</button>
+  <button id="tab-export" onclick="showPanel('export')"><span class="ni">📤</span>Export</button>
 </nav>
+
 <main>
+
 <!-- ══ RECORD ══ -->
 <div class="panel active" id="panel-record">
-<div class="hint" id="installHint">
-<span class="hi">📲</span>
-<div>Install on iPhone: tap <strong>Share</strong> → <strong>"Add to Home Screen"</strong> — works offline in the paddock!</div>
+  <div class="card">
+    <h2>⚖️ Weigh a Sheep</h2>
+
+    <!-- TAG ENTRY AREA -->
+    <div class="tag-area">
+      <div class="tag-area-label">Tap year · type last 3 digits</div>
+      <div class="chips" id="chips"></div>
+      <div class="add-row" id="addRow">
+        <div style="font-size:12px;color:var(--green-pale);font-weight:700;">New year prefix (e.g. 22, 25)</div>
+        <div class="add-row-inner">
+          <input type="text" id="newPre" maxlength="2" inputmode="numeric" placeholder="25" autocomplete="off">
+          <button class="btn-ok" onclick="confirmAdd()">Add</button>
+          <button class="btn-cx" onclick="cancelAdd()">✕</button>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.35);">Long-press a year to remove it</div>
+      </div>
+      <div class="tag-row">
+        <div class="tag-prefix-box" id="prefixBox">??</div>
+        <input class="tag-seq" id="seqInput" type="text" inputmode="numeric"
+          maxlength="3" placeholder="001" autocomplete="off" autocorrect="off"
+          oninput="updatePreview()">
+      </div>
+      <div class="tag-preview">Full tag: <span id="tagPreview">—</span></div>
+    </div>
+
+    <div class="fg">
+      <label>Weight (kg)</label>
+      <input type="number" id="weightInput" placeholder="0.0" step="0.1" min="0" max="999"
+        inputmode="decimal"
+        style="font-size:28px;font-weight:900;text-align:center;letter-spacing:2px;">
+    </div>
+    <div class="fg">
+      <label>Date</label>
+      <input type="date" id="dateInput">
+    </div>
+    <div class="fg">
+      <label>Notes (optional)</label>
+      <input type="text" id="notesInput" placeholder="e.g. drenched, good condition…" autocomplete="off">
+    </div>
+    <button class="btn btn-primary" onclick="saveRecord()">✓ Save Record</button>
+  </div>
+
+  <div id="lastUpdated" class="last-updated" style="display:none;"></div>
+  <div class="stitle">Recent — tap to reuse</div>
+  <div id="recentTags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;"></div>
 </div>
-<div class="card">
-<h2>⚖️ Weigh a Sheep</h2>
-<!-- TAG ENTRY AREA -->
-<div class="tag-area">
-<div class="tag-area-label">Tap year · type last 3 digits</div>
-<!-- Year chips — one tap switches year -->
-<div class="chips" id="chips"></div>
-<!-- Add year form (hidden until + tapped) -->
-<div class="add-row" id="addRow">
-<div style="font-size:12px;color:var(--green-pale);font-weight:700;">New year prefix (e.g. 22, 25)</div>
-<div class="add-row-inner">
-<input autocomplete="off" id="newPre" inputmode="numeric" maxlength="2" placeholder="25" type="text"/>
-<button class="btn-ok" onclick="confirmAdd()">Add</button>
-<button class="btn-cx" onclick="cancelAdd()">✕</button>
-</div>
-<div style="font-size:11px;color:rgba(255,255,255,.35);">Long-press a year to remove it</div>
-</div>
-<!-- Main input: big prefix + 3-digit field -->
-<div class="tag-row">
-<div class="tag-prefix-box" id="prefixBox">??</div>
-<input autocomplete="off" autocorrect="off" class="tag-seq" id="seqInput" inputmode="numeric" maxlength="3" oninput="updatePreview()" placeholder="001" type="text"/>
-</div>
-<div class="tag-preview">Full tag: <span id="tagPreview">—</span></div>
-</div>
-<!-- WEIGHT -->
-<div class="fg">
-<label>Weight (kg)</label>
-<input id="weightInput" inputmode="decimal" max="999" min="0" placeholder="0.0" step="0.1" style="font-size:28px;font-weight:900;text-align:center;letter-spacing:2px;" type="number"/>
-</div>
-<!-- DATE -->
-<div class="fg">
-<label>Date</label>
-<input id="dateInput" type="date"/>
-</div>
-<!-- NOTES -->
-<div class="fg">
-<label>Notes (optional)</label>
-<input autocomplete="off" id="notesInput" placeholder="e.g. drenched, good condition…" type="text"/>
-</div>
-<button class="btn btn-primary" onclick="saveRecord()">✓ Save Record</button>
-</div>
-<div class="stitle">Recent — tap to reuse</div>
-<div id="recentTags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;"></div>
-</div>
+
 <!-- ══ FLOCK ══ -->
 <div class="panel" id="panel-flock">
-<div class="sw"><span class="si">🔍</span>
-<input autocomplete="off" autocorrect="off" id="searchInput" oninput="renderFlock()" placeholder="Search by tag…" type="text"/>
+  <div class="sw"><span class="si">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search by tag…" oninput="renderFlock()" autocomplete="off" autocorrect="off">
+  </div>
+  <div class="frow">
+    <label style="white-space:nowrap;margin:0;font-size:12px;">Sort:</label>
+    <select id="sortSel" onchange="renderFlock()">
+      <option value="tag">Tag Number</option>
+      <option value="weight">Heaviest First</option>
+      <option value="recent">Most Recent</option>
+      <option value="gain">Most Weight Gain</option>
+    </select>
+  </div>
+  <div id="flockList"></div>
 </div>
-<div class="frow">
-<label style="white-space:nowrap;margin:0;font-size:12px;">Sort:</label>
-<select id="sortSel" onchange="renderFlock()">
-<option value="tag">Tag Number</option>
-<option value="weight">Heaviest First</option>
-<option value="recent">Most Recent</option>
-<option value="gain">Most Weight Gain</option>
-</select>
-</div>
-<div id="flockList"></div>
-</div>
+
 <!-- ══ STATS ══ -->
 <div class="panel" id="panel-stats">
-<div class="sgrid" id="sgrid"></div>
-<div class="stitle">🏆 Top 5 Heaviest</div>
-<div id="stop5"></div>
-<div class="stitle" style="margin-top:16px;">📈 Best Weight Gain</div>
-<div id="sbest"></div>
+  <div class="sgrid" id="sgrid"></div>
+  <div class="stitle">🏆 Top 5 Heaviest</div>
+  <div id="stop5"></div>
+  <div class="stitle" style="margin-top:16px;">📈 Best Weight Gain</div>
+  <div id="sbest"></div>
 </div>
+
 <!-- ══ EXPORT ══ -->
 <div class="panel" id="panel-export">
-<div class="card">
-<h2>📤 Export to Spreadsheet</h2>
-<p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.5;">Downloads a CSV file — opens in Excel, Numbers, or Google Sheets.</p>
-<button class="btn btn-export" onclick="exportAll()">📊 All Records (every weigh-in)</button>
-<button class="btn btn-export" onclick="exportLatest()">📋 Latest Weight Per Sheep</button>
-</div>
-<div class="card">
-<h2>💾 Backup &amp; Share with Family</h2>
-<p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">Save a backup to share with family or keep safe. Restoring merges with existing data.</p>
-<button class="btn btn-export" onclick="exportBackup()">💾 Download Backup</button>
-<label class="btn btn-primary" style="cursor:pointer;margin-top:0;">
+  <div class="card">
+    <h2>📤 Export to Spreadsheet</h2>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.5;">Downloads a CSV — opens in Excel, Numbers, or Google Sheets.</p>
+    <button class="btn btn-export" onclick="exportAll()">📊 All Records (every weigh-in)</button>
+    <button class="btn btn-export" onclick="exportLatest()">📋 Latest Weight Per Sheep</button>
+  </div>
+  <div class="card">
+    <h2>💾 Backup &amp; Share with Family</h2>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">
+      Use the <strong>Share</strong> button at the top to instantly send your data to family via iMessage, AirDrop, or email. Or download a backup file below.
+    </p>
+    <button class="btn btn-export" onclick="quickShare()">📤 Quick Share (iMessage / AirDrop)</button>
+    <button class="btn btn-export" onclick="exportBackup()">💾 Download Backup File</button>
+    <label class="btn btn-primary" style="cursor:pointer;margin-top:0;">
       📂 Restore from Backup
-      <input accept=".json" onchange="importBackup(event)" style="display:none;" type="file"/>
-</label>
+      <input type="file" accept=".json" onchange="importBackup(event)" style="display:none;">
+    </label>
+  </div>
+  <div class="card" style="border-color:#f5c6cb;">
+    <h2 style="color:var(--red);">⚠️ Danger Zone</h2>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Export a backup before clearing!</p>
+    <button class="btn-danger" onclick="clearAll()">🗑 Clear All Data</button>
+  </div>
 </div>
-<div class="card" style="border-color:#f5c6cb;">
-<h2 style="color:var(--red);">⚠️ Danger Zone</h2>
-<p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Export a backup first!</p>
-<button class="btn-danger" onclick="clearAll()">🗑 Clear All Data</button>
-</div>
-</div>
+
 </main>
+
 <script>
 // ═══════════════════════════════════════
 //  STORAGE
@@ -365,7 +392,7 @@ const K_PRE    = 'sheepPrefixes_v1';
 const K_ACTIVE = 'sheepActive_v1';
 
 const load = () => { try { return JSON.parse(localStorage.getItem(K_DATA)) || []; } catch { return []; } };
-const save = d => { localStorage.setItem(K_DATA, JSON.stringify(d)); refreshCount(); };
+const save = d => { localStorage.setItem(K_DATA, JSON.stringify(d)); refreshCount(); updateLastUpdated(); };
 
 function loadPrefixes() {
   try { const p = JSON.parse(localStorage.getItem(K_PRE)); if (Array.isArray(p) && p.length) return p; } catch {}
@@ -386,6 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshCount();
   renderChips();
   renderRecent();
+  loadLastUpdated();
 
   document.getElementById('seqInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('weightInput').focus();
@@ -393,21 +421,40 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('weightInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') saveRecord();
   });
-  // Auto-pad on blur
   document.getElementById('seqInput').addEventListener('blur', () => {
     const v = document.getElementById('seqInput').value.trim();
     if (v && /^\d+$/.test(v)) { document.getElementById('seqInput').value = v.padStart(3,'0'); updatePreview(); }
   });
-
-  setTimeout(() => { const h = document.getElementById('installHint'); if(h) h.style.display='none'; }, 9000);
 });
+
+// Service worker registration
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 
 function refreshCount() {
   document.getElementById('hCount').textContent = new Set(load().map(r => r.tag)).size;
 }
 
+function updateLastUpdated() {
+  const now = new Date().toLocaleString('en-AU');
+  localStorage.setItem('sheepLastUpdated', now);
+  const el = document.getElementById('lastUpdated');
+  el.style.display = 'block';
+  el.textContent = '🕐 Last saved: ' + now;
+}
+
+function loadLastUpdated() {
+  const saved = localStorage.getItem('sheepLastUpdated');
+  if (saved) {
+    const el = document.getElementById('lastUpdated');
+    el.style.display = 'block';
+    el.textContent = '🕐 Last saved: ' + saved;
+  }
+}
+
 // ═══════════════════════════════════════
-//  PREFIX CHIPS  (the key feature!)
+//  PREFIX CHIPS
 // ═══════════════════════════════════════
 let longTimer = null;
 
@@ -431,12 +478,7 @@ function renderChips() {
   updatePreview();
 }
 
-function selectPrefix(p) {
-  setActive(p);
-  renderChips();
-  document.getElementById('seqInput').focus();
-}
-
+function selectPrefix(p) { setActive(p); renderChips(); document.getElementById('seqInput').focus(); }
 function startLong(e, p) { longTimer = setTimeout(() => removePrefix(e, p), 700); }
 function endLong()        { clearTimeout(longTimer); }
 
@@ -451,30 +493,22 @@ function removePrefix(e, p) {
   renderChips();
 }
 
-function showAdd() {
-  document.getElementById('addRow').classList.add('open');
-  document.getElementById('newPre').value = '';
-  document.getElementById('newPre').focus();
-}
-function cancelAdd() { document.getElementById('addRow').classList.remove('open'); }
+function showAdd()    { document.getElementById('addRow').classList.add('open'); document.getElementById('newPre').value=''; document.getElementById('newPre').focus(); }
+function cancelAdd()  { document.getElementById('addRow').classList.remove('open'); }
 function confirmAdd() {
   const v = document.getElementById('newPre').value.trim();
   if (!/^\d{1,2}$/.test(v)) { showToast('⚠️ Enter 1 or 2 digits'); return; }
   const p = v.padStart(2,'0');
   const list = loadPrefixes();
   if (!list.includes(p)) { list.push(p); list.sort(); savePrefixes(list); }
-  setActive(p);
-  cancelAdd();
-  renderChips();
+  setActive(p); cancelAdd(); renderChips();
   document.getElementById('seqInput').focus();
 }
 
 function updatePreview() {
-  const pre = getActive();
   const seq = document.getElementById('seqInput').value.trim();
-  document.getElementById('tagPreview').textContent = seq ? pre + seq.padStart(3,'0') : '—';
+  document.getElementById('tagPreview').textContent = seq ? getActive() + seq.padStart(3,'0') : '—';
 }
-
 function buildTag() {
   const seq = document.getElementById('seqInput').value.trim();
   return seq ? getActive() + seq.padStart(3,'0') : null;
@@ -489,16 +523,16 @@ function saveRecord() {
   const date   = document.getElementById('dateInput').value;
   const notes  = document.getElementById('notesInput').value.trim();
 
-  if (!tag)           { showToast('⚠️ Enter last 3 digits of tag'); return; }
-  if (!weight || weight <= 0) { showToast('⚠️ Enter a valid weight'); return; }
-  if (!date)          { showToast('⚠️ Select a date'); return; }
+  if (!tag)                    { showToast('⚠️ Enter last 3 digits of tag'); return; }
+  if (!weight || weight <= 0)  { showToast('⚠️ Enter a valid weight'); return; }
+  if (!date)                   { showToast('⚠️ Select a date'); return; }
 
   const d = load();
   d.push({ tag, weight, date, notes, id: Date.now() });
   save(d);
   showToast(`✓ ${tag} — ${weight}kg saved`);
 
-  document.getElementById('seqInput').value  = '';
+  document.getElementById('seqInput').value    = '';
   document.getElementById('weightInput').value = '';
   document.getElementById('notesInput').value  = '';
   document.getElementById('tagPreview').textContent = '—';
@@ -520,11 +554,32 @@ function quickFill(tag) {
   const pre = tag.slice(0,2), seq = tag.slice(2);
   const list = loadPrefixes();
   if (!list.includes(pre)) { list.push(pre); list.sort(); savePrefixes(list); }
-  setActive(pre);
-  renderChips();
+  setActive(pre); renderChips();
   document.getElementById('seqInput').value = seq;
   updatePreview();
   document.getElementById('weightInput').focus();
+}
+
+// ═══════════════════════════════════════
+//  SHARE (native iOS share sheet)
+// ═══════════════════════════════════════
+function quickShare() {
+  const data = { version:1, exported:new Date().toISOString(), records:load() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+  const file = new File([blob], `sheep-backup-${new Date().toISOString().split('T')[0]}.json`, { type:'application/json' });
+
+  if (navigator.canShare && navigator.canShare({ files:[file] })) {
+    navigator.share({ title:'Sheep Tracker Backup', files:[file] })
+      .catch(() => {}); // user cancelled — no error needed
+  } else if (navigator.share) {
+    // Fallback: share as text if file share not supported
+    navigator.share({ title:'Sheep Tracker Backup', text: JSON.stringify(data) })
+      .catch(() => {});
+  } else {
+    // Desktop fallback — just download
+    exportBackup();
+    showToast('💾 Backup downloaded');
+  }
 }
 
 // ═══════════════════════════════════════
@@ -543,25 +598,25 @@ function showPanel(name) {
 //  FLOCK LIST
 // ═══════════════════════════════════════
 function renderFlock() {
-  const data  = load();
-  const q     = document.getElementById('searchInput').value.trim().toLowerCase();
-  const sort  = document.getElementById('sortSel').value;
-  const el    = document.getElementById('flockList');
+  const data = load();
+  const q    = document.getElementById('searchInput').value.trim().toLowerCase();
+  const sort = document.getElementById('sortSel').value;
+  const el   = document.getElementById('flockList');
 
-  if (!data.length) { el.innerHTML = `<div class="empty"><div class="ei">🐑</div><p>No records yet</p></div>`; return; }
+  if (!data.length) { el.innerHTML=`<div class="empty"><div class="ei">🐑</div><p>No records yet</p></div>`; return; }
 
   const g = {};
-  data.forEach(r => { (g[r.tag] = g[r.tag]||[]).push(r); });
-  Object.values(g).forEach(e => e.sort((a,b) => a.date.localeCompare(b.date)));
+  data.forEach(r => { (g[r.tag]=g[r.tag]||[]).push(r); });
+  Object.values(g).forEach(e => e.sort((a,b)=>a.date.localeCompare(b.date)));
 
   let tags = Object.keys(g).filter(t => !q || t.toLowerCase().includes(q));
   if (sort==='tag')    tags.sort();
-  if (sort==='weight') tags.sort((a,b) => g[b].at(-1).weight - g[a].at(-1).weight);
-  if (sort==='recent') tags.sort((a,b) => g[b].at(-1).date.localeCompare(g[a].at(-1).date));
-  if (sort==='gain')   tags.sort((a,b) => gain(g[b]) - gain(g[a]));
+  if (sort==='weight') tags.sort((a,b)=>g[b].at(-1).weight-g[a].at(-1).weight);
+  if (sort==='recent') tags.sort((a,b)=>g[b].at(-1).date.localeCompare(g[a].at(-1).date));
+  if (sort==='gain')   tags.sort((a,b)=>gain(g[b])-gain(g[a]));
 
-  if (!tags.length) { el.innerHTML = `<div class="empty"><div class="ei">🔍</div><p>No match for "${q}"</p></div>`; return; }
-  el.innerHTML = tags.map(t => sheepCard(t, g[t])).join('');
+  if (!tags.length) { el.innerHTML=`<div class="empty"><div class="ei">🔍</div><p>No match for "${q}"</p></div>`; return; }
+  el.innerHTML = tags.map(t=>sheepCard(t,g[t])).join('');
 }
 
 const gain = e => e.length < 2 ? 0 : e.at(-1).weight - e[0].weight;
@@ -572,7 +627,7 @@ function sheepCard(tag, entries) {
 
   const rows = entries.map((e,i) => {
     const prev = entries[i-1];
-    const d = prev ? e.weight - prev.weight : null;
+    const d = prev ? e.weight-prev.weight : null;
     const badge = d!==null ? `<span class="hgain ${d>0?'gp':d<0?'gn':'gz'}">${d>0?'+':''}${d.toFixed(1)}kg</span>` : '';
     return `<div class="hrow">
       <span class="hdate">${fmtDate(e.date)}</span>
@@ -610,7 +665,7 @@ function toggleH(id, hdr) {
 function reweigh(tag) { quickFill(tag); showPanel('record'); }
 function delEntry(id) {
   if (!confirm('Delete this weight entry?')) return;
-  save(load().filter(r => r.id !== id));
+  save(load().filter(r=>r.id!==id));
   renderFlock();
   showToast('🗑 Deleted');
 }
@@ -619,25 +674,25 @@ function delEntry(id) {
 //  STATS
 // ═══════════════════════════════════════
 function renderStats() {
-  const data = load(), sg = document.getElementById('sgrid'),
-        s5   = document.getElementById('stop5'), sb = document.getElementById('sbest');
+  const data=load(), sg=document.getElementById('sgrid'),
+        s5=document.getElementById('stop5'), sb=document.getElementById('sbest');
   if (!data.length) { sg.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="ei">📊</div><p>No data yet</p></div>`; s5.innerHTML=sb.innerHTML=''; return; }
 
-  const g = {};
-  data.forEach(r => { (g[r.tag]=g[r.tag]||[]).push(r); });
-  Object.values(g).forEach(e => e.sort((a,b)=>a.date.localeCompare(b.date)));
-  const tags = Object.keys(g);
-  const lw   = tags.map(t => g[t].at(-1).weight);
-  const avg  = (lw.reduce((a,b)=>a+b,0)/lw.length).toFixed(1);
+  const g={};
+  data.forEach(r=>{(g[r.tag]=g[r.tag]||[]).push(r);});
+  Object.values(g).forEach(e=>e.sort((a,b)=>a.date.localeCompare(b.date)));
+  const tags=Object.keys(g);
+  const lw=tags.map(t=>g[t].at(-1).weight);
+  const avg=(lw.reduce((a,b)=>a+b,0)/lw.length).toFixed(1);
 
-  sg.innerHTML = `
+  sg.innerHTML=`
     <div class="sbox"><div class="sval">${tags.length}</div><div class="slbl">🐑 Sheep</div></div>
     <div class="sbox"><div class="sval">${data.length}</div><div class="slbl">📝 Records</div></div>
     <div class="sbox"><div class="sval">${avg}kg</div><div class="slbl">⚖️ Avg Weight</div></div>
     <div class="sbox"><div class="sval">${Math.max(...lw)}kg</div><div class="slbl">🏆 Heaviest</div></div>`;
 
-  const byW = [...tags].sort((a,b)=>g[b].at(-1).weight-g[a].at(-1).weight).slice(0,5);
-  s5.innerHTML = byW.map((t,i)=>`
+  const byW=[...tags].sort((a,b)=>g[b].at(-1).weight-g[a].at(-1).weight).slice(0,5);
+  s5.innerHTML=byW.map((t,i)=>`
     <div class="sheep-card" style="margin-bottom:8px;">
       <div class="sch" style="cursor:default;">
         <div><span style="color:var(--amber);font-size:14px;font-weight:800;">#${i+1}</span>
@@ -646,8 +701,8 @@ function renderStats() {
       </div>
     </div>`).join('');
 
-  const gains = tags.map(t=>({tag:t,gain:gain(g[t])})).filter(x=>x.gain!==0).sort((a,b)=>b.gain-a.gain).slice(0,5);
-  sb.innerHTML = gains.length
+  const gains=tags.map(t=>({tag:t,gain:gain(g[t])})).filter(x=>x.gain!==0).sort((a,b)=>b.gain-a.gain).slice(0,5);
+  sb.innerHTML=gains.length
     ? gains.map((x,i)=>`
         <div class="sheep-card" style="margin-bottom:8px;">
           <div class="sch" style="cursor:default;">
@@ -663,14 +718,14 @@ function renderStats() {
 //  EXPORT
 // ═══════════════════════════════════════
 function exportAll() {
-  const data = load(); if (!data.length) { showToast('No data'); return; }
-  const rows = [['Tag Number','Date','Weight (kg)','Notes']];
+  const data=load(); if (!data.length){showToast('No data');return;}
+  const rows=[['Tag Number','Date','Weight (kg)','Notes']];
   [...data].sort((a,b)=>a.tag.localeCompare(b.tag)||a.date.localeCompare(b.date))
     .forEach(r=>rows.push([r.tag,r.date,r.weight,r.notes||'']));
   dlCSV(rows,'sheep-all-records.csv'); showToast('📊 Exported!');
 }
 function exportLatest() {
-  const data = load(); if (!data.length) { showToast('No data'); return; }
+  const data=load(); if (!data.length){showToast('No data');return;}
   const g={};
   data.forEach(r=>{(g[r.tag]=g[r.tag]||[]).push(r);});
   Object.values(g).forEach(e=>e.sort((a,b)=>a.date.localeCompare(b.date)));
@@ -691,21 +746,14 @@ function exportBackup() {
 }
 function importBackup(ev) {
   const f=ev.target.files[0]; if(!f) return;
-  new FileReader().onload=e=>{
+  const r=new FileReader();
+  r.onload=e=>{
     try {
       const b=JSON.parse(e.target.result);
       if(!Array.isArray(b.records)) throw 0;
       const seen=new Set(), m=[...load(),...b.records].filter(r=>seen.has(r.id)?false:seen.add(r.id));
       save(m); showToast(`✓ Restored ${b.records.length} records`);
-    } catch { showToast('⚠️ Invalid file'); }
-  };
-  const r=new FileReader(); r.onload=e=>{
-    try {
-      const b=JSON.parse(e.target.result);
-      if(!Array.isArray(b.records)) throw 0;
-      const seen=new Set(), m=[...load(),...b.records].filter(r=>seen.has(r.id)?false:seen.add(r.id));
-      save(m); showToast(`✓ Restored ${b.records.length} records`);
-    } catch { showToast('⚠️ Invalid file'); }
+    } catch { showToast('⚠️ Invalid backup file'); }
   };
   r.readAsText(f); ev.target.value='';
 }
@@ -728,42 +776,5 @@ function showToast(msg) {
   setTimeout(()=>t.classList.remove('show'),2200);
 }
 </script>
-<script>
-function quickShare() {
-  const data = {
-    version: 1,
-    exported: new Date().toISOString(),
-    records: JSON.parse(localStorage.getItem('sheepData_v1') || '[]')
-  };
-
-  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-  const file = new File([blob], "sheep-backup.json");
-
-  if (navigator.share) {
-    navigator.share({
-      title: "Sheep Tracker Backup",
-      files: [file]
-    });
-  } else {
-    alert("Sharing not supported on this device");
-  }
-}
-
-function updateLastUpdated() {
-  const now = new Date().toLocaleString();
-  localStorage.setItem("lastUpdated", now);
-  document.getElementById("lastUpdated").textContent = "Last updated: " + now;
-}
-
-window.onload = function () {
-  const saved = localStorage.getItem("lastUpdated");
-  if (saved) {
-    document.getElementById("lastUpdated").textContent = "Last updated: " + saved;
-  }
-};
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
-</script></body>
+</body>
 </html>
