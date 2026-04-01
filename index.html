@@ -11,262 +11,299 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Sheep Tracker</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Courier+Prime:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Courier+Prime:wght@400;700&display=swap');
 
-  :root {
-    --green-dark: #1a3a0f;
-    --green-mid:  #2d5a1b;
-    --green-light:#4a8a2e;
-    --green-pale: #d4e8c4;
-    --cream:      #f5f0e8;
-    --amber:      #e8a020;
-    --amber-dark: #b87818;
-    --red:        #c0392b;
-    --text:       #1a2010;
-    --text-muted: #5a6e4a;
-    --border:     #b0c8a0;
-    --white:      #ffffff;
-    --shadow:     0 2px 12px rgba(0,0,0,0.15);
-    --radius:     14px;
-  }
+:root {
+  --gd: #1a3a0f; --gm: #2d5a1b; --gl: #4a8a2e; --gp: #d4e8c4;
+  --cream: #f5f0e8; --am: #e8a020; --amd: #b87818;
+  --red: #c0392b; --red-pale: #fde8f2;
+  --text: #1a2010; --muted: #5a6e4a; --border: #b0c8a0;
+  --white: #fff; --shadow: 0 2px 12px rgba(0,0,0,.15); --r: 14px;
+  --blue: #2980b9; --blue-pale: #d6eaf8;
+  --pink: #c0397a; --pink-pale: #fde8f2;
+  --purple: #7d3c98; --purple-pale: #f0e6f8;
+  --orange: #e67e22; --orange-pale: #fef0e0;
+  --sold-c: #16a085; --sold-pale: #d5f5ef;
+  --dead-c: #7f8c8d; --dead-pale: #ecf0f1;
+}
 
-  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body { font-family:'Nunito',sans-serif; background:var(--gd); color:var(--text); min-height:100dvh; display:flex; flex-direction:column; max-width:480px; margin:0 auto; }
 
-  body {
-    font-family:'Nunito',sans-serif; background:var(--green-dark);
-    color:var(--text); min-height:100dvh;
-    display:flex; flex-direction:column; max-width:480px; margin:0 auto;
-  }
+/* ── HEADER ── */
+header { background:linear-gradient(160deg,var(--gm),var(--gd)); padding:13px 16px 10px; display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--gl); position:sticky; top:0; z-index:100; }
+.htitle { display:flex; align-items:center; gap:9px; }
+.hlogo { width:34px; height:34px; border-radius:9px; object-fit:cover; }
+.htitle h1 { font-size:18px; font-weight:900; color:var(--cream); }
+.htitle p  { font-size:10px; color:var(--gp); font-weight:600; }
+.hright { display:flex; align-items:center; gap:10px; }
+.share-btn { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:9px; padding:6px 10px; color:var(--cream); font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; cursor:pointer; }
+.hcount { text-align:right; }
+.hcount .n { font-size:21px; font-weight:900; color:var(--am); line-height:1; }
+.hcount .l { font-size:9px; color:var(--gp); font-weight:700; }
 
-  /* HEADER */
-  header {
-    background:linear-gradient(160deg,var(--green-mid),var(--green-dark));
-    padding:14px 16px 11px;
-    display:flex; align-items:center; justify-content:space-between;
-    border-bottom:2px solid var(--green-light);
-    position:sticky; top:0; z-index:100;
-  }
-  .htitle { display:flex; align-items:center; gap:10px; }
-  .hlogo  { width:38px; height:38px; border-radius:10px; object-fit:cover; }
-  .htitle h1 { font-size:19px; font-weight:900; color:var(--cream); }
-  .htitle p  { font-size:11px; color:var(--green-pale); font-weight:600; }
-  .hright { display:flex; align-items:center; gap:12px; }
-  .share-btn {
-    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
-    border-radius:10px; padding:7px 12px; color:var(--cream);
-    font-family:'Nunito',sans-serif; font-size:12px; font-weight:800;
-    cursor:pointer; display:flex; align-items:center; gap:5px;
-  }
-  .share-btn:active { background:rgba(255,255,255,.2); }
+/* ── NAV ── */
+nav { background:var(--gd); display:flex; border-bottom:2px solid var(--gm); }
+nav button { flex:1; padding:10px 6px; background:none; border:none; border-bottom:3px solid transparent; color:var(--gp); font-family:'Nunito',sans-serif; font-size:10px; font-weight:700; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; transition:all .2s; }
+nav button .ni { font-size:18px; }
+nav button.active { color:var(--am); border-bottom-color:var(--am); background:rgba(255,255,255,.05); }
 
-  /* NAV */
-  nav { background:var(--green-dark); display:flex; border-bottom:2px solid var(--green-mid); }
-  nav button {
-    flex:1; padding:11px 8px; background:none; border:none;
-    color:var(--green-pale); font-family:'Nunito',sans-serif;
-    font-size:11px; font-weight:700; cursor:pointer;
-    display:flex; flex-direction:column; align-items:center; gap:2px;
-    border-bottom:3px solid transparent; transition:all .2s;
-  }
-  nav button .ni { font-size:19px; }
-  nav button.active { color:var(--amber); border-bottom-color:var(--amber); background:rgba(255,255,255,.05); }
+main { flex:1; background:var(--cream); overflow-y:auto; }
+.panel { display:none; padding:13px; }
+.panel.active { display:block; }
 
-  main { flex:1; background:var(--cream); overflow-y:auto; }
-  .panel { display:none; padding:14px; }
-  .panel.active { display:block; }
+/* ── CARDS ── */
+.card { background:var(--white); border-radius:var(--r); padding:16px; box-shadow:var(--shadow); margin-bottom:13px; border:1px solid var(--border); }
+.card h2 { font-size:14px; font-weight:800; color:var(--gd); margin-bottom:13px; }
+label { display:block; font-size:10px; font-weight:800; color:var(--muted); margin-bottom:4px; text-transform:uppercase; letter-spacing:.8px; }
+.fg { margin-bottom:12px; }
+input[type=text], input[type=number], input[type=date], textarea, select { width:100%; padding:11px 13px; border:2px solid var(--border); border-radius:10px; font-family:'Nunito',sans-serif; font-size:16px; font-weight:700; color:var(--text); background:var(--cream); -webkit-appearance:none; appearance:none; }
+textarea { resize:none; height:70px; font-size:14px; }
+input:focus, textarea:focus, select:focus { outline:none; border-color:var(--gl); background:var(--white); }
 
-  /* CARD */
-  .card {
-    background:var(--white); border-radius:var(--radius);
-    padding:18px; box-shadow:var(--shadow); margin-bottom:14px;
-    border:1px solid var(--border);
-  }
-  .card h2 { font-size:15px; font-weight:800; color:var(--green-dark); margin-bottom:14px; }
+/* ── TAG AREA ── */
+.tag-area { background:var(--gd); border-radius:13px; padding:13px; margin-bottom:12px; }
+.tag-area-label { font-size:10px; font-weight:800; color:var(--gp); text-transform:uppercase; letter-spacing:.8px; margin-bottom:9px; }
+.chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:10px; }
+.chip { padding:10px 15px; border-radius:10px; border:2px solid rgba(255,255,255,.2); background:rgba(255,255,255,.1); color:var(--gp); font-family:'Courier Prime',monospace; font-size:20px; font-weight:700; cursor:pointer; transition:all .15s; user-select:none; -webkit-user-select:none; }
+.chip.active { background:var(--am); color:var(--gd); border-color:var(--amd); box-shadow:0 3px 12px rgba(232,160,32,.5); transform:scale(1.06); }
+.chip:active { transform:scale(.95); }
+.chip.add-chip { font-size:22px; padding:7px 13px; color:rgba(255,255,255,.4); border-style:dashed; background:rgba(255,255,255,.06); }
+.add-row { display:none; margin-top:9px; background:rgba(255,255,255,.1); border-radius:10px; padding:11px; flex-direction:column; gap:7px; }
+.add-row.open { display:flex; }
+.add-row-inner { display:flex; gap:7px; }
+.add-row input { flex:1; font-size:20px !important; text-align:center; padding:9px !important; background:var(--white) !important; letter-spacing:3px; border-radius:8px !important; }
+.add-row button { padding:9px 14px; border:none; border-radius:8px; font-family:'Nunito',sans-serif; font-weight:800; font-size:13px; cursor:pointer; }
+.btn-ok { background:var(--am); color:var(--gd); }
+.btn-cx { background:rgba(255,255,255,.15); color:var(--gp); }
+.tag-row { display:flex; align-items:stretch; border-radius:11px; overflow:hidden; border:3px solid var(--am); }
+.tag-prefix-box { padding:11px 10px; min-width:58px; text-align:center; font-family:'Courier Prime',monospace; font-size:26px; font-weight:700; color:var(--amd); background:#fff8ee; border-right:2px solid #f0d080; display:flex; align-items:center; justify-content:center; }
+.tag-seq { flex:1; border:none !important; border-radius:0 !important; font-size:30px !important; font-weight:900 !important; text-align:center; letter-spacing:4px; background:var(--white) !important; padding:11px 8px !important; color:var(--gd) !important; }
+.tag-seq:focus { outline:none; }
+.tag-preview { text-align:center; margin-top:7px; font-family:'Courier Prime',monospace; font-size:12px; color:var(--gp); letter-spacing:2px; }
+.tag-preview span { color:var(--am); font-size:17px; font-weight:700; }
 
-  label {
-    display:block; font-size:11px; font-weight:800;
-    color:var(--text-muted); margin-bottom:5px;
-    text-transform:uppercase; letter-spacing:.8px;
-  }
-  .fg { margin-bottom:13px; }
+/* ── SEX BUTTONS ── */
+.sex-row { display:flex; gap:6px; margin-top:10px; align-items:center; }
+.sex-lbl { font-size:10px; font-weight:800; color:var(--gp); text-transform:uppercase; letter-spacing:.7px; white-space:nowrap; }
+.sex-btn { flex:1; padding:8px 4px; border-radius:10px; border:2px solid rgba(255,255,255,.2); background:rgba(255,255,255,.08); color:rgba(255,255,255,.45); font-family:'Nunito',sans-serif; font-size:12px; font-weight:800; cursor:pointer; text-align:center; display:flex; flex-direction:column; align-items:center; gap:2px; transition:all .15s; user-select:none; }
+.sex-btn .si { font-size:16px; }
+.sex-btn.sel-ram  { background:var(--blue); color:white; border-color:#1a6a9a; }
+.sex-btn.sel-ewe  { background:var(--pink); color:white; border-color:#9a2d62; }
+.sex-btn.sel-weth { background:var(--purple); color:white; border-color:#6a3280; }
+.sex-known { font-size:10px; font-weight:700; color:var(--am); background:rgba(232,160,32,.2); padding:2px 8px; border-radius:20px; margin-left:auto; white-space:nowrap; display:none; }
+.sex-known.show { display:inline; }
 
-  input[type="text"], input[type="number"], input[type="date"], select {
-    width:100%; padding:12px 14px; border:2px solid var(--border);
-    border-radius:10px; font-family:'Nunito',sans-serif;
-    font-size:17px; font-weight:700; color:var(--text);
-    background:var(--cream); -webkit-appearance:none; appearance:none;
-  }
-  input:focus, select:focus { outline:none; border-color:var(--green-light); background:var(--white); }
+/* ── SHEEP SUMMARY (sold/dead confirm) ── */
+.sheep-summary { background:rgba(255,255,255,.12); border-radius:10px; padding:10px 12px; margin-top:9px; display:none; }
+.sheep-summary.show { display:block; }
+.ss-tag { font-family:'Courier Prime',monospace; font-size:18px; font-weight:700; color:var(--am); }
+.ss-row { display:flex; gap:12px; margin-top:5px; font-size:12px; color:var(--gp); font-weight:600; }
 
-  /* ── TAG ENTRY ── */
-  .tag-area {
-    background:var(--green-dark); border-radius:14px;
-    padding:14px; margin-bottom:13px;
-  }
-  .tag-area-label {
-    font-size:11px; font-weight:800; color:var(--green-pale);
-    text-transform:uppercase; letter-spacing:.8px; margin-bottom:10px;
-  }
+/* ── STATUS BUTTONS (Sold/Dead) ── */
+.status-btns { display:flex; gap:10px; margin-bottom:12px; }
+.status-btn { flex:1; padding:16px; border:none; border-radius:12px; font-family:'Nunito',sans-serif; font-size:16px; font-weight:800; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:5px; transition:all .15s; border:3px solid transparent; }
+.status-btn .sbi { font-size:28px; }
+.status-btn.sold-btn { background:var(--sold-pale); color:var(--sold-c); border-color:#a8ddd5; }
+.status-btn.dead-btn { background:var(--dead-pale); color:var(--dead-c); border-color:#d0d3d4; }
+.status-btn.sel { transform:scale(1.04); box-shadow:0 4px 14px rgba(0,0,0,.15); }
+.status-btn.sold-btn.sel { border-color:var(--sold-c); background:#b2ebe0; }
+.status-btn.dead-btn.sel { border-color:#7f8c8d; background:#d5d8dc; }
 
-  /* Year chips */
-  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
-  .chip {
-    padding:11px 18px; border-radius:11px;
-    border:2px solid rgba(255,255,255,.2);
-    background:rgba(255,255,255,.1); color:var(--green-pale);
-    font-family:'Courier Prime',monospace; font-size:22px; font-weight:700;
-    cursor:pointer; transition:all .15s; letter-spacing:1px;
-    user-select:none; -webkit-user-select:none;
-  }
-  .chip.active {
-    background:var(--amber); color:var(--green-dark);
-    border-color:var(--amber-dark); box-shadow:0 3px 12px rgba(232,160,32,.5);
-    transform:scale(1.06);
-  }
-  .chip:active { transform:scale(.95); }
-  .chip.add-chip {
-    font-size:24px; padding:8px 16px;
-    color:rgba(255,255,255,.4); border-style:dashed;
-    background:rgba(255,255,255,.06);
-  }
+/* ── TOGGLE BUTTONS (purchased/income) ── */
+.toggle-row { display:flex; gap:0; border-radius:10px; overflow:hidden; border:2px solid var(--border); margin-bottom:12px; }
+.toggle-btn { flex:1; padding:12px; border:none; background:var(--cream); color:var(--muted); font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; cursor:pointer; transition:all .15s; }
+.toggle-btn.sel-purchase { background:#e74c3c; color:white; }
+.toggle-btn.sel-income   { background:var(--sold-c); color:white; }
 
-  /* Add prefix form */
-  .add-row {
-    display:none; margin-top:10px; background:rgba(255,255,255,.1);
-    border-radius:10px; padding:12px; flex-direction:column; gap:8px;
-  }
-  .add-row.open { display:flex; }
-  .add-row-inner { display:flex; gap:8px; }
-  .add-row input {
-    flex:1; font-size:22px !important; text-align:center;
-    padding:10px !important; background:var(--white) !important;
-    letter-spacing:3px; border-radius:8px !important;
-  }
-  .add-row button {
-    padding:10px 16px; border:none; border-radius:8px;
-    font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; cursor:pointer;
-  }
-  .btn-ok { background:var(--amber); color:var(--green-dark); }
-  .btn-cx { background:rgba(255,255,255,.15); color:var(--green-pale); }
+/* ── BUTTONS ── */
+.btn { width:100%; padding:14px; border:none; border-radius:12px; font-family:'Nunito',sans-serif; font-size:16px; font-weight:800; cursor:pointer; transition:all .15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.btn-primary { background:linear-gradient(135deg,var(--gl),var(--gm)); color:white; box-shadow:0 4px 14px rgba(45,90,27,.4); }
+.btn-primary:active { transform:scale(.97); }
+.btn-export  { background:linear-gradient(135deg,var(--am),var(--amd)); color:white; box-shadow:0 4px 14px rgba(184,120,24,.4); margin-bottom:10px; }
+.btn-export:active { transform:scale(.97); }
+.btn-danger  { background:var(--red); color:white; font-size:13px; padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:800; }
+.btn-sm { padding:7px 12px; font-size:12px; width:auto; border-radius:8px; }
+.btn-warn { background:#f39c12; color:white; }
 
-  /* Tag input row */
-  .tag-row {
-    display:flex; align-items:stretch; border-radius:12px;
-    overflow:hidden; border:3px solid var(--amber);
-  }
-  .tag-prefix-box {
-    padding:12px 10px 12px 14px; min-width:64px; text-align:center;
-    font-family:'Courier Prime',monospace; font-size:28px; font-weight:700;
-    color:var(--amber-dark); background:#fff8ee;
-    border-right:2px solid #f0d080; letter-spacing:1px;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .tag-seq {
-    flex:1; border:none !important; border-radius:0 !important;
-    font-size:32px !important; font-weight:900 !important;
-    text-align:center; letter-spacing:4px;
-    background:var(--white) !important; padding:12px 8px !important;
-    color:var(--green-dark) !important;
-  }
-  .tag-seq:focus { outline:none; background:var(--white) !important; }
+/* ── RECORD HUB BIG BUTTONS ── */
+.hub { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:13px; }
+.hub-btn { background:var(--white); border:2px solid var(--border); border-radius:var(--r); padding:20px 12px; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; transition:all .15s; box-shadow:0 1px 6px rgba(0,0,0,.08); }
+.hub-btn:active { transform:scale(.96); }
+.hub-btn .hbi { font-size:36px; }
+.hub-btn .hbl { font-size:13px; font-weight:800; color:var(--gd); }
+.hub-btn .hbs { font-size:10px; font-weight:600; color:var(--muted); }
+.hub-btn.hb-weigh  { border-color:var(--gl); }
+.hub-btn.hb-status { border-color:var(--sold-c); }
+.hub-btn.hb-drench { border-color:var(--blue); }
+.hub-btn.hb-cost   { border-color:var(--am); }
 
-  .tag-preview {
-    text-align:center; margin-top:8px;
-    font-family:'Courier Prime',monospace;
-    font-size:13px; color:var(--green-pale); letter-spacing:2px;
-  }
-  .tag-preview span { color:var(--amber); font-size:18px; font-weight:700; }
+/* ── ENTRY SCREENS ── */
+.entry-screen { display:none; }
+.entry-screen.active { display:block; }
+.back-btn { display:flex; align-items:center; gap:6px; background:none; border:none; color:var(--muted); font-family:'Nunito',sans-serif; font-size:13px; font-weight:800; cursor:pointer; padding:0; margin-bottom:13px; }
 
-  /* BUTTONS */
-  .btn {
-    width:100%; padding:15px; border:none; border-radius:12px;
-    font-family:'Nunito',sans-serif; font-size:17px; font-weight:800;
-    cursor:pointer; transition:all .15s;
-    display:flex; align-items:center; justify-content:center; gap:8px;
-  }
-  .btn-primary { background:linear-gradient(135deg,var(--green-light),var(--green-mid)); color:white; box-shadow:0 4px 14px rgba(45,90,27,.4); }
-  .btn-primary:active { transform:scale(.97); }
-  .btn-export  { background:linear-gradient(135deg,var(--amber),var(--amber-dark)); color:white; box-shadow:0 4px 14px rgba(184,120,24,.4); margin-bottom:10px; }
-  .btn-export:active { transform:scale(.97); }
-  .btn-danger  { background:var(--red); color:white; font-size:14px; padding:10px 18px; border:none; border-radius:8px; cursor:pointer; font-weight:800; }
-  .btn-sm      { padding:8px 14px; font-size:13px; width:auto; border-radius:8px; }
+/* ── TOAST ── */
+#toast { position:fixed; bottom:86px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--gd); color:var(--cream); padding:11px 20px; border-radius:30px; font-size:13px; font-weight:700; opacity:0; transition:all .3s; z-index:999; pointer-events:none; white-space:nowrap; box-shadow:var(--shadow); }
+#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-  /* TOAST */
-  #toast {
-    position:fixed; bottom:88px; left:50%; transform:translateX(-50%) translateY(20px);
-    background:var(--green-dark); color:var(--cream);
-    padding:11px 20px; border-radius:30px; font-size:14px; font-weight:700;
-    opacity:0; transition:all .3s; z-index:999; pointer-events:none;
-    white-space:nowrap; box-shadow:var(--shadow);
-  }
-  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+/* ── WARNING MODAL ── */
+#warnModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:200; align-items:center; justify-content:center; padding:20px; }
+#warnModal.show { display:flex; }
+.warn-box { background:var(--white); border-radius:var(--r); padding:22px; max-width:360px; width:100%; box-shadow:0 8px 32px rgba(0,0,0,.3); }
+.warn-box h3 { font-size:16px; font-weight:800; color:var(--red); margin-bottom:10px; }
+.warn-box p { font-size:13px; color:var(--text); margin-bottom:16px; line-height:1.5; }
+.warn-btns { display:flex; gap:10px; }
+.warn-btns button { flex:1; padding:12px; border:none; border-radius:10px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; cursor:pointer; }
 
-  /* FLOCK CARDS */
-  .sheep-card { background:var(--white); border-radius:var(--radius); border:1px solid var(--border); margin-bottom:10px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.08); }
-  .sch { display:flex; align-items:center; justify-content:space-between; padding:13px 15px; cursor:pointer; background:linear-gradient(135deg,var(--green-dark),var(--green-mid)); color:white; }
-  .stag { font-family:'Courier Prime',monospace; font-size:20px; font-weight:700; letter-spacing:1px; }
-  .smeta { font-size:12px; color:var(--green-pale); margin-top:2px; }
-  .slw  { font-size:26px; font-weight:900; color:var(--amber); line-height:1; }
-  .swu  { font-size:11px; color:var(--green-pale); }
-  .shist { display:none; padding:12px 15px; }
-  .shist.open { display:block; }
-  .hrow { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; padding:8px 0; border-bottom:1px solid var(--green-pale); font-size:14px; }
-  .hrow:last-child { border-bottom:none; }
-  .hdate { color:var(--text-muted); font-weight:600; }
-  .hwt   { font-weight:800; font-size:16px; color:var(--green-mid); }
-  .hgain { font-size:12px; font-weight:700; padding:2px 8px; border-radius:20px; }
-  .gp { background:#d4edda; color:#155724; }
-  .gn { background:#f8d7da; color:#721c24; }
-  .gz { background:var(--green-pale); color:var(--text-muted); }
-  .delbtn { background:none; border:none; color:#ccc; font-size:16px; cursor:pointer; padding:4px 8px; }
-  .delbtn:active { color:var(--red); }
-  .chev { transition:transform .2s; }
-  .chev.open { transform:rotate(180deg); }
+/* ── SUB TABS (Flock panel) ── */
+.sub-tabs { display:flex; gap:0; border-radius:10px; overflow:hidden; border:2px solid var(--border); margin-bottom:13px; }
+.sub-tab { flex:1; padding:10px 6px; border:none; background:var(--cream); color:var(--muted); font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; cursor:pointer; transition:all .2s; text-align:center; }
+.sub-tab.active { background:var(--gm); color:white; }
+.sub-panel { display:none; }
+.sub-panel.active { display:block; }
 
-  /* SEARCH */
-  .sw { position:relative; margin-bottom:12px; }
-  .sw input { padding-left:38px; font-size:15px; }
-  .si { position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:17px; color:var(--text-muted); pointer-events:none; }
+/* ── FLOCK CARDS ── */
+.sheep-card { background:var(--white); border-radius:var(--r); border:1px solid var(--border); margin-bottom:9px; overflow:hidden; box-shadow:0 1px 5px rgba(0,0,0,.07); }
+.sch { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; cursor:pointer; background:linear-gradient(135deg,var(--gd),var(--gm)); color:white; }
+.sch.sold-hdr { background:linear-gradient(135deg,#0e6655,var(--sold-c)); }
+.sch.dead-hdr { background:linear-gradient(135deg,#566573,var(--dead-c)); }
+.stag { font-family:'Courier Prime',monospace; font-size:19px; font-weight:700; letter-spacing:1px; }
+.smeta { font-size:11px; color:var(--gp); margin-top:2px; }
+.smeta.sold-meta { color:#a8ead8; }
+.smeta.dead-meta { color:#d5d8dc; }
+.slw { font-size:24px; font-weight:900; color:var(--am); line-height:1; }
+.swu { font-size:10px; color:var(--gp); }
+.chev { transition:transform .2s; color:var(--am); font-size:16px; margin-left:7px; }
+.chev.open { transform:rotate(180deg); }
+.shist { display:none; padding:11px 14px; }
+.shist.open { display:block; }
+.hrow { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; padding:7px 0; border-bottom:1px solid var(--gp); font-size:13px; }
+.hrow:last-child { border-bottom:none; }
+.hdate { color:var(--muted); font-weight:600; }
+.hwt { font-weight:800; font-size:14px; color:var(--gm); }
+.hgain { font-size:11px; font-weight:700; padding:2px 7px; border-radius:20px; }
+.gp { background:#d4edda; color:#155724; }
+.gn { background:#f8d7da; color:#721c24; }
+.delbtn { background:none; border:none; color:#ccc; font-size:15px; cursor:pointer; padding:3px 7px; }
+.delbtn:active { color:var(--red); }
 
-  /* STATS */
-  .sgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
-  .sbox  { background:var(--white); border-radius:var(--radius); padding:14px; border:1px solid var(--border); text-align:center; }
-  .sval  { font-size:30px; font-weight:900; color:var(--green-mid); line-height:1; }
-  .slbl  { font-size:11px; color:var(--text-muted); font-weight:700; margin-top:4px; text-transform:uppercase; }
+/* Status badge */
+.sex-badge { font-size:10px; font-weight:800; padding:2px 8px; border-radius:20px; display:inline-block; margin-left:5px; vertical-align:middle; }
+.sb-ram  { background:var(--blue-pale); color:var(--blue); }
+.sb-ewe  { background:var(--pink-pale); color:var(--pink); }
+.sb-weth { background:var(--purple-pale); color:var(--purple); }
+.sb-unk  { background:#eee; color:#999; }
+.status-badge { font-size:10px; font-weight:800; padding:2px 8px; border-radius:20px; display:inline-block; margin-left:5px; vertical-align:middle; }
+.sb-sold { background:var(--sold-pale); color:var(--sold-c); }
+.sb-dead { background:var(--dead-pale); color:var(--dead-c); }
 
-  .stitle { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin:14px 0 8px; }
-  .frow   { display:flex; gap:8px; margin-bottom:12px; align-items:center; }
-  .frow select { flex:1; font-size:13px; padding:10px 12px; }
-  .empty { text-align:center; padding:36px 20px; color:var(--text-muted); }
-  .empty .ei { font-size:50px; margin-bottom:12px; }
-  .empty p { font-weight:600; font-size:14px; }
+/* Change sex row */
+.change-sex-row { display:flex; gap:5px; margin-top:9px; padding-top:9px; border-top:1px solid var(--gp); flex-wrap:wrap; }
+.cs-lbl { font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; width:100%; margin-bottom:4px; }
+.csb { flex:1; padding:7px 4px; border-radius:9px; border:2px solid var(--border); background:var(--cream); font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; cursor:pointer; text-align:center; display:flex; flex-direction:column; align-items:center; gap:2px; }
+.csb .csi { font-size:16px; }
+.csb.csel-ram  { background:var(--blue); color:white; border-color:#1a6a9a; }
+.csb.csel-ewe  { background:var(--pink); color:white; border-color:#9a2d62; }
+.csb.csel-weth { background:var(--purple); color:white; border-color:#6a3280; }
 
-  /* Last updated bar */
-  .last-updated {
-    text-align:center; font-size:11px; color:var(--text-muted);
-    padding:6px; background:var(--green-pale); border-radius:8px;
-    margin-bottom:12px; font-weight:600;
-  }
+/* Restore status row */
+.restore-row { display:flex; gap:5px; margin-top:9px; padding-top:9px; border-top:1px solid var(--gp); }
+.restore-btn { flex:1; padding:8px; border:2px solid var(--border); border-radius:9px; background:var(--cream); font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; cursor:pointer; color:var(--gm); }
+
+/* SEARCH */
+.sw { position:relative; margin-bottom:10px; }
+.sw input { padding-left:36px; font-size:14px; }
+.si { position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:16px; color:var(--muted); pointer-events:none; }
+
+/* Sex filter pills */
+.sfrow { display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+.sfpill { padding:6px 12px; border-radius:20px; font-size:11px; font-weight:800; border:2px solid var(--border); background:var(--white); color:var(--muted); cursor:pointer; transition:all .15s; }
+.sfpill.active { border-color:transparent; color:white; }
+.sfpill.active.sf-all  { background:var(--gm); }
+.sfpill.active.sf-ram  { background:var(--blue); }
+.sfpill.active.sf-ewe  { background:var(--pink); }
+.sfpill.active.sf-weth { background:var(--purple); }
+.sfpill.active.sf-unk  { background:#888; }
+.sfpill.active.sf-sold { background:var(--sold-c); }
+.sfpill.active.sf-dead { background:var(--dead-c); }
+
+/* FROW */
+.frow { display:flex; gap:7px; margin-bottom:11px; align-items:center; }
+.frow label { white-space:nowrap; margin:0; font-size:11px; }
+.frow select { flex:1; font-size:12px; padding:9px 11px; }
+
+/* ── DRENCH CARDS ── */
+.drench-card { background:var(--white); border-radius:var(--r); border:1px solid var(--border); margin-bottom:9px; overflow:hidden; box-shadow:0 1px 5px rgba(0,0,0,.07); }
+.drench-hdr { background:linear-gradient(135deg,#154360,var(--blue)); padding:12px 14px; color:white; }
+.drench-name { font-size:15px; font-weight:800; }
+.drench-date { font-size:11px; color:#aed6f1; margin-top:2px; }
+.drench-body { padding:11px 14px; }
+.drench-row { display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-bottom:1px solid var(--gp); }
+.drench-row:last-child { border-bottom:none; }
+.drench-row .dk { color:var(--muted); font-weight:600; }
+.drench-row .dv { font-weight:800; color:var(--text); }
+.wh-badge { font-size:11px; font-weight:800; padding:3px 10px; border-radius:20px; display:inline-block; }
+.wh-active { background:#fdecea; color:var(--red); }
+.wh-clear  { background:#d4edda; color:#155724; }
+.wh-days { font-size:13px; font-weight:900; }
+
+/* ── COST CARDS ── */
+.cost-card { background:var(--white); border-radius:var(--r); border:1px solid var(--border); margin-bottom:9px; padding:13px 14px; box-shadow:0 1px 5px rgba(0,0,0,.07); }
+.cost-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.cost-title { font-size:14px; font-weight:800; color:var(--text); }
+.cost-amount { font-size:18px; font-weight:900; }
+.cost-amount.purchase { color:var(--red); }
+.cost-amount.income   { color:var(--sold-c); }
+.cost-meta { font-size:11px; color:var(--muted); margin-top:3px; font-weight:600; }
+.cost-notes { font-size:11px; color:var(--muted); margin-top:6px; padding-top:6px; border-top:1px solid var(--gp); }
+.cost-summary { background:var(--gd); border-radius:12px; padding:13px; margin-bottom:12px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.cs-box { text-align:center; }
+.cs-val { font-size:16px; font-weight:900; }
+.cs-lbl2 { font-size:9px; color:var(--gp); font-weight:700; text-transform:uppercase; margin-top:2px; }
+
+/* ── STATS ── */
+.sgrid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:12px; }
+.sbox { background:var(--white); border-radius:var(--r); padding:13px; border:1px solid var(--border); text-align:center; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+.sval { font-size:28px; font-weight:900; color:var(--gm); line-height:1; }
+.slbl { font-size:10px; color:var(--muted); font-weight:700; margin-top:4px; text-transform:uppercase; }
+.stitle { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin:13px 0 8px; }
+
+/* EMPTY */
+.empty { text-align:center; padding:32px 20px; color:var(--muted); }
+.empty .ei { font-size:46px; margin-bottom:11px; }
+.empty p { font-weight:600; font-size:13px; }
+
+/* LAST UPDATED */
+.last-upd { text-align:center; font-size:10px; color:var(--muted); padding:5px; background:var(--gp); border-radius:8px; margin-bottom:11px; font-weight:600; }
+
+/* RECENT */
+.recent-tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:13px; }
+.rtag { padding:8px 12px; background:var(--white); border:2px solid var(--border); border-radius:9px; font-family:'Courier Prime',monospace; font-size:14px; font-weight:700; color:var(--gd); cursor:pointer; }
 </style>
 </head>
 <body>
-
 <div id="toast"></div>
+
+<!-- DUPLICATE WARNING MODAL -->
+<div id="warnModal">
+  <div class="warn-box">
+    <h3>⚠️ Already Weighed Today</h3>
+    <p id="warnMsg"></p>
+    <div class="warn-btns">
+      <button onclick="cancelWarn()" style="background:var(--cream);color:var(--text);">Cancel</button>
+      <button onclick="confirmWarn()" class="btn-warn" style="color:white;">Save Anyway</button>
+    </div>
+  </div>
+</div>
 
 <header>
   <div class="htitle">
-    <img src="icon-192.png" class="hlogo" alt="Sheep">
-    <div>
-      <h1>Sheep Tracker</h1>
-      <p id="hDate"></p>
-    </div>
+    <div><h1>Sheep Tracker</h1><p id="hDate"></p></div>
   </div>
   <div class="hright">
     <button class="share-btn" onclick="quickShare()">📤 Share</button>
-    <div style="text-align:right;">
-      <div id="hCount" style="font-size:22px;font-weight:900;color:var(--amber);">0</div>
-      <div style="font-size:10px;color:var(--green-pale);font-weight:700;">SHEEP</div>
-    </div>
+    <div class="hcount"><div class="n" id="hCount">0</div><div class="l">SHEEP</div></div>
   </div>
 </header>
 
@@ -279,96 +316,290 @@
 
 <main>
 
-<!-- ══ RECORD ══ -->
+<!-- ══════════════════════════════════════
+     RECORD PANEL
+══════════════════════════════════════ -->
 <div class="panel active" id="panel-record">
-  <div class="card">
-    <h2>⚖️ Weigh a Sheep</h2>
 
-    <!-- TAG ENTRY AREA -->
-    <div class="tag-area">
-      <div class="tag-area-label">Tap year · type last 3 digits</div>
-      <div class="chips" id="chips"></div>
-      <div class="add-row" id="addRow">
-        <div style="font-size:12px;color:var(--green-pale);font-weight:700;">New year prefix (e.g. 22, 25)</div>
-        <div class="add-row-inner">
-          <input type="text" id="newPre" maxlength="2" inputmode="numeric" placeholder="25" autocomplete="off">
-          <button class="btn-ok" onclick="confirmAdd()">Add</button>
-          <button class="btn-cx" onclick="cancelAdd()">✕</button>
+  <!-- HUB -->
+  <div class="entry-screen active" id="es-hub">
+    <div class="hub">
+      <div class="hub-btn hb-weigh" onclick="showEntry('weigh')">
+        <span class="hbi">⚖️</span>
+        <span class="hbl">Weigh Sheep</span>
+        <span class="hbs">Record weight</span>
+      </div>
+      <div class="hub-btn hb-status" onclick="showEntry('status')">
+        <span class="hbi">🏷️</span>
+        <span class="hbl">Sold / Dead</span>
+        <span class="hbs">Update status</span>
+      </div>
+      <div class="hub-btn hb-drench" onclick="showEntry('drench')">
+        <span class="hbi">💉</span>
+        <span class="hbl">Drench Log</span>
+        <span class="hbs">Record treatment</span>
+      </div>
+      <div class="hub-btn hb-cost" onclick="showEntry('cost')">
+        <span class="hbi">💰</span>
+        <span class="hbl">Cost / Income</span>
+        <span class="hbs">Track finances</span>
+      </div>
+    </div>
+    <div id="lastUpdated" class="last-upd" style="display:none"></div>
+    <div class="stitle">Recently Weighed</div>
+    <div class="recent-tags" id="recentTags"></div>
+  </div>
+
+  <!-- ── WEIGH ENTRY ── -->
+  <div class="entry-screen" id="es-weigh">
+    <button class="back-btn" onclick="showEntry('hub')">← Back</button>
+    <div class="card">
+      <h2>⚖️ Weigh a Sheep</h2>
+      <div class="tag-area">
+        <div class="tag-area-label">Tap year · type last 3 digits</div>
+        <div class="chips" id="wChips"></div>
+        <div class="add-row" id="wAddRow">
+          <div style="font-size:11px;color:var(--gp);font-weight:700;">New year prefix (e.g. 25)</div>
+          <div class="add-row-inner">
+            <input type="text" id="wNewPre" maxlength="2" inputmode="numeric" placeholder="25" autocomplete="off">
+            <button class="btn-ok" onclick="confirmAdd('w')">Add</button>
+            <button class="btn-cx" onclick="cancelAdd('w')">✕</button>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,.35)">Long-press a year to remove</div>
         </div>
-        <div style="font-size:11px;color:rgba(255,255,255,.35);">Long-press a year to remove it</div>
+        <div class="tag-row">
+          <div class="tag-prefix-box" id="wPrefixBox">??</div>
+          <input class="tag-seq" id="wSeqInput" type="text" inputmode="numeric" maxlength="3" placeholder="001" autocomplete="off" autocorrect="off" oninput="onWeighSeq()">
+        </div>
+        <div class="tag-preview">Full tag: <span id="wTagPreview">—</span></div>
+        <div class="sex-row">
+          <span class="sex-lbl">Sex</span>
+          <button class="sex-btn" id="wSexRam"  onclick="setSex('w','ram')"><span class="si">♂</span>Ram</button>
+          <button class="sex-btn" id="wSexEwe"  onclick="setSex('w','ewe')"><span class="si">♀</span>Ewe</button>
+          <button class="sex-btn" id="wSexWeth" onclick="setSex('w','wether')"><span class="si">✂</span>Wether</button>
+          <span class="sex-known" id="wSexKnown">✓ Saved</span>
+        </div>
       </div>
-      <div class="tag-row">
-        <div class="tag-prefix-box" id="prefixBox">??</div>
-        <input class="tag-seq" id="seqInput" type="text" inputmode="numeric"
-          maxlength="3" placeholder="001" autocomplete="off" autocorrect="off"
-          oninput="updatePreview()">
+      <div class="fg">
+        <label>Weight (kg)</label>
+        <input type="number" id="wWeight" placeholder="0.0" step="0.1" min="0" max="999" inputmode="decimal" style="font-size:26px;font-weight:900;text-align:center;letter-spacing:2px;">
       </div>
-      <div class="tag-preview">Full tag: <span id="tagPreview">—</span></div>
+      <div class="fg">
+        <label>Date</label>
+        <input type="date" id="wDate">
+      </div>
+      <div class="fg">
+        <label>Notes (optional)</label>
+        <input type="text" id="wNotes" placeholder="e.g. drenched, good condition…" autocomplete="off">
+      </div>
+      <button class="btn btn-primary" onclick="saveWeight()">✓ Save Weight</button>
     </div>
-
-    <div class="fg">
-      <label>Weight (kg)</label>
-      <input type="number" id="weightInput" placeholder="0.0" step="0.1" min="0" max="999"
-        inputmode="decimal"
-        style="font-size:28px;font-weight:900;text-align:center;letter-spacing:2px;">
-    </div>
-    <div class="fg">
-      <label>Date</label>
-      <input type="date" id="dateInput">
-    </div>
-    <div class="fg">
-      <label>Notes (optional)</label>
-      <input type="text" id="notesInput" placeholder="e.g. drenched, good condition…" autocomplete="off">
-    </div>
-    <button class="btn btn-primary" onclick="saveRecord()">✓ Save Record</button>
+    <div class="stitle">Recently Weighed — tap to reuse</div>
+    <div class="recent-tags" id="wRecentTags"></div>
   </div>
 
-  <div id="lastUpdated" class="last-updated" style="display:none;"></div>
-  <div class="stitle">Recent — tap to reuse</div>
-  <div id="recentTags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;"></div>
-</div>
+  <!-- ── SOLD/DEAD ENTRY ── -->
+  <div class="entry-screen" id="es-status">
+    <button class="back-btn" onclick="showEntry('hub')">← Back</button>
+    <div class="card">
+      <h2>🏷️ Update Sheep Status</h2>
+      <div class="tag-area">
+        <div class="tag-area-label">Tap year · type last 3 digits</div>
+        <div class="chips" id="sChips"></div>
+        <div class="add-row" id="sAddRow">
+          <div style="font-size:11px;color:var(--gp);font-weight:700;">New year prefix</div>
+          <div class="add-row-inner">
+            <input type="text" id="sNewPre" maxlength="2" inputmode="numeric" placeholder="25" autocomplete="off">
+            <button class="btn-ok" onclick="confirmAdd('s')">Add</button>
+            <button class="btn-cx" onclick="cancelAdd('s')">✕</button>
+          </div>
+        </div>
+        <div class="tag-row">
+          <div class="tag-prefix-box" id="sPrefixBox">??</div>
+          <input class="tag-seq" id="sSeqInput" type="text" inputmode="numeric" maxlength="3" placeholder="001" autocomplete="off" autocorrect="off" oninput="onStatusSeq()">
+        </div>
+        <div class="tag-preview">Full tag: <span id="sTagPreview">—</span></div>
+        <!-- Sheep summary card -->
+        <div class="sheep-summary" id="sSummary">
+          <div class="ss-tag" id="sSumTag"></div>
+          <div class="ss-row">
+            <span id="sSumSex"></span>
+            <span id="sSumWeight"></span>
+            <span id="sSumDate"></span>
+          </div>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Status</label>
+        <div class="status-btns">
+          <button class="status-btn sold-btn" id="btnSold" onclick="pickStatus('sold')">
+            <span class="sbi">💰</span>Sold
+          </button>
+          <button class="status-btn dead-btn" id="btnDead" onclick="pickStatus('dead')">
+            <span class="sbi">💀</span>Dead
+          </button>
+        </div>
+      </div>
+      <div class="fg" id="causeGroup" style="display:none">
+        <label>Cause of Death (optional)</label>
+        <input type="text" id="sCause" placeholder="e.g. illness, injury…" autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>Date</label>
+        <input type="date" id="sDate">
+      </div>
+      <button class="btn btn-primary" onclick="saveStatus()">✓ Save Status</button>
+    </div>
+    <div class="stitle">Recent Tags — tap to reuse</div>
+    <div class="recent-tags" id="sRecentTags"></div>
+  </div>
 
-<!-- ══ FLOCK ══ -->
+  <!-- ── DRENCH ENTRY ── -->
+  <div class="entry-screen" id="es-drench">
+    <button class="back-btn" onclick="showEntry('hub')">← Back</button>
+    <div class="card">
+      <h2>💉 Record Drench</h2>
+      <div class="fg">
+        <label>Mob / Group Name</label>
+        <input type="text" id="dName" placeholder="e.g. 2025 Wether Mob" autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>Date</label>
+        <input type="date" id="dDate">
+      </div>
+      <div class="fg">
+        <label>Product Name</label>
+        <input type="text" id="dProduct" placeholder="e.g. Cydectin" autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>Amount Per Sheep (ml)</label>
+        <input type="number" id="dAmount" placeholder="0.0" step="0.1" min="0" inputmode="decimal" style="font-size:22px;text-align:center;font-weight:800;">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <label>Local Slaughter Withhold (days)</label>
+          <input type="number" id="dLocalWH" placeholder="0" min="0" inputmode="numeric" style="font-size:20px;text-align:center;font-weight:800;">
+        </div>
+        <div>
+          <label>Export Slaughter Withhold (days)</label>
+          <input type="number" id="dExportWH" placeholder="0" min="0" inputmode="numeric" style="font-size:20px;text-align:center;font-weight:800;">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="saveDrench()">✓ Save Drench Record</button>
+    </div>
+  </div>
+
+  <!-- ── COST ENTRY ── -->
+  <div class="entry-screen" id="es-cost">
+    <button class="back-btn" onclick="showEntry('hub')">← Back</button>
+    <div class="card">
+      <h2>💰 Record Cost / Income</h2>
+      <div class="fg">
+        <label>Title</label>
+        <input type="text" id="cTitle" placeholder="e.g. Drench supplies, Wool income…" autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>Type</label>
+        <div class="toggle-row">
+          <button class="toggle-btn sel-purchase" id="cBtnPurchase" onclick="setCostType('purchase')">📦 Purchased</button>
+          <button class="toggle-btn" id="cBtnIncome" onclick="setCostType('income')">💵 Income</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Amount (AUD $)</label>
+        <input type="number" id="cAmount" placeholder="0.00" step="0.01" min="0" inputmode="decimal" style="font-size:24px;text-align:center;font-weight:800;letter-spacing:1px;">
+      </div>
+      <div class="fg">
+        <label>Date</label>
+        <input type="date" id="cDate">
+      </div>
+      <div class="fg">
+        <label>Notes (optional)</label>
+        <textarea id="cNotes" placeholder="Any extra details…"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="saveCost()">✓ Save Entry</button>
+    </div>
+  </div>
+
+</div><!-- end panel-record -->
+
+<!-- ══════════════════════════════════════
+     FLOCK PANEL
+══════════════════════════════════════ -->
 <div class="panel" id="panel-flock">
-  <div class="sw"><span class="si">🔍</span>
-    <input type="text" id="searchInput" placeholder="Search by tag…" oninput="renderFlock()" autocomplete="off" autocorrect="off">
+  <div class="sub-tabs">
+    <button class="sub-tab active" onclick="showSubTab('sheep',this)">🐑 Sheep</button>
+    <button class="sub-tab" onclick="showSubTab('drenchlog',this)">💉 Drench</button>
+    <button class="sub-tab" onclick="showSubTab('costlog',this)">💰 Costs</button>
   </div>
-  <div class="frow">
-    <label style="white-space:nowrap;margin:0;font-size:12px;">Sort:</label>
-    <select id="sortSel" onchange="renderFlock()">
-      <option value="tag">Tag Number</option>
-      <option value="weight">Heaviest First</option>
-      <option value="recent">Most Recent</option>
-      <option value="gain">Most Weight Gain</option>
-    </select>
+
+  <!-- SHEEP SUB-TAB -->
+  <div class="sub-panel active" id="sub-sheep">
+    <div class="sw"><span class="si">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search by tag…" oninput="renderFlock()" autocomplete="off" autocorrect="off">
+    </div>
+    <div class="sfrow">
+      <button class="sfpill active sf-all"  data-sex="all"     onclick="setSexFilter('all',this)">All</button>
+      <button class="sfpill sf-ram"          data-sex="ram"     onclick="setSexFilter('ram',this)">♂ Rams</button>
+      <button class="sfpill sf-ewe"          data-sex="ewe"     onclick="setSexFilter('ewe',this)">♀ Ewes</button>
+      <button class="sfpill sf-weth"         data-sex="wether"  onclick="setSexFilter('wether',this)">✂ Wethers</button>
+      <button class="sfpill sf-sold"         data-sex="sold"    onclick="setSexFilter('sold',this)">💰 Sold</button>
+      <button class="sfpill sf-dead"         data-sex="dead"    onclick="setSexFilter('dead',this)">💀 Dead</button>
+    </div>
+    <div class="frow">
+      <label>Sort:</label>
+      <select id="sortSel" onchange="renderFlock()">
+        <option value="tag">Tag Number</option>
+        <option value="weight">Heaviest First</option>
+        <option value="recent">Most Recent</option>
+        <option value="gain">Most Weight Gain</option>
+      </select>
+    </div>
+    <div id="flockList"></div>
   </div>
-  <div id="flockList"></div>
+
+  <!-- DRENCH LOG SUB-TAB -->
+  <div class="sub-panel" id="sub-drenchlog">
+    <div id="drenchList"></div>
+  </div>
+
+  <!-- COST LOG SUB-TAB -->
+  <div class="sub-panel" id="sub-costlog">
+    <div class="cost-summary" id="costSummary"></div>
+    <div id="costList"></div>
+  </div>
 </div>
 
-<!-- ══ STATS ══ -->
+<!-- ══════════════════════════════════════
+     STATS PANEL
+══════════════════════════════════════ -->
 <div class="panel" id="panel-stats">
-  <div class="sgrid" id="sgrid"></div>
-  <div class="stitle">🏆 Top 5 Heaviest</div>
+  <div class="sgrid" id="sgrid1"></div>
+  <div class="stitle">🐑 By Sex</div>
+  <div class="sgrid" id="sgrid2"></div>
+  <div class="stitle">🏆 Top 5 Heaviest (Active)</div>
   <div id="stop5"></div>
-  <div class="stitle" style="margin-top:16px;">📈 Best Weight Gain</div>
+  <div class="stitle" style="margin-top:13px">📈 Best Weight Gain (Active)</div>
   <div id="sbest"></div>
 </div>
 
-<!-- ══ EXPORT ══ -->
+<!-- ══════════════════════════════════════
+     EXPORT PANEL
+══════════════════════════════════════ -->
 <div class="panel" id="panel-export">
   <div class="card">
     <h2>📤 Export to Spreadsheet</h2>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.5;">Downloads a CSV — opens in Excel, Numbers, or Google Sheets.</p>
-    <button class="btn btn-export" onclick="exportAll()">📊 All Records (every weigh-in)</button>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:13px;line-height:1.5">Opens in Excel, Numbers, or Google Sheets.</p>
+    <button class="btn btn-export" onclick="exportAll()">📊 All Weight Records</button>
     <button class="btn btn-export" onclick="exportLatest()">📋 Latest Weight Per Sheep</button>
+    <button class="btn btn-export" onclick="exportDrench()">💉 Drench Log</button>
+    <button class="btn btn-export" onclick="exportCosts()">💰 Cost / Income Log</button>
   </div>
   <div class="card">
-    <h2>💾 Backup &amp; Share with Family</h2>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;">
-      Use the <strong>Share</strong> button at the top to instantly send your data to family via iMessage, AirDrop, or email. Or download a backup file below.
-    </p>
+    <h2>💾 Backup &amp; Share</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:11px;line-height:1.5">Share via iMessage or AirDrop, or download a backup file.</p>
     <button class="btn btn-export" onclick="quickShare()">📤 Quick Share (iMessage / AirDrop)</button>
-    <button class="btn btn-export" onclick="exportBackup()">💾 Download Backup File</button>
+    <button class="btn btn-export" onclick="exportBackup()">💾 Download Backup</button>
     <label class="btn btn-primary" style="cursor:pointer;margin-top:0;">
       📂 Restore from Backup
       <input type="file" accept=".json" onchange="importBackup(event)" style="display:none;">
@@ -376,7 +607,7 @@
   </div>
   <div class="card" style="border-color:#f5c6cb;">
     <h2 style="color:var(--red);">⚠️ Danger Zone</h2>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Export a backup before clearing!</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:11px;">Export a backup before clearing!</p>
     <button class="btn-danger" onclick="clearAll()">🗑 Clear All Data</button>
   </div>
 </div>
@@ -384,396 +615,867 @@
 </main>
 
 <script>
-// ═══════════════════════════════════════
-//  STORAGE
-// ═══════════════════════════════════════
-const K_DATA   = 'sheepData_v1';
-const K_PRE    = 'sheepPrefixes_v1';
-const K_ACTIVE = 'sheepActive_v1';
+// ═══════════════════════════════════════════════════════
+//  STORAGE KEYS
+// ═══════════════════════════════════════════════════════
+const K_DATA    = 'sheepData_v1';
+const K_PRE     = 'sheepPrefixes_v1';
+const K_ACTIVE  = 'sheepActive_v1';
+const K_SEX     = 'sheepSex_v1';
+const K_STATUS  = 'sheepStatus_v1';   // {tag: {status:'sold'|'dead', date, cause}}
+const K_DRENCH  = 'sheepDrench_v1';   // [{id,name,date,product,amount,localWH,exportWH}]
+const K_COSTS   = 'sheepCosts_v1';    // [{id,title,type:'purchase'|'income',amount,date,notes}]
 
-const load = () => { try { return JSON.parse(localStorage.getItem(K_DATA)) || []; } catch { return []; } };
-const save = d => { localStorage.setItem(K_DATA, JSON.stringify(d)); refreshCount(); updateLastUpdated(); };
+const load       = () => { try { return JSON.parse(localStorage.getItem(K_DATA))||[]; } catch { return []; } };
+const save       = d  => { localStorage.setItem(K_DATA,JSON.stringify(d)); refreshCount(); updateLastUpdated(); };
+const loadSex    = () => { try { return JSON.parse(localStorage.getItem(K_SEX))||{}; } catch { return {}; } };
+const saveSex    = s  => localStorage.setItem(K_SEX,JSON.stringify(s));
+const loadStatus = () => { try { return JSON.parse(localStorage.getItem(K_STATUS))||{}; } catch { return {}; } };
+const saveStatus2= s  => { localStorage.setItem(K_STATUS,JSON.stringify(s)); refreshCount(); };
+const loadDrench = () => { try { return JSON.parse(localStorage.getItem(K_DRENCH))||[]; } catch { return []; } };
+const saveDrench2= d  => localStorage.setItem(K_DRENCH,JSON.stringify(d));
+const loadCosts  = () => { try { return JSON.parse(localStorage.getItem(K_COSTS))||[]; } catch { return []; } };
+const saveCosts2 = c  => localStorage.setItem(K_COSTS,JSON.stringify(c));
+
+function getSexForTag(tag)      { return loadSex()[tag]||null; }
+function setSexForTag(tag,sex)  { const s=loadSex(); s[tag]=sex; saveSex(s); }
+function getStatusForTag(tag)   { return loadStatus()[tag]||null; }
 
 function loadPrefixes() {
-  try { const p = JSON.parse(localStorage.getItem(K_PRE)); if (Array.isArray(p) && p.length) return p; } catch {}
-  const y = new Date().getFullYear();
-  return [String(y-2).slice(-2), String(y-1).slice(-2), String(y).slice(-2)];
+  try { const p=JSON.parse(localStorage.getItem(K_PRE)); if(Array.isArray(p)&&p.length) return p; } catch {}
+  const y=new Date().getFullYear();
+  return [String(y-2).slice(-2),String(y-1).slice(-2),String(y).slice(-2)];
 }
-const savePrefixes = arr => localStorage.setItem(K_PRE, JSON.stringify(arr));
-const getActive    = ()  => localStorage.getItem(K_ACTIVE) || loadPrefixes()[0];
-const setActive    = p   => localStorage.setItem(K_ACTIVE, p);
+const savePrefixes = a => localStorage.setItem(K_PRE,JSON.stringify(a));
+const getActive    = () => localStorage.getItem(K_ACTIVE)||loadPrefixes()[0];
+const setActive    = p => localStorage.setItem(K_ACTIVE,p);
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  INIT
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+let wSexChoice = null, pendingSave = null, activeCostType = 'purchase', activeStatusChoice = null;
+
 document.addEventListener('DOMContentLoaded', () => {
   const today = new Date().toISOString().split('T')[0];
-  document.getElementById('dateInput').value = today;
+  ['wDate','sDate','dDate','cDate'].forEach(id => { const el=document.getElementById(id); if(el) el.value=today; });
   document.getElementById('hDate').textContent = fmtDate(today);
   refreshCount();
-  renderChips();
+  renderChips('w'); renderChips('s');
   renderRecent();
   loadLastUpdated();
 
-  document.getElementById('seqInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('weightInput').focus();
-  });
-  document.getElementById('weightInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') saveRecord();
-  });
-  document.getElementById('seqInput').addEventListener('blur', () => {
-    const v = document.getElementById('seqInput').value.trim();
-    if (v && /^\d+$/.test(v)) { document.getElementById('seqInput').value = v.padStart(3,'0'); updatePreview(); }
-  });
+  // Keyboard shortcuts
+  document.getElementById('wSeqInput').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('wWeight').focus(); });
+  document.getElementById('wWeight').addEventListener('keydown', e => { if(e.key==='Enter') saveWeight(); });
+  document.getElementById('wSeqInput').addEventListener('blur', () => { padSeq('wSeqInput'); const t=buildTag('w'); if(t) autoLoadSex(t); });
+  document.getElementById('sSeqInput').addEventListener('blur', () => { padSeq('sSeqInput'); const t=buildTag('s'); if(t) loadStatusSummary(t); });
 });
 
-// Service worker registration
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+function padSeq(id) {
+  const el=document.getElementById(id), v=el.value.trim();
+  if(v && /^\d+$/.test(v)) { el.value=v.padStart(3,'0'); }
 }
 
 function refreshCount() {
-  document.getElementById('hCount').textContent = new Set(load().map(r => r.tag)).size;
+  const statusMap=loadStatus();
+  const tags=new Set(load().map(r=>r.tag));
+  const active=[...tags].filter(t=>{ const s=statusMap[t]; return !s||(s.status!=='sold'&&s.status!=='dead'); });
+  document.getElementById('hCount').textContent=active.length;
 }
 
 function updateLastUpdated() {
-  const now = new Date().toLocaleString('en-AU');
-  localStorage.setItem('sheepLastUpdated', now);
-  const el = document.getElementById('lastUpdated');
-  el.style.display = 'block';
-  el.textContent = '🕐 Last saved: ' + now;
+  const now=new Date().toLocaleString('en-AU');
+  localStorage.setItem('sheepLastUpdated',now);
+  const el=document.getElementById('lastUpdated');
+  if(el){ el.style.display='block'; el.textContent='🕐 Last saved: '+now; }
 }
-
 function loadLastUpdated() {
-  const saved = localStorage.getItem('sheepLastUpdated');
-  if (saved) {
-    const el = document.getElementById('lastUpdated');
-    el.style.display = 'block';
-    el.textContent = '🕐 Last saved: ' + saved;
-  }
+  const s=localStorage.getItem('sheepLastUpdated');
+  if(s){ const el=document.getElementById('lastUpdated'); if(el){ el.style.display='block'; el.textContent='🕐 Last saved: '+s; } }
 }
 
-// ═══════════════════════════════════════
-//  PREFIX CHIPS
-// ═══════════════════════════════════════
-let longTimer = null;
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='flock'){ renderFlock(); renderDrenchLog(); renderCostLog(); }
+  if(name==='stats') renderStats();
+}
 
-function renderChips() {
-  const prefixes = loadPrefixes();
-  const active   = getActive();
-  const c = document.getElementById('chips');
+function showEntry(name) {
+  document.querySelectorAll('.entry-screen').forEach(e=>e.classList.remove('active'));
+  document.getElementById('es-'+name).classList.add('active');
+  if(name==='weigh'){ renderChips('w'); renderWeighRecent(); }
+  if(name==='status'){ renderChips('s'); renderStatusRecent(); clearStatusForm(); }
+}
 
-  c.innerHTML = prefixes.map(p => `
+function showSubTab(name, btn) {
+  document.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sub-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='drenchlog') renderDrenchLog();
+  if(name==='costlog') renderCostLog();
+}
+
+// ═══════════════════════════════════════════════════════
+//  PREFIX CHIPS  (shared for weigh 'w' and status 's')
+// ═══════════════════════════════════════════════════════
+let longTimer=null;
+
+function renderChips(ctx) {
+  const prefixes=loadPrefixes(), active=getActive();
+  const containerId = ctx==='w'?'wChips':'sChips';
+  const prefixBoxId = ctx==='w'?'wPrefixBox':'sPrefixBox';
+  const c=document.getElementById(containerId);
+  c.innerHTML=prefixes.map(p=>`
     <button class="chip ${p===active?'active':''}"
       onclick="selectPrefix('${p}')"
       oncontextmenu="removePrefix(event,'${p}')"
       ontouchstart="startLong(event,'${p}')"
-      ontouchend="endLong()"
-      ontouchmove="endLong()">
-      ${p}
-    </button>`).join('')
-    + `<button class="chip add-chip" onclick="showAdd()">＋</button>`;
-
-  document.getElementById('prefixBox').textContent = active;
-  updatePreview();
+      ontouchend="endLong()" ontouchmove="endLong()">${p}</button>`).join('')
+    +`<button class="chip add-chip" onclick="showAdd('${ctx}')">＋</button>`;
+  document.getElementById(prefixBoxId).textContent=active;
+  updateTagPreview(ctx);
 }
 
-function selectPrefix(p) { setActive(p); renderChips(); document.getElementById('seqInput').focus(); }
-function startLong(e, p) { longTimer = setTimeout(() => removePrefix(e, p), 700); }
-function endLong()        { clearTimeout(longTimer); }
-
-function removePrefix(e, p) {
+function selectPrefix(p) {
+  setActive(p);
+  renderChips('w'); renderChips('s');
+  const wSeq=document.getElementById('wSeqInput');
+  if(wSeq) wSeq.focus();
+}
+function startLong(e,p){ longTimer=setTimeout(()=>removePrefix(e,p),700); }
+function endLong(){ clearTimeout(longTimer); }
+function removePrefix(e,p){
   e.preventDefault();
-  const list = loadPrefixes();
-  if (list.length <= 1) { showToast('⚠️ Need at least one year prefix'); return; }
-  if (!confirm(`Remove year "${p}"?`)) return;
-  const nl = list.filter(x => x !== p);
-  savePrefixes(nl);
-  if (getActive() === p) setActive(nl[0]);
-  renderChips();
+  const list=loadPrefixes();
+  if(list.length<=1){ showToast('⚠️ Need at least one prefix'); return; }
+  if(!confirm(`Remove year "${p}"?`)) return;
+  const nl=list.filter(x=>x!==p); savePrefixes(nl);
+  if(getActive()===p) setActive(nl[0]);
+  renderChips('w'); renderChips('s');
+}
+function showAdd(ctx){ document.getElementById(ctx==='w'?'wAddRow':'sAddRow').classList.add('open'); }
+function cancelAdd(ctx){ document.getElementById(ctx==='w'?'wAddRow':'sAddRow').classList.remove('open'); }
+function confirmAdd(ctx){
+  const inputId=ctx==='w'?'wNewPre':'sNewPre';
+  const v=document.getElementById(inputId).value.trim();
+  if(!/^\d{1,2}$/.test(v)){ showToast('⚠️ Enter 1 or 2 digits'); return; }
+  const p=v.padStart(2,'0'), list=loadPrefixes();
+  if(!list.includes(p)){ list.push(p); list.sort(); savePrefixes(list); }
+  setActive(p); cancelAdd(ctx); renderChips('w'); renderChips('s');
 }
 
-function showAdd()    { document.getElementById('addRow').classList.add('open'); document.getElementById('newPre').value=''; document.getElementById('newPre').focus(); }
-function cancelAdd()  { document.getElementById('addRow').classList.remove('open'); }
-function confirmAdd() {
-  const v = document.getElementById('newPre').value.trim();
-  if (!/^\d{1,2}$/.test(v)) { showToast('⚠️ Enter 1 or 2 digits'); return; }
-  const p = v.padStart(2,'0');
-  const list = loadPrefixes();
-  if (!list.includes(p)) { list.push(p); list.sort(); savePrefixes(list); }
-  setActive(p); cancelAdd(); renderChips();
-  document.getElementById('seqInput').focus();
+function updateTagPreview(ctx) {
+  const seqId=ctx==='w'?'wSeqInput':'sSeqInput';
+  const prevId=ctx==='w'?'wTagPreview':'sTagPreview';
+  const seq=document.getElementById(seqId)?.value.trim();
+  document.getElementById(prevId).textContent = seq ? getActive()+seq.padStart(3,'0') : '—';
 }
 
-function updatePreview() {
-  const seq = document.getElementById('seqInput').value.trim();
-  document.getElementById('tagPreview').textContent = seq ? getActive() + seq.padStart(3,'0') : '—';
-}
-function buildTag() {
-  const seq = document.getElementById('seqInput').value.trim();
-  return seq ? getActive() + seq.padStart(3,'0') : null;
+function buildTag(ctx) {
+  const seqId=ctx==='w'?'wSeqInput':'sSeqInput';
+  const seq=document.getElementById(seqId).value.trim();
+  return seq ? getActive()+seq.padStart(3,'0') : null;
 }
 
-// ═══════════════════════════════════════
-//  RECORD
-// ═══════════════════════════════════════
-function saveRecord() {
-  const tag    = buildTag();
-  const weight = parseFloat(document.getElementById('weightInput').value);
-  const date   = document.getElementById('dateInput').value;
-  const notes  = document.getElementById('notesInput').value.trim();
+function onWeighSeq() {
+  updateTagPreview('w');
+  const seq=document.getElementById('wSeqInput').value.trim();
+  if(seq.length===3){ autoLoadSex(getActive()+seq.padStart(3,'0')); }
+  else { document.getElementById('wSexKnown').classList.remove('show'); }
+}
 
-  if (!tag)                    { showToast('⚠️ Enter last 3 digits of tag'); return; }
-  if (!weight || weight <= 0)  { showToast('⚠️ Enter a valid weight'); return; }
-  if (!date)                   { showToast('⚠️ Select a date'); return; }
+function onStatusSeq() {
+  updateTagPreview('s');
+  const seq=document.getElementById('sSeqInput').value.trim();
+  if(seq.length===3){ loadStatusSummary(getActive()+seq.padStart(3,'0')); }
+  else { document.getElementById('sSummary').classList.remove('show'); }
+}
 
-  const d = load();
-  d.push({ tag, weight, date, notes, id: Date.now() });
-  save(d);
+// ═══════════════════════════════════════════════════════
+//  SEX
+// ═══════════════════════════════════════════════════════
+const SEX_META={ram:{icon:'♂',cls:'sel-ram',bc:'sb-ram'},ewe:{icon:'♀',cls:'sel-ewe',bc:'sb-ewe'},wether:{icon:'✂',cls:'sel-weth',bc:'sb-weth'}};
+
+function setSex(ctx,sex){
+  wSexChoice=sex;
+  document.getElementById('wSexRam').className='sex-btn'+(sex==='ram'?' sel-ram':'');
+  document.getElementById('wSexEwe').className='sex-btn'+(sex==='ewe'?' sel-ewe':'');
+  document.getElementById('wSexWeth').className='sex-btn'+(sex==='wether'?' sel-weth':'');
+}
+function clearSexUI(){
+  wSexChoice=null;
+  ['wSexRam','wSexEwe','wSexWeth'].forEach(id=>document.getElementById(id).className='sex-btn');
+  document.getElementById('wSexKnown').classList.remove('show');
+}
+function autoLoadSex(tag){
+  const known=getSexForTag(tag);
+  if(known){ setSex('w',known); document.getElementById('wSexKnown').classList.add('show'); }
+  else clearSexUI();
+}
+function sexBadgeHTML(sex){ const m=SEX_META[sex]; return m?`<span class="sex-badge ${m.bc}">${m.icon} ${sex==='wether'?'Wether':sex.charAt(0).toUpperCase()+sex.slice(1)}</span>`:`<span class="sex-badge sb-unk">?</span>`; }
+
+// ═══════════════════════════════════════════════════════
+//  STATUS SUMMARY (sold/dead entry)
+// ═══════════════════════════════════════════════════════
+function loadStatusSummary(tag){
+  const data=load(), sexMap=loadSex(), statusMap=loadStatus();
+  const entries=data.filter(r=>r.tag===tag).sort((a,b)=>a.date.localeCompare(b.date));
+  const sumEl=document.getElementById('sSummary');
+  if(!entries.length){ sumEl.classList.remove('show'); return; }
+  const latest=entries.at(-1);
+  const sex=sexMap[tag], status=statusMap[tag];
+  document.getElementById('sSumTag').textContent=tag;
+  document.getElementById('sSumSex').textContent=sex?(SEX_META[sex]?.icon+' '+sex):'Sex unknown';
+  document.getElementById('sSumWeight').textContent='Last: '+latest.weight+'kg';
+  document.getElementById('sSumDate').textContent=fmtDate(latest.date);
+  if(status){ document.getElementById('sSumSex').textContent+=' · Currently: '+status.status; }
+  sumEl.classList.add('show');
+}
+function clearStatusForm(){
+  activeStatusChoice=null;
+  ['btnSold','btnDead'].forEach(id=>document.getElementById(id).classList.remove('sel'));
+  document.getElementById('causeGroup').style.display='none';
+  document.getElementById('sCause').value='';
+  document.getElementById('sSeqInput').value='';
+  document.getElementById('sTagPreview').textContent='—';
+  document.getElementById('sSummary').classList.remove('show');
+}
+function pickStatus(s){
+  activeStatusChoice=s;
+  document.getElementById('btnSold').classList.toggle('sel',s==='sold');
+  document.getElementById('btnDead').classList.toggle('sel',s==='dead');
+  document.getElementById('causeGroup').style.display=s==='dead'?'block':'none';
+}
+
+// ═══════════════════════════════════════════════════════
+//  SAVE WEIGHT
+// ═══════════════════════════════════════════════════════
+function saveWeight(){
+  const tag=buildTag('w');
+  const weight=parseFloat(document.getElementById('wWeight').value);
+  const date=document.getElementById('wDate').value;
+  const notes=document.getElementById('wNotes').value.trim();
+  if(!tag){ showToast('⚠️ Enter last 3 digits of tag'); return; }
+  if(!weight||weight<=0){ showToast('⚠️ Enter a valid weight'); return; }
+  if(!date){ showToast('⚠️ Select a date'); return; }
+
+  // Duplicate check
+  const existing=load().filter(r=>r.tag===tag&&r.date===date);
+  if(existing.length>0){
+    pendingSave={tag,weight,date,notes};
+    document.getElementById('warnMsg').textContent=`${tag} was already weighed today at ${existing[0].weight}kg. Is this a different sheep or a correction?`;
+    document.getElementById('warnModal').classList.add('show');
+    return;
+  }
+  doSaveWeight(tag,weight,date,notes);
+}
+function doSaveWeight(tag,weight,date,notes){
+  if(wSexChoice) setSexForTag(tag,wSexChoice);
+  const d=load(); d.push({tag,weight,date,notes,id:Date.now()}); save(d);
   showToast(`✓ ${tag} — ${weight}kg saved`);
+  document.getElementById('wSeqInput').value='';
+  document.getElementById('wWeight').value='';
+  document.getElementById('wNotes').value='';
+  document.getElementById('wTagPreview').textContent='—';
+  clearSexUI();
+  document.getElementById('wSeqInput').focus();
+  renderWeighRecent(); renderRecent();
+}
+function cancelWarn(){ document.getElementById('warnModal').classList.remove('show'); pendingSave=null; }
+function confirmWarn(){ document.getElementById('warnModal').classList.remove('show'); if(pendingSave){ doSaveWeight(pendingSave.tag,pendingSave.weight,pendingSave.date,pendingSave.notes); pendingSave=null; } }
 
-  document.getElementById('seqInput').value    = '';
-  document.getElementById('weightInput').value = '';
-  document.getElementById('notesInput').value  = '';
-  document.getElementById('tagPreview').textContent = '—';
-  document.getElementById('seqInput').focus();
+// ═══════════════════════════════════════════════════════
+//  SAVE STATUS (sold/dead)
+// ═══════════════════════════════════════════════════════
+function saveStatus(){
+  const tag=buildTag('s');
+  const date=document.getElementById('sDate').value;
+  const cause=document.getElementById('sCause').value.trim();
+  if(!tag){ showToast('⚠️ Enter tag number'); return; }
+  if(!activeStatusChoice){ showToast('⚠️ Select Sold or Dead'); return; }
+  if(!date){ showToast('⚠️ Select a date'); return; }
+  const st=loadStatus();
+  st[tag]={status:activeStatusChoice,date,cause};
+  saveStatus2(st);
+  // Also make sure tag is in data so it appears in flock
+  const d=load();
+  if(!d.find(r=>r.tag===tag)){ d.push({tag,weight:0,date,notes:'No weight recorded',id:Date.now()}); save(d); }
+  showToast(`✓ ${tag} marked as ${activeStatusChoice}`);
+  clearStatusForm();
+  renderStatusRecent();
   renderRecent();
 }
 
-function renderRecent() {
-  const recent = [...new Set(load().slice(-30).reverse().map(r => r.tag))].slice(0, 10);
-  document.getElementById('recentTags').innerHTML = recent.map(t => `
-    <button onclick="quickFill('${t}')" style="
-      padding:9px 14px; background:var(--white); border:2px solid var(--border);
-      border-radius:10px; font-family:'Courier Prime',monospace; font-size:15px;
-      font-weight:700; color:var(--green-dark); cursor:pointer;">${t}</button>
-  `).join('');
+// ═══════════════════════════════════════════════════════
+//  SAVE DRENCH
+// ═══════════════════════════════════════════════════════
+function saveDrench(){
+  const name=document.getElementById('dName').value.trim();
+  const date=document.getElementById('dDate').value;
+  const product=document.getElementById('dProduct').value.trim();
+  const amount=parseFloat(document.getElementById('dAmount').value)||0;
+  const localWH=parseInt(document.getElementById('dLocalWH').value)||0;
+  const exportWH=parseInt(document.getElementById('dExportWH').value)||0;
+  if(!name){ showToast('⚠️ Enter a mob/group name'); return; }
+  if(!date){ showToast('⚠️ Select a date'); return; }
+  if(!product){ showToast('⚠️ Enter product name'); return; }
+  const d=loadDrench();
+  d.push({id:Date.now(),name,date,product,amount,localWH,exportWH});
+  saveDrench2(d);
+  showToast('✓ Drench record saved');
+  ['dName','dProduct','dAmount','dLocalWH','dExportWH'].forEach(id=>document.getElementById(id).value='');
+  updateLastUpdated();
 }
 
-function quickFill(tag) {
-  const pre = tag.slice(0,2), seq = tag.slice(2);
-  const list = loadPrefixes();
-  if (!list.includes(pre)) { list.push(pre); list.sort(); savePrefixes(list); }
-  setActive(pre); renderChips();
-  document.getElementById('seqInput').value = seq;
-  updatePreview();
-  document.getElementById('weightInput').focus();
+// ═══════════════════════════════════════════════════════
+//  SAVE COST
+// ═══════════════════════════════════════════════════════
+function setCostType(type){
+  activeCostType=type;
+  document.getElementById('cBtnPurchase').className='toggle-btn'+(type==='purchase'?' sel-purchase':'');
+  document.getElementById('cBtnIncome').className='toggle-btn'+(type==='income'?' sel-income':'');
+}
+function saveCost(){
+  const title=document.getElementById('cTitle').value.trim();
+  const amount=parseFloat(document.getElementById('cAmount').value);
+  const date=document.getElementById('cDate').value;
+  const notes=document.getElementById('cNotes').value.trim();
+  if(!title){ showToast('⚠️ Enter a title'); return; }
+  if(!amount||amount<=0){ showToast('⚠️ Enter a valid amount'); return; }
+  if(!date){ showToast('⚠️ Select a date'); return; }
+  const c=loadCosts();
+  c.push({id:Date.now(),title,type:activeCostType,amount,date,notes});
+  saveCosts2(c);
+  showToast('✓ Cost entry saved');
+  document.getElementById('cTitle').value='';
+  document.getElementById('cAmount').value='';
+  document.getElementById('cNotes').value='';
+  updateLastUpdated();
 }
 
-// ═══════════════════════════════════════
-//  SHARE (native iOS share sheet)
-// ═══════════════════════════════════════
-function quickShare() {
-  const data = { version:1, exported:new Date().toISOString(), records:load() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
-  const file = new File([blob], `sheep-backup-${new Date().toISOString().split('T')[0]}.json`, { type:'application/json' });
-
-  if (navigator.canShare && navigator.canShare({ files:[file] })) {
-    navigator.share({ title:'Sheep Tracker Backup', files:[file] })
-      .catch(() => {}); // user cancelled — no error needed
-  } else if (navigator.share) {
-    // Fallback: share as text if file share not supported
-    navigator.share({ title:'Sheep Tracker Backup', text: JSON.stringify(data) })
-      .catch(() => {});
-  } else {
-    // Desktop fallback — just download
-    exportBackup();
-    showToast('💾 Backup downloaded');
-  }
+// ═══════════════════════════════════════════════════════
+//  QUICK FILL (tag reuse)
+// ═══════════════════════════════════════════════════════
+function quickFillWeigh(tag){
+  const pre=tag.slice(0,2), seq=tag.slice(2);
+  const list=loadPrefixes();
+  if(!list.includes(pre)){ list.push(pre); list.sort(); savePrefixes(list); }
+  setActive(pre); renderChips('w'); renderChips('s');
+  document.getElementById('wSeqInput').value=seq;
+  updateTagPreview('w'); autoLoadSex(tag);
+  document.getElementById('wWeight').focus();
+}
+function quickFillStatus(tag){
+  const pre=tag.slice(0,2), seq=tag.slice(2);
+  const list=loadPrefixes();
+  if(!list.includes(pre)){ list.push(pre); list.sort(); savePrefixes(list); }
+  setActive(pre); renderChips('w'); renderChips('s');
+  document.getElementById('sSeqInput').value=seq;
+  updateTagPreview('s'); loadStatusSummary(tag);
 }
 
-// ═══════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════
-function showPanel(name) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-'+name).classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
-  if (name==='flock') renderFlock();
-  if (name==='stats') renderStats();
+// ═══════════════════════════════════════════════════════
+//  RECENT TAGS
+// ═══════════════════════════════════════════════════════
+function renderRecent(){
+  const recent=[...new Set(load().slice(-30).reverse().map(r=>r.tag))].slice(0,8);
+  const el=document.getElementById('recentTags');
+  if(el) el.innerHTML=recent.map(t=>`<div class="rtag" onclick="quickFillWeigh('${t}')">${t}</div>`).join('');
+}
+function renderWeighRecent(){
+  const recent=[...new Set(load().slice(-30).reverse().map(r=>r.tag))].slice(0,8);
+  const el=document.getElementById('wRecentTags');
+  if(el) el.innerHTML=recent.map(t=>`<div class="rtag" onclick="quickFillWeigh('${t}')">${t}</div>`).join('');
+}
+function renderStatusRecent(){
+  const statusMap=loadStatus();
+  const recent=[...new Set(Object.keys(statusMap).slice(-8))];
+  const el=document.getElementById('sRecentTags');
+  if(el) el.innerHTML=recent.map(t=>`<div class="rtag" onclick="quickFillStatus('${t}')">${t}</div>`).join('');
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  FLOCK LIST
-// ═══════════════════════════════════════
-function renderFlock() {
-  const data = load();
-  const q    = document.getElementById('searchInput').value.trim().toLowerCase();
-  const sort = document.getElementById('sortSel').value;
-  const el   = document.getElementById('flockList');
+// ═══════════════════════════════════════════════════════
+let activeSexFilter='all';
 
-  if (!data.length) { el.innerHTML=`<div class="empty"><div class="ei">🐑</div><p>No records yet</p></div>`; return; }
-
-  const g = {};
-  data.forEach(r => { (g[r.tag]=g[r.tag]||[]).push(r); });
-  Object.values(g).forEach(e => e.sort((a,b)=>a.date.localeCompare(b.date)));
-
-  let tags = Object.keys(g).filter(t => !q || t.toLowerCase().includes(q));
-  if (sort==='tag')    tags.sort();
-  if (sort==='weight') tags.sort((a,b)=>g[b].at(-1).weight-g[a].at(-1).weight);
-  if (sort==='recent') tags.sort((a,b)=>g[b].at(-1).date.localeCompare(g[a].at(-1).date));
-  if (sort==='gain')   tags.sort((a,b)=>gain(g[b])-gain(g[a]));
-
-  if (!tags.length) { el.innerHTML=`<div class="empty"><div class="ei">🔍</div><p>No match for "${q}"</p></div>`; return; }
-  el.innerHTML = tags.map(t=>sheepCard(t,g[t])).join('');
+function setSexFilter(sex, btn){
+  activeSexFilter=sex;
+  document.querySelectorAll('.sfpill').forEach(p=>{ p.classList.remove('active'); Object.keys({all:1,ram:1,ewe:1,wether:1,sold:1,dead:1}).forEach(k=>p.classList.remove('sf-'+k)); });
+  btn.classList.add('active','sf-'+sex);
+  renderFlock();
 }
 
-const gain = e => e.length < 2 ? 0 : e.at(-1).weight - e[0].weight;
+function renderFlock(){
+  const data=load(), sexMap=loadSex(), statusMap=loadStatus();
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  const sort=document.getElementById('sortSel').value;
+  const el=document.getElementById('flockList');
+  if(!data.length){ el.innerHTML=`<div class="empty"><div class="ei">🐑</div><p>No records yet</p></div>`; return; }
 
-function sheepCard(tag, entries) {
-  const lat = entries.at(-1), n = entries.length, g = gain(entries);
-  const gt  = n>1 ? (g>=0?`+${g.toFixed(1)}kg`:`${g.toFixed(1)}kg`) : '';
+  const g={};
+  data.forEach(r=>{ (g[r.tag]=g[r.tag]||[]).push(r); });
+  Object.values(g).forEach(e=>e.sort((a,b)=>a.date.localeCompare(b.date)));
 
-  const rows = entries.map((e,i) => {
-    const prev = entries[i-1];
-    const d = prev ? e.weight-prev.weight : null;
-    const badge = d!==null ? `<span class="hgain ${d>0?'gp':d<0?'gn':'gz'}">${d>0?'+':''}${d.toFixed(1)}kg</span>` : '';
+  let tags=Object.keys(g).filter(t=>{
+    if(q&&!t.toLowerCase().includes(q)) return false;
+    const st=statusMap[t]?.status||'active';
+    if(activeSexFilter==='sold') return st==='sold';
+    if(activeSexFilter==='dead') return st==='dead';
+    if(['ram','ewe','wether','unk'].includes(activeSexFilter)){
+      if(st==='sold'||st==='dead') return false;
+      if(activeSexFilter==='unk') return !sexMap[t];
+      return sexMap[t]===activeSexFilter;
+    }
+    return true; // 'all'
+  });
+
+  if(sort==='tag')    tags.sort();
+  if(sort==='weight') tags.sort((a,b)=>{ const wa=g[a].at(-1).weight,wb=g[b].at(-1).weight; return wb-wa; });
+  if(sort==='recent') tags.sort((a,b)=>g[b].at(-1).date.localeCompare(g[a].at(-1).date));
+  if(sort==='gain')   tags.sort((a,b)=>gain(g[b])-gain(g[a]));
+
+  if(!tags.length){ el.innerHTML=`<div class="empty"><div class="ei">🔍</div><p>No sheep match this filter</p></div>`; return; }
+  el.innerHTML=tags.map(t=>sheepCard(t,g[t],sexMap[t],statusMap[t])).join('');
+}
+
+const gain=e=>e.length<2?0:e.at(-1).weight-e[0].weight;
+
+function sheepCard(tag,entries,sex,statusObj){
+  const status=statusObj?.status||'active';
+  const lat=entries.filter(e=>e.weight>0).at(-1)||entries.at(-1);
+  const n=entries.filter(e=>e.weight>0).length;
+  const g=gain(entries.filter(e=>e.weight>0));
+  const gt=n>1?(g>=0?`+${g.toFixed(1)}kg`:`${g.toFixed(1)}kg`):'';
+  const isSold=status==='sold', isDead=status==='dead';
+
+  const rows=entries.filter(e=>e.weight>0).map((e,i,arr)=>{
+    const prev=arr[i-1];
+    const d=prev?e.weight-prev.weight:null;
+    const badge=d!==null?`<span class="hgain ${d>0?'gp':'gn'}">${d>0?'+':''}${d.toFixed(1)}kg</span>`:'';
     return `<div class="hrow">
-      <span class="hdate">${fmtDate(e.date)}</span>
-      ${badge}
+      <span class="hdate">${fmtDate(e.date)}</span>${badge}
       <span class="hwt">${e.weight}kg</span>
       <button class="delbtn" onclick="delEntry(${e.id})">✕</button>
-      ${e.notes?`<span style="font-size:11px;color:var(--text-muted);width:100%;margin-top:2px;">📝 ${e.notes}</span>`:''}
+      ${e.notes&&e.notes!=='No weight recorded'?`<span style="font-size:10px;color:var(--muted);width:100%;margin-top:2px;">📝 ${e.notes}</span>`:''}
     </div>`;
   }).join('');
 
+  const statusInfo = statusObj?`<div style="font-size:11px;padding:8px 0;color:var(--muted);font-weight:600;border-bottom:1px solid var(--gp);margin-bottom:6px;">
+    ${isSold?'💰 Sold':'💀 Dead'} on ${fmtDate(statusObj.date)}${statusObj.cause?' · '+statusObj.cause:''}
+  </div>`:'';
+
+  const changeSex=`<div class="change-sex-row">
+    <span class="cs-lbl">Change Sex</span>
+    <button class="csb ${sex==='ram'?'csel-ram':''}" onclick="changeSex('${tag}','ram')"><span class="csi">♂</span>Ram</button>
+    <button class="csb ${sex==='ewe'?'csel-ewe':''}" onclick="changeSex('${tag}','ewe')"><span class="csi">♀</span>Ewe</button>
+    <button class="csb ${sex==='wether'?'csel-weth':''}" onclick="changeSex('${tag}','wether')"><span class="csi">✂</span>Wether</button>
+  </div>`;
+
+  const restoreRow=(isSold||isDead)?`<div class="restore-row">
+    <button class="restore-btn" onclick="restoreTag('${tag}')">↩ Restore to Active</button>
+  </div>`:'';
+
+  const hdrClass=isSold?'sold-hdr':isDead?'dead-hdr':'';
+  const metaClass=isSold?'sold-meta':isDead?'dead-meta':'';
+  const statusBadge=isSold?`<span class="status-badge sb-sold">Sold</span>`:isDead?`<span class="status-badge sb-dead">Dead</span>`:'';
+
   return `<div class="sheep-card">
-    <div class="sch" onclick="toggleH('h-${tag}',this)">
+    <div class="sch ${hdrClass}" onclick="toggleH('h-${tag}',this)">
       <div>
-        <div class="stag">${tag}</div>
-        <div class="smeta">${n} record${n!==1?'s':''} ${gt?'· '+gt+' total':''}</div>
+        <div class="stag">${tag}${sexBadgeHTML(sex)}${statusBadge}</div>
+        <div class="smeta ${metaClass}">${n} record${n!==1?'s':''} ${gt?'· '+gt+' total':''}</div>
       </div>
-      <div style="text-align:right;">
-        <div class="slw">${lat.weight}</div>
-        <div class="swu">kg · ${fmtDate(lat.date)}</div>
+      <div style="text-align:right">
+        ${n>0?`<div class="slw">${lat.weight}</div><div class="swu">kg · ${fmtDate(lat.date)}</div>`:'<div class="swu" style="font-size:12px">No weight</div>'}
       </div>
-      <span class="chev" style="margin-left:8px;color:var(--amber);font-size:18px;">▼</span>
+      <span class="chev">▼</span>
     </div>
     <div class="shist" id="h-${tag}">
-      <div style="font-size:11px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Weight History</div>
-      ${rows}
-      <button class="btn btn-primary btn-sm" onclick="reweigh('${tag}')" style="margin-top:12px;width:100%;">+ Add New Weight</button>
+      ${statusInfo}
+      ${n>0?`<div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px;">Weight History</div>${rows}`:'<p style="font-size:12px;color:var(--muted);padding:4px 0;">No weight records yet.</p>'}
+      ${!isSold&&!isDead?`<button class="btn btn-primary btn-sm" onclick="reweigh('${tag}')" style="margin-top:10px;width:100%;">+ Add New Weight</button>`:''}
+      ${changeSex}
+      ${restoreRow}
     </div>
   </div>`;
 }
 
-function toggleH(id, hdr) {
-  document.getElementById(id).classList.toggle('open');
-  hdr.querySelector('.chev').classList.toggle('open');
+function toggleH(id,hdr){ document.getElementById(id).classList.toggle('open'); hdr.querySelector('.chev').classList.toggle('open'); }
+function reweigh(tag){ quickFillWeigh(tag); showPanel('record'); showEntry('weigh'); }
+function changeSex(tag,sex){ setSexForTag(tag,sex); showToast(`✓ ${tag} set as ${sex}`); renderFlock(); }
+function restoreTag(tag){ const st=loadStatus(); delete st[tag]; saveStatus2(st); showToast(`✓ ${tag} restored to active`); renderFlock(); }
+function delEntry(id){ if(!confirm('Delete this entry?')) return; save(load().filter(r=>r.id!==id)); renderFlock(); showToast('🗑 Deleted'); }
+
+// ═══════════════════════════════════════════════════════
+//  DRENCH LOG
+// ═══════════════════════════════════════════════════════
+function renderDrenchLog(){
+  const data=loadDrench().slice().reverse();
+  const el=document.getElementById('drenchList');
+  if(!data.length){ el.innerHTML=`<div class="empty"><div class="ei">💉</div><p>No drench records yet</p></div>`; return; }
+  el.innerHTML=data.map(d=>drenchCard(d)).join('');
 }
-function reweigh(tag) { quickFill(tag); showPanel('record'); }
-function delEntry(id) {
-  if (!confirm('Delete this weight entry?')) return;
-  save(load().filter(r=>r.id!==id));
-  renderFlock();
-  showToast('🗑 Deleted');
+
+function drenchCard(d){
+  const today=new Date(); today.setHours(0,0,0,0);
+  const dDate=new Date(d.date); dDate.setHours(0,0,0,0);
+  const daysSince=Math.floor((today-dDate)/(1000*60*60*24));
+
+  function whBadge(days, title, desc){
+    if(!days) return `<span class="wh-badge wh-clear">No withhold set</span>`;
+    const remaining=days-daysSince;
+    if(remaining<=0) return `<span class="wh-badge wh-clear">✓ Cleared</span>`;
+    return `<span class="wh-badge wh-active">⚠️ <span class="wh-days">${remaining} day${remaining===1?'':'s'} left</span></span>`;
+  }
+
+  // Withholding title rows — full plain-English labels
+  const localTitle  = 'Local Slaughter Withholding';
+  const exportTitle = 'Export Slaughter Withholding';
+
+  return `<div class="drench-card" id="dc-${d.id}">
+    <div class="drench-hdr" onclick="toggleDrenchEdit(${d.id})" style="cursor:pointer;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div class="drench-name">💉 ${d.name}</div>
+          <div class="drench-date">${fmtDate(d.date)}</div>
+        </div>
+        <span style="color:#aed6f1;font-size:14px;">✏️</span>
+      </div>
+    </div>
+    <div class="drench-body">
+
+      <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px;">Treatment Details</div>
+      <div class="drench-row" style="flex-direction:column;align-items:flex-start;gap:2px;padding-bottom:8px;">
+        <span class="dk">Product Name</span>
+        <span class="dv" style="font-size:15px;">${d.product}</span>
+      </div>
+      <div class="drench-row" style="flex-direction:column;align-items:flex-start;gap:2px;padding-bottom:10px;">
+        <span class="dk">Dose Per Sheep</span>
+        <span class="dv" style="font-size:15px;">${d.amount} ml per sheep</span>
+      </div>
+
+      <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin:10px 0 6px;">Withholding Periods</div>
+      <div class="drench-row" style="flex-direction:column;align-items:flex-start;gap:3px;padding-bottom:8px;">
+        <span class="dk">${localTitle}</span>
+        <span class="dv">${whBadge(d.localWH, 'Local slaughter')}</span>
+      </div>
+      <div class="drench-row" style="flex-direction:column;align-items:flex-start;gap:3px;margin-top:2px;">
+        <span class="dk">${exportTitle}</span>
+        <span class="dv">${whBadge(d.exportWH, 'Export slaughter')}</span>
+      </div>
+
+      <!-- EDIT FORM (hidden by default) -->
+      <div class="drench-edit-form" id="def-${d.id}" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--gp);">
+        <div class="fg"><label>Mob / Group Name</label>
+          <input type="text" id="de-name-${d.id}" value="${d.name}" autocomplete="off"></div>
+        <div class="fg"><label>Date</label>
+          <input type="date" id="de-date-${d.id}" value="${d.date}"></div>
+        <div class="fg"><label>Product Name</label>
+          <input type="text" id="de-product-${d.id}" value="${d.product}" autocomplete="off"></div>
+        <div class="fg"><label>Amount Per Sheep (ml)</label>
+          <input type="number" id="de-amount-${d.id}" value="${d.amount}" step="0.1" min="0" inputmode="decimal" style="font-size:20px;text-align:center;font-weight:800;"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+          <div><label>Local Slaughter Withhold (days)</label>
+            <input type="number" id="de-localwh-${d.id}" value="${d.localWH}" min="0" inputmode="numeric" style="font-size:18px;text-align:center;font-weight:800;"></div>
+          <div><label>Export Slaughter Withhold (days)</label>
+            <input type="number" id="de-exportwh-${d.id}" value="${d.exportWH}" min="0" inputmode="numeric" style="font-size:18px;text-align:center;font-weight:800;"></div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary btn-sm" style="flex:1;" onclick="saveDrenchEdit(${d.id})">✓ Save Changes</button>
+          <button class="btn-danger btn-sm" onclick="deleteDrench(${d.id})">🗑 Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
 }
 
-// ═══════════════════════════════════════
-//  STATS
-// ═══════════════════════════════════════
-function renderStats() {
-  const data=load(), sg=document.getElementById('sgrid'),
-        s5=document.getElementById('stop5'), sb=document.getElementById('sbest');
-  if (!data.length) { sg.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="ei">📊</div><p>No data yet</p></div>`; s5.innerHTML=sb.innerHTML=''; return; }
+function toggleDrenchEdit(id){
+  const f=document.getElementById('def-'+id);
+  f.style.display=f.style.display==='none'?'block':'none';
+}
 
-  const g={};
-  data.forEach(r=>{(g[r.tag]=g[r.tag]||[]).push(r);});
-  Object.values(g).forEach(e=>e.sort((a,b)=>a.date.localeCompare(b.date)));
-  const tags=Object.keys(g);
-  const lw=tags.map(t=>g[t].at(-1).weight);
-  const avg=(lw.reduce((a,b)=>a+b,0)/lw.length).toFixed(1);
+function saveDrenchEdit(id){
+  const list=loadDrench();
+  const idx=list.findIndex(d=>d.id===id);
+  if(idx===-1) return;
+  list[idx]={
+    ...list[idx],
+    name:document.getElementById(`de-name-${id}`).value.trim(),
+    date:document.getElementById(`de-date-${id}`).value,
+    product:document.getElementById(`de-product-${id}`).value.trim(),
+    amount:parseFloat(document.getElementById(`de-amount-${id}`).value)||0,
+    localWH:parseInt(document.getElementById(`de-localwh-${id}`).value)||0,
+    exportWH:parseInt(document.getElementById(`de-exportwh-${id}`).value)||0,
+  };
+  saveDrench2(list);
+  showToast('✓ Drench record updated');
+  renderDrenchLog();
+}
 
-  sg.innerHTML=`
-    <div class="sbox"><div class="sval">${tags.length}</div><div class="slbl">🐑 Sheep</div></div>
-    <div class="sbox"><div class="sval">${data.length}</div><div class="slbl">📝 Records</div></div>
-    <div class="sbox"><div class="sval">${avg}kg</div><div class="slbl">⚖️ Avg Weight</div></div>
-    <div class="sbox"><div class="sval">${Math.max(...lw)}kg</div><div class="slbl">🏆 Heaviest</div></div>`;
+function deleteDrench(id){ if(!confirm('Delete this drench record?')) return; saveDrench2(loadDrench().filter(d=>d.id!==id)); renderDrenchLog(); showToast('🗑 Deleted'); }
 
-  const byW=[...tags].sort((a,b)=>g[b].at(-1).weight-g[a].at(-1).weight).slice(0,5);
-  s5.innerHTML=byW.map((t,i)=>`
-    <div class="sheep-card" style="margin-bottom:8px;">
-      <div class="sch" style="cursor:default;">
-        <div><span style="color:var(--amber);font-size:14px;font-weight:800;">#${i+1}</span>
-        <span class="stag" style="margin-left:8px;">${t}</span></div>
-        <div class="slw">${g[t].at(-1).weight}kg</div>
+// ═══════════════════════════════════════════════════════
+//  COST LOG
+// ═══════════════════════════════════════════════════════
+function renderCostLog(){
+  const data=loadCosts().slice().reverse();
+  const el=document.getElementById('costList');
+  const sumEl=document.getElementById('costSummary');
+
+  const totalPurchase=loadCosts().filter(c=>c.type==='purchase').reduce((a,c)=>a+c.amount,0);
+  const totalIncome=loadCosts().filter(c=>c.type==='income').reduce((a,c)=>a+c.amount,0);
+  const net=totalIncome-totalPurchase;
+  sumEl.innerHTML=`
+    <div class="cs-box"><div class="cs-val" style="color:#e74c3c">-$${totalPurchase.toFixed(2)}</div><div class="cs-lbl2">Purchased</div></div>
+    <div class="cs-box"><div class="cs-val" style="color:var(--sold-c)">+$${totalIncome.toFixed(2)}</div><div class="cs-lbl2">Income</div></div>
+    <div class="cs-box"><div class="cs-val" style="color:${net>=0?'var(--sold-c)':'#e74c3c'}">${net>=0?'+':''} $${net.toFixed(2)}</div><div class="cs-lbl2">Net</div></div>
+  `;
+
+  if(!data.length){ el.innerHTML=`<div class="empty"><div class="ei">💰</div><p>No cost records yet</p></div>`; return; }
+  el.innerHTML=data.map(c=>`
+    <div class="cost-card" id="cc-${c.id}">
+      <div class="cost-top" onclick="toggleCostEdit(${c.id})" style="cursor:pointer;">
+        <div>
+          <div class="cost-title">${c.title}</div>
+          <div class="cost-meta">${c.type==='purchase'?'📦 Purchased':'💵 Income'} · ${fmtDate(c.date)}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="cost-amount ${c.type}">${c.type==='purchase'?'-':'+'}$${c.amount.toFixed(2)}</div>
+          <span style="color:var(--muted);font-size:13px;">✏️</span>
+        </div>
+      </div>
+      ${c.notes?`<div class="cost-notes">📝 ${c.notes}</div>`:''}
+
+      <!-- EDIT FORM -->
+      <div id="cef-${c.id}" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--gp);">
+        <div class="fg"><label>Title</label>
+          <input type="text" id="ce-title-${c.id}" value="${c.title.replace(/"/g,'&quot;')}" autocomplete="off"></div>
+        <div class="fg"><label>Type</label>
+          <div class="toggle-row">
+            <button class="toggle-btn ${c.type==='purchase'?'sel-purchase':''}" id="ce-pur-${c.id}" onclick="setCostEditType(${c.id},'purchase')">📦 Purchased</button>
+            <button class="toggle-btn ${c.type==='income'?'sel-income':''}"   id="ce-inc-${c.id}" onclick="setCostEditType(${c.id},'income')">💵 Income</button>
+          </div>
+        </div>
+        <div class="fg"><label>Amount (AUD $)</label>
+          <input type="number" id="ce-amount-${c.id}" value="${c.amount}" step="0.01" min="0" inputmode="decimal" style="font-size:22px;text-align:center;font-weight:800;"></div>
+        <div class="fg"><label>Date</label>
+          <input type="date" id="ce-date-${c.id}" value="${c.date}"></div>
+        <div class="fg"><label>Notes</label>
+          <textarea id="ce-notes-${c.id}">${c.notes||''}</textarea></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary btn-sm" style="flex:1;" onclick="saveCostEdit(${c.id})">✓ Save Changes</button>
+          <button class="btn-danger btn-sm" onclick="deleteCost(${c.id})">🗑 Delete</button>
+        </div>
       </div>
     </div>`).join('');
-
-  const gains=tags.map(t=>({tag:t,gain:gain(g[t])})).filter(x=>x.gain!==0).sort((a,b)=>b.gain-a.gain).slice(0,5);
-  sb.innerHTML=gains.length
-    ? gains.map((x,i)=>`
-        <div class="sheep-card" style="margin-bottom:8px;">
-          <div class="sch" style="cursor:default;">
-            <div><span style="color:var(--amber);font-size:14px;font-weight:800;">#${i+1}</span>
-            <span class="stag" style="margin-left:8px;">${x.tag}</span></div>
-            <div class="slw" style="color:${x.gain>0?'#90ee90':'#ff9999'};">${x.gain>0?'+':''}${x.gain.toFixed(1)}kg</div>
-          </div>
-        </div>`).join('')
-    : `<p style="color:var(--text-muted);font-size:13px;padding:8px;">Need 2+ weigh-ins per sheep.</p>`;
 }
 
-// ═══════════════════════════════════════
-//  EXPORT
-// ═══════════════════════════════════════
-function exportAll() {
-  const data=load(); if (!data.length){showToast('No data');return;}
-  const rows=[['Tag Number','Date','Weight (kg)','Notes']];
-  [...data].sort((a,b)=>a.tag.localeCompare(b.tag)||a.date.localeCompare(b.date))
-    .forEach(r=>rows.push([r.tag,r.date,r.weight,r.notes||'']));
-  dlCSV(rows,'sheep-all-records.csv'); showToast('📊 Exported!');
+// Track cost edit types per card
+const costEditTypes={};
+function setCostEditType(id, type){
+  costEditTypes[id]=type;
+  document.getElementById(`ce-pur-${id}`).className='toggle-btn'+(type==='purchase'?' sel-purchase':'');
+  document.getElementById(`ce-inc-${id}`).className='toggle-btn'+(type==='income'?' sel-income':'');
 }
-function exportLatest() {
-  const data=load(); if (!data.length){showToast('No data');return;}
+
+function toggleCostEdit(id){
+  const f=document.getElementById('cef-'+id);
+  const isOpen=f.style.display!=='none';
+  f.style.display=isOpen?'none':'block';
+  if(!isOpen){
+    // Initialise edit type tracker from current state
+    const c=loadCosts().find(x=>x.id===id);
+    if(c) costEditTypes[id]=c.type;
+  }
+}
+
+function saveCostEdit(id){
+  const list=loadCosts();
+  const idx=list.findIndex(c=>c.id===id);
+  if(idx===-1) return;
+  const amount=parseFloat(document.getElementById(`ce-amount-${id}`).value);
+  if(!amount||amount<=0){ showToast('⚠️ Enter a valid amount'); return; }
+  list[idx]={
+    ...list[idx],
+    title:document.getElementById(`ce-title-${id}`).value.trim(),
+    type:costEditTypes[id]||list[idx].type,
+    amount,
+    date:document.getElementById(`ce-date-${id}`).value,
+    notes:document.getElementById(`ce-notes-${id}`).value.trim(),
+  };
+  saveCosts2(list);
+  showToast('✓ Cost entry updated');
+  renderCostLog();
+}
+
+function deleteCost(id){ if(!confirm('Delete this entry?')) return; saveCosts2(loadCosts().filter(c=>c.id!==id)); renderCostLog(); showToast('🗑 Deleted'); }
+
+// ═══════════════════════════════════════════════════════
+//  STATS
+// ═══════════════════════════════════════════════════════
+function renderStats(){
+  const data=load(), sexMap=loadSex(), statusMap=loadStatus();
+  const g1=document.getElementById('sgrid1'), g2=document.getElementById('sgrid2');
+  const s5=document.getElementById('stop5'), sb=document.getElementById('sbest');
+
+  if(!data.length){ g1.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="ei">📊</div><p>No data yet</p></div>`; g2.innerHTML=s5.innerHTML=sb.innerHTML=''; return; }
+
   const g={};
-  data.forEach(r=>{(g[r.tag]=g[r.tag]||[]).push(r);});
+  data.forEach(r=>{ (g[r.tag]=g[r.tag]||[]).push(r); });
   Object.values(g).forEach(e=>e.sort((a,b)=>a.date.localeCompare(b.date)));
-  const rows=[['Tag Number','Latest Date','Latest Weight (kg)','First Weight (kg)','Total Gain (kg)','Records']];
-  Object.keys(g).sort().forEach(t=>{const e=g[t];rows.push([t,e.at(-1).date,e.at(-1).weight,e[0].weight,(e.at(-1).weight-e[0].weight).toFixed(1),e.length]);});
-  dlCSV(rows,'sheep-latest.csv'); showToast('📋 Summary exported!');
+  const allTags=Object.keys(g);
+
+  const activeTags=allTags.filter(t=>{ const s=statusMap[t]?.status; return !s||(s!=='sold'&&s!=='dead'); });
+  const soldCount=allTags.filter(t=>statusMap[t]?.status==='sold').length;
+  const deadCount=allTags.filter(t=>statusMap[t]?.status==='dead').length;
+
+  const activeWeights=activeTags.map(t=>g[t].filter(e=>e.weight>0).at(-1)?.weight).filter(Boolean);
+  const avg=activeWeights.length?(activeWeights.reduce((a,b)=>a+b,0)/activeWeights.length).toFixed(1):'—';
+  const max=activeWeights.length?Math.max(...activeWeights):'—';
+
+  const totalPurchase=loadCosts().filter(c=>c.type==='purchase').reduce((a,c)=>a+c.amount,0);
+  const totalIncome=loadCosts().filter(c=>c.type==='income').reduce((a,c)=>a+c.amount,0);
+  const net=totalIncome-totalPurchase;
+  const netStr=(net>=0?'+':'')+' $'+Math.abs(net).toFixed(2);
+
+  g1.innerHTML=`
+    <div class="sbox"><div class="sval">${activeTags.length}</div><div class="slbl">🐑 Sheep</div></div>
+    <div class="sbox"><div class="sval" style="color:var(--sold-c)">${soldCount}</div><div class="slbl">💰 Sold</div></div>
+    <div class="sbox"><div class="sval" style="color:var(--dead-c)">${deadCount}</div><div class="slbl">💀 Dead</div></div>
+    <div class="sbox"><div class="sval" style="font-size:18px;color:${net>=0?'var(--sold-c)':'var(--red)'}">${net>=0?'+':'-'} $${Math.abs(net).toFixed(2)}</div><div class="slbl">💰 Net Cost</div></div>
+    <div class="sbox"><div class="sval">${avg}kg</div><div class="slbl">⚖️ Avg Weight</div></div>
+    <div class="sbox"><div class="sval">${max}${max!=='—'?'kg':''}</div><div class="slbl">🏆 Heaviest</div></div>`;
+
+  const rams=activeTags.filter(t=>sexMap[t]==='ram').length;
+  const ewes=activeTags.filter(t=>sexMap[t]==='ewe').length;
+  const weth=activeTags.filter(t=>sexMap[t]==='wether').length;
+  const unk=activeTags.length-rams-ewes-weth;
+  g2.innerHTML=`
+    <div class="sbox"><div class="sval" style="color:var(--blue)">${rams}</div><div class="slbl">♂ Rams</div></div>
+    <div class="sbox"><div class="sval" style="color:var(--pink)">${ewes}</div><div class="slbl">♀ Ewes</div></div>
+    <div class="sbox"><div class="sval" style="color:var(--purple)">${weth}</div><div class="slbl">✂ Wethers</div></div>
+    <div class="sbox"><div class="sval" style="color:#999">${unk}</div><div class="slbl">? Unknown</div></div>`;
+
+  const byW=[...activeTags].filter(t=>g[t].some(e=>e.weight>0)).sort((a,b)=>{
+    const wa=g[a].filter(e=>e.weight>0).at(-1)?.weight||0;
+    const wb=g[b].filter(e=>e.weight>0).at(-1)?.weight||0;
+    return wb-wa;
+  }).slice(0,5);
+  s5.innerHTML=byW.length?byW.map((t,i)=>`
+    <div class="sheep-card" style="margin-bottom:7px;">
+      <div class="sch" style="cursor:default;">
+        <div><span style="color:var(--am);font-size:13px;font-weight:800">#${i+1}</span>
+        <span class="stag" style="margin-left:7px">${t}${sexBadgeHTML(sexMap[t])}</span></div>
+        <div class="slw">${g[t].filter(e=>e.weight>0).at(-1)?.weight}kg</div>
+      </div></div>`).join(''):'<p style="color:var(--muted);font-size:12px;padding:6px;">No weight records yet.</p>';
+
+  const gains=activeTags.map(t=>({tag:t,g:gain(g[t].filter(e=>e.weight>0))})).filter(x=>x.g!==0).sort((a,b)=>b.g-a.g).slice(0,5);
+  sb.innerHTML=gains.length?gains.map((x,i)=>`
+    <div class="sheep-card" style="margin-bottom:7px;">
+      <div class="sch" style="cursor:default;">
+        <div><span style="color:var(--am);font-size:13px;font-weight:800">#${i+1}</span>
+        <span class="stag" style="margin-left:7px">${x.tag}${sexBadgeHTML(sexMap[x.tag])}</span></div>
+        <div class="slw" style="color:${x.g>0?'#90ee90':'#ff9999'}">${x.g>0?'+':''}${x.g.toFixed(1)}kg</div>
+      </div></div>`).join('')
+  :'<p style="color:var(--muted);font-size:12px;padding:6px;">Need 2+ weigh-ins per sheep.</p>';
 }
-function dlCSV(rows,fn) {
+
+// ═══════════════════════════════════════════════════════
+//  EXPORT
+// ═══════════════════════════════════════════════════════
+function exportAll(){
+  const data=load(),sexMap=loadSex(),statusMap=loadStatus(); if(!data.length){showToast('No data');return;}
+  const rows=[['Tag','Sex','Status','Date','Weight (kg)','Notes']];
+  [...data].sort((a,b)=>a.tag.localeCompare(b.tag)||a.date.localeCompare(b.date))
+    .forEach(r=>rows.push([r.tag,sexMap[r.tag]||'unknown',statusMap[r.tag]?.status||'active',r.date,r.weight,r.notes||'']));
+  dlCSV(rows,'sheep-weights.csv'); showToast('📊 Exported!');
+}
+function exportLatest(){
+  const data=load(),sexMap=loadSex(),statusMap=loadStatus(); if(!data.length){showToast('No data');return;}
+  const g={};
+  data.filter(r=>r.weight>0).forEach(r=>{(g[r.tag]=g[r.tag]||[]).push(r);});
+  Object.values(g).forEach(e=>e.sort((a,b)=>a.date.localeCompare(b.date)));
+  const rows=[['Tag','Sex','Status','Latest Date','Latest kg','First kg','Gain kg','Records']];
+  Object.keys(g).sort().forEach(t=>{const e=g[t];rows.push([t,sexMap[t]||'unknown',statusMap[t]?.status||'active',e.at(-1).date,e.at(-1).weight,e[0].weight,(e.at(-1).weight-e[0].weight).toFixed(1),e.length]);});
+  dlCSV(rows,'sheep-latest.csv'); showToast('📋 Exported!');
+}
+function exportDrench(){
+  const data=loadDrench(); if(!data.length){showToast('No drench records');return;}
+  const rows=[['Mob/Group','Date','Product','ml/sheep','Local Withhold (days)','Export Withhold (days)']];
+  data.forEach(d=>rows.push([d.name,d.date,d.product,d.amount,d.localWH,d.exportWH]));
+  dlCSV(rows,'drench-log.csv'); showToast('💉 Exported!');
+}
+function exportCosts(){
+  const data=loadCosts(); if(!data.length){showToast('No cost records');return;}
+  const rows=[['Title','Type','Amount (AUD)','Date','Notes']];
+  data.forEach(c=>rows.push([c.title,c.type,c.amount.toFixed(2),c.date,c.notes||'']));
+  dlCSV(rows,'costs.csv'); showToast('💰 Exported!');
+}
+function dlCSV(rows,fn){
   const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:fn});
   document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
-function exportBackup() {
-  const json=JSON.stringify({version:1,exported:new Date().toISOString(),records:load()},null,2);
+function exportBackup(){
+  const json=JSON.stringify({version:3,exported:new Date().toISOString(),records:load(),sex:loadSex(),status:loadStatus(),drench:loadDrench(),costs:loadCosts()},null,2);
   const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:`sheep-backup-${new Date().toISOString().split('T')[0]}.json`});
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   showToast('💾 Backup saved!');
 }
-function importBackup(ev) {
+function importBackup(ev){
   const f=ev.target.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=e=>{
-    try {
+    try{
       const b=JSON.parse(e.target.result);
       if(!Array.isArray(b.records)) throw 0;
-      const seen=new Set(), m=[...load(),...b.records].filter(r=>seen.has(r.id)?false:seen.add(r.id));
-      save(m); showToast(`✓ Restored ${b.records.length} records`);
+      const seen=new Set(),m=[...load(),...b.records].filter(r=>seen.has(r.id)?false:seen.add(r.id));
+      save(m);
+      if(b.sex) saveSex(Object.assign(loadSex(),b.sex));
+      if(b.status) saveStatus2(Object.assign(loadStatus(),b.status));
+      if(Array.isArray(b.drench)){ const seen2=new Set(),md=[...loadDrench(),...b.drench].filter(d=>seen2.has(d.id)?false:seen2.add(d.id)); saveDrench2(md); }
+      if(Array.isArray(b.costs)){ const seen3=new Set(),mc=[...loadCosts(),...b.costs].filter(c=>seen3.has(c.id)?false:seen3.add(c.id)); saveCosts2(mc); }
+      showToast(`✓ Restored ${b.records.length} records`);
     } catch { showToast('⚠️ Invalid backup file'); }
   };
   r.readAsText(f); ev.target.value='';
 }
-function clearAll() {
-  if(!confirm('⚠️ Delete ALL sheep records?\n\nExport a backup first!')) return;
-  localStorage.removeItem(K_DATA); save([]); showToast('🗑 Cleared');
+function clearAll(){
+  if(!confirm('⚠️ Delete ALL data?\n\nExport a backup first!')) return;
+  [K_DATA,K_SEX,K_STATUS,K_DRENCH,K_COSTS].forEach(k=>localStorage.removeItem(k));
+  save([]); showToast('🗑 All data cleared');
+}
+function quickShare(){
+  const data={version:3,exported:new Date().toISOString(),records:load(),sex:loadSex(),status:loadStatus(),drench:loadDrench(),costs:loadCosts()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const file=new File([blob],`sheep-backup-${new Date().toISOString().split('T')[0]}.json`,{type:'application/json'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})) navigator.share({title:'Sheep Tracker Backup',files:[file]}).catch(()=>{});
+  else if(navigator.share) navigator.share({title:'Sheep Tracker Backup',text:JSON.stringify(data)}).catch(()=>{});
+  else { exportBackup(); showToast('💾 Backup downloaded'); }
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════════════════════════════
 //  UTILS
-// ═══════════════════════════════════════
-function fmtDate(d) {
+// ═══════════════════════════════════════════════════════
+function fmtDate(d){
   if(!d) return '';
   const [y,m,day]=d.split('-');
   return `${parseInt(day)} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m-1]} ${y}`;
 }
-function showToast(msg) {
+function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
+  setTimeout(()=>t.classList.remove('show'),2400);
 }
 </script>
 </body>
