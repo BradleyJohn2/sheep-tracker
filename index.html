@@ -130,13 +130,15 @@ input:focus, textarea:focus, select:focus { outline:none; border-color:var(--gl)
 .hub { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:13px; }
 .hub-btn { background:var(--white); border:2px solid var(--border); border-radius:var(--r); padding:20px 12px; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; transition:all .15s; box-shadow:0 1px 6px rgba(0,0,0,.08); }
 .hub-btn:active { transform:scale(.96); }
-.hub-btn .hbi { font-size:36px; }
-.hub-btn .hbl { font-size:13px; font-weight:800; color:var(--gd); }
-.hub-btn .hbs { font-size:10px; font-weight:600; color:var(--muted); }
-.hub-btn.hb-weigh  { border-color:var(--gl); }
-.hub-btn.hb-status { border-color:var(--sold-c); }
-.hub-btn.hb-drench { border-color:var(--blue); }
-.hub-btn.hb-cost   { border-color:var(--am); }
+.hub-btn .hbi { font-size:34px; }
+.hub-btn .hbl { font-size:13px; font-weight:800; color:var(--gd); text-align:center; }
+.hub-btn .hbs { font-size:10px; font-weight:600; color:var(--muted); text-align:center; }
+.hub-btn.hb-weigh    { border-color:var(--gl); }
+.hub-btn.hb-status   { border-color:var(--sold-c); }
+.hub-btn.hb-drench   { border-color:var(--blue); }
+.hub-btn.hb-cost     { border-color:var(--am); }
+.hub-btn.hb-notes    { border-color:var(--purple); }
+.hub-btn.hb-newsheep { border-color:var(--pink); }
 
 /* ── ENTRY SCREENS ── */
 .entry-screen { display:none; }
@@ -344,6 +346,16 @@ input:focus, textarea:focus, select:focus { outline:none; border-color:var(--gl)
         <span class="hbl">Cost / Income</span>
         <span class="hbs">Track finances</span>
       </div>
+      <div class="hub-btn hb-notes" onclick="showEntry('notes')">
+        <span class="hbi">📝</span>
+        <span class="hbl">Notes</span>
+        <span class="hbs">Tag history & notes</span>
+      </div>
+      <div class="hub-btn hb-newsheep" onclick="showEntry('newsheep')">
+        <span class="hbi">🐑</span>
+        <span class="hbl">New Sheep</span>
+        <span class="hbs">Add / Marking</span>
+      </div>
     </div>
     <div id="lastUpdated" class="last-upd" style="display:none"></div>
     <div class="stitle">Recently Weighed</div>
@@ -374,11 +386,18 @@ input:focus, textarea:focus, select:focus { outline:none; border-color:var(--gl)
         <div class="tag-preview">Full tag: <span id="wTagPreview">—</span></div>
         <div class="sex-row">
           <span class="sex-lbl">Sex</span>
-          <button class="sex-btn" id="wSexRam"  onclick="setSex('w','ram')"><span class="si">♂</span>Ram</button>
-          <button class="sex-btn" id="wSexEwe"  onclick="setSex('w','ewe')"><span class="si">♀</span>Ewe</button>
-          <button class="sex-btn" id="wSexWeth" onclick="setSex('w','wether')"><span class="si">✂</span>Wether</button>
+          <button class="sex-btn" id="wSexRam"  onclick="setSex('w','ram')">Ram</button>
+          <button class="sex-btn" id="wSexEwe"  onclick="setSex('w','ewe')">Ewe</button>
+          <button class="sex-btn" id="wSexWeth" onclick="setSex('w','wether')">Wether</button>
           <span class="sex-known" id="wSexKnown">✓ Saved</span>
         </div>
+      </div>
+
+      <!-- LIVE DUPLICATE WARNING BANNER — shown as soon as tag already weighed today -->
+      <div id="dupWarningBanner" style="display:none;background:#c0392b;border-radius:10px;padding:12px 14px;margin-bottom:12px;display:none;">
+        <div style="font-size:13px;font-weight:800;color:white;">⚠️ Already weighed today!</div>
+        <div id="dupWarningText" style="font-size:12px;color:rgba(255,255,255,.85);margin-top:3px;font-weight:600;"></div>
+        <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:4px;">Check the tag number — you can still save if it is correct.</div>
       </div>
       <div class="fg">
         <label>Weight (kg)</label>
@@ -521,6 +540,125 @@ input:focus, textarea:focus, select:focus { outline:none; border-color:var(--gl)
     </div>
   </div>
 
+  <!-- ── NOTES ENTRY ── -->
+  <div class="entry-screen" id="es-notes">
+    <button class="back-btn" onclick="showEntry('hub')">← Back</button>
+    <div class="card">
+      <h2>📝 Sheep Notes</h2>
+      <div class="tag-area">
+        <div class="tag-area-label">Tap year · type last 3 digits</div>
+        <div class="chips" id="nChips"></div>
+        <div class="add-row" id="nAddRow">
+          <div style="font-size:11px;color:var(--gp);font-weight:700;">New year prefix</div>
+          <div class="add-row-inner">
+            <input type="text" id="nNewPre" maxlength="2" inputmode="numeric" placeholder="25" autocomplete="off">
+            <button class="btn-ok" onclick="confirmAdd('n')">Add</button>
+            <button class="btn-cx" onclick="cancelAdd('n')">✕</button>
+          </div>
+        </div>
+        <div class="tag-row">
+          <div class="tag-prefix-box" id="nPrefixBox">??</div>
+          <input class="tag-seq" id="nSeqInput" type="text" inputmode="numeric" maxlength="3" placeholder="001" autocomplete="off" autocorrect="off" oninput="onNotesSeq()">
+        </div>
+        <div class="tag-preview">Full tag: <span id="nTagPreview">—</span></div>
+
+        <!-- Sheep summary — shows once tag is entered, like sold/dead screen -->
+        <div class="sheep-summary" id="nSummary">
+          <div class="ss-tag" id="nSumTag"></div>
+          <div class="ss-row">
+            <span id="nSumSex"></span>
+            <span id="nSumWeight"></span>
+            <span id="nSumStatus"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Note text box — always visible -->
+      <div class="fg">
+        <label>Add Note</label>
+        <textarea id="noteText" placeholder="Type your note here…"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="saveNote()" style="margin-bottom:14px;">✓ Save Note</button>
+
+      <!-- History shown below once tag loaded -->
+      <div id="notesHistoryWrap" style="display:none;">
+        <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">History</div>
+        <div id="notesHistory"></div>
+      </div>
+      <div id="notesEmpty" style="text-align:center;padding:16px 0;color:var(--muted);font-size:13px;font-weight:600;">Enter a tag number above to load history</div>
+    </div>
+  </div>
+
+  <!-- ── NEW SHEEP / MARKING ENTRY ── -->
+  <div class="entry-screen" id="es-newsheep">
+    <button class="back-btn" onclick="showEntry('hub')">← Back</button>
+    <div class="card">
+      <h2>🐑 Add New Sheep</h2>
+
+      <!-- Year prefix chips -->
+      <div class="tag-area">
+        <div class="tag-area-label">Select year prefix</div>
+        <div class="chips" id="nsChips"></div>
+        <div class="add-row" id="nsAddRow">
+          <div style="font-size:11px;color:var(--gp);font-weight:700;">New year prefix</div>
+          <div class="add-row-inner">
+            <input type="text" id="nsNewPre" maxlength="2" inputmode="numeric" placeholder="26" autocomplete="off">
+            <button class="btn-ok" onclick="confirmAdd('ns')">Add</button>
+            <button class="btn-cx" onclick="cancelAdd('ns')">✕</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Starting number + direction -->
+      <div class="fg">
+        <label>Starting Tag Number (last 3 digits)</label>
+        <input type="number" id="nsStartNum" placeholder="001" min="1" max="999" inputmode="numeric" style="font-size:28px;font-weight:900;text-align:center;letter-spacing:3px;">
+      </div>
+      <div class="fg">
+        <label>Direction</label>
+        <div class="toggle-row">
+          <button class="toggle-btn sel-purchase" id="nsBtnAsc" onclick="setNsDir('asc')" style="background:var(--gl);color:white;">▲ Ascending</button>
+          <button class="toggle-btn" id="nsBtnDesc" onclick="setNsDir('desc')">▼ Descending</button>
+        </div>
+      </div>
+
+      <!-- Current tag display — big and bold -->
+      <div style="background:var(--gd);border-radius:13px;padding:16px;margin-bottom:13px;text-align:center;">
+        <div style="font-size:10px;font-weight:800;color:var(--gp);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Current Tag</div>
+        <div id="nsCurrentTag" style="font-family:'Courier Prime',monospace;font-size:40px;font-weight:900;color:var(--am);letter-spacing:4px;">—</div>
+        <div id="nsTagStatus" style="font-size:11px;color:var(--gp);margin-top:5px;font-weight:600;"></div>
+      </div>
+
+      <!-- Sex buttons — big for field use -->
+      <div class="fg">
+        <label>Sex</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <button class="ns-sex-btn" id="nsSexRam"  onclick="setNsSex('ram')"
+            style="padding:18px 8px;border-radius:12px;border:3px solid rgba(41,128,185,.3);background:rgba(41,128,185,.1);color:var(--blue);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;">
+            Ram
+          </button>
+          <button class="ns-sex-btn" id="nsSexEwe"  onclick="setNsSex('ewe')"
+            style="padding:18px 8px;border-radius:12px;border:3px solid rgba(192,57,122,.3);background:rgba(192,57,122,.1);color:var(--pink);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;">
+            Ewe
+          </button>
+          <button class="ns-sex-btn" id="nsSexWeth" onclick="setNsSex('wether')"
+            style="padding:18px 8px;border-radius:12px;border:3px solid rgba(125,60,152,.3);background:rgba(125,60,152,.1);color:var(--purple);font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;">
+            Wether
+          </button>
+        </div>
+      </div>
+
+      <!-- Big ADD button -->
+      <button class="btn btn-primary" onclick="addNewSheep()" style="font-size:20px;padding:18px;">
+        ＋ Add Sheep
+      </button>
+    </div>
+
+    <!-- Recently added list -->
+    <div class="stitle">Recently Added</div>
+    <div id="nsRecentList" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;"></div>
+  </div>
+
 </div><!-- end panel-record -->
 
 <!-- ══════════════════════════════════════
@@ -574,13 +712,27 @@ input:focus, textarea:focus, select:focus { outline:none; border-color:var(--gl)
      STATS PANEL
 ══════════════════════════════════════ -->
 <div class="panel" id="panel-stats">
-  <div class="sgrid" id="sgrid1"></div>
-  <div class="stitle">🐑 By Sex</div>
-  <div class="sgrid" id="sgrid2"></div>
-  <div class="stitle">🏆 Top 5 Heaviest (Active)</div>
-  <div id="stop5"></div>
-  <div class="stitle" style="margin-top:13px">📈 Best Weight Gain (Active)</div>
-  <div id="sbest"></div>
+  <div class="sub-tabs" style="margin-bottom:13px;">
+    <button class="sub-tab active" id="stab-overview" onclick="showStatsTab('overview',this)">📊 Overview</button>
+    <button class="sub-tab" id="stab-year" onclick="showStatsTab('year',this)">📅 By Year</button>
+  </div>
+
+  <!-- OVERVIEW — default visible -->
+  <div id="stats-overview">
+    <div class="sgrid" id="sgrid1"></div>
+    <div class="stitle">🐑 By Sex</div>
+    <div class="sgrid" id="sgrid2"></div>
+    <div class="stitle">🏆 Top 5 Heaviest (Active)</div>
+    <div id="stop5"></div>
+    <div class="stitle" style="margin-top:13px">📈 Best Weight Gain (Active)</div>
+    <div id="sbest"></div>
+  </div>
+
+  <!-- BY YEAR — hidden until tab tapped -->
+  <div id="stats-year" style="display:none;">
+    <div id="yearPills" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px;"></div>
+    <div id="yearDetail"></div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -622,9 +774,10 @@ const K_DATA    = 'sheepData_v1';
 const K_PRE     = 'sheepPrefixes_v1';
 const K_ACTIVE  = 'sheepActive_v1';
 const K_SEX     = 'sheepSex_v1';
-const K_STATUS  = 'sheepStatus_v1';   // {tag: {status:'sold'|'dead', date, cause}}
-const K_DRENCH  = 'sheepDrench_v1';   // [{id,name,date,product,amount,localWH,exportWH}]
-const K_COSTS   = 'sheepCosts_v1';    // [{id,title,type:'purchase'|'income',amount,date,notes}]
+const K_STATUS  = 'sheepStatus_v1';
+const K_DRENCH  = 'sheepDrench_v1';
+const K_COSTS   = 'sheepCosts_v1';
+const K_NOTES   = 'sheepNotes_v1';   // [{id,tag,text,date}]
 
 const load       = () => { try { return JSON.parse(localStorage.getItem(K_DATA))||[]; } catch { return []; } };
 const save       = d  => { localStorage.setItem(K_DATA,JSON.stringify(d)); refreshCount(); updateLastUpdated(); };
@@ -636,6 +789,8 @@ const loadDrench = () => { try { return JSON.parse(localStorage.getItem(K_DRENCH
 const saveDrench2= d  => localStorage.setItem(K_DRENCH,JSON.stringify(d));
 const loadCosts  = () => { try { return JSON.parse(localStorage.getItem(K_COSTS))||[]; } catch { return []; } };
 const saveCosts2 = c  => localStorage.setItem(K_COSTS,JSON.stringify(c));
+const loadNotes  = () => { try { return JSON.parse(localStorage.getItem(K_NOTES))||[]; } catch { return []; } };
+const saveNotes2 = n  => localStorage.setItem(K_NOTES,JSON.stringify(n));
 
 function getSexForTag(tag)      { return loadSex()[tag]||null; }
 function setSexForTag(tag,sex)  { const s=loadSex(); s[tag]=sex; saveSex(s); }
@@ -660,15 +815,20 @@ document.addEventListener('DOMContentLoaded', () => {
   ['wDate','sDate','dDate','cDate'].forEach(id => { const el=document.getElementById(id); if(el) el.value=today; });
   document.getElementById('hDate').textContent = fmtDate(today);
   refreshCount();
-  renderChips('w'); renderChips('s');
+  renderChips('w'); renderChips('s'); renderChips('n'); renderChips('ns');
   renderRecent();
   loadLastUpdated();
 
   // Keyboard shortcuts
   document.getElementById('wSeqInput').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('wWeight').focus(); });
   document.getElementById('wWeight').addEventListener('keydown', e => { if(e.key==='Enter') saveWeight(); });
-  document.getElementById('wSeqInput').addEventListener('blur', () => { padSeq('wSeqInput'); const t=buildTag('w'); if(t) autoLoadSex(t); });
+  document.getElementById('wSeqInput').addEventListener('blur', () => {
+    padSeq('wSeqInput');
+    const t=buildTag('w');
+    if(t){ autoLoadSex(t); checkDupBanner(t); }
+  });
   document.getElementById('sSeqInput').addEventListener('blur', () => { padSeq('sSeqInput'); const t=buildTag('s'); if(t) loadStatusSummary(t); });
+  document.getElementById('nSeqInput').addEventListener('blur', () => { padSeq('nSeqInput'); const t=buildTag('n'); if(t) loadNotesProfile(t); });
 });
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
@@ -705,7 +865,7 @@ function showPanel(name) {
   document.getElementById('panel-'+name).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='flock'){ renderFlock(); renderDrenchLog(); renderCostLog(); }
-  if(name==='stats') renderStats();
+  if(name==='stats'){ renderStats(); }
 }
 
 function showEntry(name) {
@@ -713,6 +873,8 @@ function showEntry(name) {
   document.getElementById('es-'+name).classList.add('active');
   if(name==='weigh'){ renderChips('w'); renderWeighRecent(); }
   if(name==='status'){ renderChips('s'); renderStatusRecent(); clearStatusForm(); }
+  if(name==='notes'){ renderChips('n'); clearNotesForm(); }
+  if(name==='newsheep'){ renderChips('ns'); initNewSheep(); }
 }
 
 function showSubTab(name, btn) {
@@ -731,9 +893,10 @@ let longTimer=null;
 
 function renderChips(ctx) {
   const prefixes=loadPrefixes(), active=getActive();
-  const containerId = ctx==='w'?'wChips':'sChips';
-  const prefixBoxId = ctx==='w'?'wPrefixBox':'sPrefixBox';
+  const ids={w:['wChips','wPrefixBox'],s:['sChips','sPrefixBox'],n:['nChips','nPrefixBox'],ns:['nsChips',null]};
+  const [containerId, prefixBoxId]=ids[ctx]||['wChips','wPrefixBox'];
   const c=document.getElementById(containerId);
+  if(!c) return;
   c.innerHTML=prefixes.map(p=>`
     <button class="chip ${p===active?'active':''}"
       onclick="selectPrefix('${p}')"
@@ -741,13 +904,13 @@ function renderChips(ctx) {
       ontouchstart="startLong(event,'${p}')"
       ontouchend="endLong()" ontouchmove="endLong()">${p}</button>`).join('')
     +`<button class="chip add-chip" onclick="showAdd('${ctx}')">＋</button>`;
-  document.getElementById(prefixBoxId).textContent=active;
+  if(prefixBoxId) document.getElementById(prefixBoxId).textContent=active;
   updateTagPreview(ctx);
 }
 
 function selectPrefix(p) {
   setActive(p);
-  renderChips('w'); renderChips('s');
+  ['w','s','n','ns'].forEach(ctx=>renderChips(ctx));
   const wSeq=document.getElementById('wSeqInput');
   if(wSeq) wSeq.focus();
 }
@@ -762,35 +925,74 @@ function removePrefix(e,p){
   if(getActive()===p) setActive(nl[0]);
   renderChips('w'); renderChips('s');
 }
-function showAdd(ctx){ document.getElementById(ctx==='w'?'wAddRow':'sAddRow').classList.add('open'); }
-function cancelAdd(ctx){ document.getElementById(ctx==='w'?'wAddRow':'sAddRow').classList.remove('open'); }
+function showAdd(ctx){
+  const ids={w:'wAddRow',s:'sAddRow',n:'nAddRow',ns:'nsAddRow'};
+  const row=document.getElementById(ids[ctx]);
+  if(row) row.classList.add('open');
+}
+function cancelAdd(ctx){
+  const ids={w:'wAddRow',s:'sAddRow',n:'nAddRow',ns:'nsAddRow'};
+  const row=document.getElementById(ids[ctx]);
+  if(row) row.classList.remove('open');
+}
 function confirmAdd(ctx){
-  const inputId=ctx==='w'?'wNewPre':'sNewPre';
-  const v=document.getElementById(inputId).value.trim();
+  const inputIds={w:'wNewPre',s:'sNewPre',n:'nNewPre',ns:'nsNewPre'};
+  const v=document.getElementById(inputIds[ctx]).value.trim();
   if(!/^\d{1,2}$/.test(v)){ showToast('⚠️ Enter 1 or 2 digits'); return; }
   const p=v.padStart(2,'0'), list=loadPrefixes();
   if(!list.includes(p)){ list.push(p); list.sort(); savePrefixes(list); }
-  setActive(p); cancelAdd(ctx); renderChips('w'); renderChips('s');
+  setActive(p); cancelAdd(ctx);
+  ['w','s','n','ns'].forEach(c=>renderChips(c));
+  // Also update new sheep display
+  updateNsDisplay();
 }
 
 function updateTagPreview(ctx) {
-  const seqId=ctx==='w'?'wSeqInput':'sSeqInput';
-  const prevId=ctx==='w'?'wTagPreview':'sTagPreview';
-  const seq=document.getElementById(seqId)?.value.trim();
-  document.getElementById(prevId).textContent = seq ? getActive()+seq.padStart(3,'0') : '—';
+  const seqIds={w:'wSeqInput',s:'sSeqInput',n:'nSeqInput'};
+  const prevIds={w:'wTagPreview',s:'sTagPreview',n:'nTagPreview'};
+  const seqEl=document.getElementById(seqIds[ctx]);
+  const prevEl=document.getElementById(prevIds[ctx]);
+  if(!seqEl||!prevEl) return;
+  const seq=seqEl.value.trim();
+  prevEl.textContent = seq ? getActive()+seq.padStart(3,'0') : '—';
 }
 
 function buildTag(ctx) {
-  const seqId=ctx==='w'?'wSeqInput':'sSeqInput';
-  const seq=document.getElementById(seqId).value.trim();
+  const seqIds={w:'wSeqInput',s:'sSeqInput',n:'nSeqInput'};
+  const seqEl=document.getElementById(seqIds[ctx]);
+  if(!seqEl) return null;
+  const seq=seqEl.value.trim();
   return seq ? getActive()+seq.padStart(3,'0') : null;
 }
 
 function onWeighSeq() {
   updateTagPreview('w');
   const seq=document.getElementById('wSeqInput').value.trim();
-  if(seq.length===3){ autoLoadSex(getActive()+seq.padStart(3,'0')); }
-  else { document.getElementById('wSexKnown').classList.remove('show'); }
+  if(seq.length===3){
+    const tag=getActive()+seq.padStart(3,'0');
+    autoLoadSex(tag);
+    checkDupBanner(tag);
+  } else {
+    document.getElementById('wSexKnown').classList.remove('show');
+    hideDupBanner();
+  }
+}
+
+function checkDupBanner(tag){
+  const date=document.getElementById('wDate').value;
+  const existing=load().filter(r=>r.tag===tag && r.date===date && r.weight>0);
+  const banner=document.getElementById('dupWarningBanner');
+  if(existing.length>0){
+    document.getElementById('dupWarningText').textContent=
+      `${tag} was already recorded at ${existing[0].weight}kg on ${fmtDate(date)}`;
+    banner.style.display='block';
+  } else {
+    hideDupBanner();
+  }
+}
+
+function hideDupBanner(){
+  document.getElementById('dupWarningBanner').style.display='none';
 }
 
 function onStatusSeq() {
@@ -864,15 +1066,16 @@ function saveWeight(){
   const weight=parseFloat(document.getElementById('wWeight').value);
   const date=document.getElementById('wDate').value;
   const notes=document.getElementById('wNotes').value.trim();
-  if(!tag){ showToast('⚠️ Enter last 3 digits of tag'); return; }
+  if(!tag)           { showToast('⚠️ Enter last 3 digits of tag'); return; }
   if(!weight||weight<=0){ showToast('⚠️ Enter a valid weight'); return; }
-  if(!date){ showToast('⚠️ Select a date'); return; }
+  if(!date)          { showToast('⚠️ Select a date'); return; }
 
-  // Duplicate check
-  const existing=load().filter(r=>r.tag===tag&&r.date===date);
+  // Only warn if there is a real weight entry (weight > 0) for this tag on this exact date
+  const existing=load().filter(r=>r.tag===tag && r.date===date && r.weight>0);
   if(existing.length>0){
     pendingSave={tag,weight,date,notes};
-    document.getElementById('warnMsg').textContent=`${tag} was already weighed today at ${existing[0].weight}kg. Is this a different sheep or a correction?`;
+    document.getElementById('warnMsg').textContent=
+      `${tag} already has a weight of ${existing[0].weight}kg recorded for ${fmtDate(date)}. Is this the same sheep or a correction?`;
     document.getElementById('warnModal').classList.add('show');
     return;
   }
@@ -886,6 +1089,7 @@ function doSaveWeight(tag,weight,date,notes){
   document.getElementById('wWeight').value='';
   document.getElementById('wNotes').value='';
   document.getElementById('wTagPreview').textContent='—';
+  hideDupBanner();
   clearSexUI();
   document.getElementById('wSeqInput').focus();
   renderWeighRecent(); renderRecent();
@@ -1103,6 +1307,11 @@ function sheepCard(tag,entries,sex,statusObj){
     <div class="shist" id="h-${tag}">
       ${statusInfo}
       ${n>0?`<div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px;">Weight History</div>${rows}`:'<p style="font-size:12px;color:var(--muted);padding:4px 0;">No weight records yet.</p>'}
+      ${getNotesForTag(tag).map(n=>`
+        <div style="display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-top:1px solid var(--gp);">
+          <div style="background:var(--purple);color:white;border-radius:5px;padding:2px 6px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;">NOTE</div>
+          <div style="flex:1;font-size:12px;color:var(--text);">${n.text}<div style="font-size:10px;color:var(--muted);margin-top:1px;">${fmtDate(n.date)}</div></div>
+        </div>`).join('')}
       ${!isSold&&!isDead?`<button class="btn btn-primary btn-sm" onclick="reweigh('${tag}')" style="margin-top:10px;width:100%;">+ Add New Weight</button>`:''}
       ${changeSex}
       ${restoreRow}
@@ -1427,7 +1636,7 @@ function dlCSV(rows,fn){
   document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 function exportBackup(){
-  const json=JSON.stringify({version:3,exported:new Date().toISOString(),records:load(),sex:loadSex(),status:loadStatus(),drench:loadDrench(),costs:loadCosts()},null,2);
+  const json=JSON.stringify({version:4,exported:new Date().toISOString(),records:load(),sex:loadSex(),status:loadStatus(),drench:loadDrench(),costs:loadCosts(),notes:loadNotes()},null,2);
   const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:`sheep-backup-${new Date().toISOString().split('T')[0]}.json`});
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   showToast('💾 Backup saved!');
@@ -1443,8 +1652,9 @@ function importBackup(ev){
       save(m);
       if(b.sex) saveSex(Object.assign(loadSex(),b.sex));
       if(b.status) saveStatus2(Object.assign(loadStatus(),b.status));
-      if(Array.isArray(b.drench)){ const seen2=new Set(),md=[...loadDrench(),...b.drench].filter(d=>seen2.has(d.id)?false:seen2.add(d.id)); saveDrench2(md); }
-      if(Array.isArray(b.costs)){ const seen3=new Set(),mc=[...loadCosts(),...b.costs].filter(c=>seen3.has(c.id)?false:seen3.add(c.id)); saveCosts2(mc); }
+      if(Array.isArray(b.drench)){const seen2=new Set(),md=[...loadDrench(),...b.drench].filter(d=>seen2.has(d.id)?false:seen2.add(d.id));saveDrench2(md);}
+      if(Array.isArray(b.costs)){const seen3=new Set(),mc=[...loadCosts(),...b.costs].filter(c=>seen3.has(c.id)?false:seen3.add(c.id));saveCosts2(mc);}
+      if(Array.isArray(b.notes)){const seen4=new Set(),mn=[...loadNotes(),...b.notes].filter(n=>seen4.has(n.id)?false:seen4.add(n.id));saveNotes2(mn);}
       showToast(`✓ Restored ${b.records.length} records`);
     } catch { showToast('⚠️ Invalid backup file'); }
   };
@@ -1452,11 +1662,11 @@ function importBackup(ev){
 }
 function clearAll(){
   if(!confirm('⚠️ Delete ALL data?\n\nExport a backup first!')) return;
-  [K_DATA,K_SEX,K_STATUS,K_DRENCH,K_COSTS].forEach(k=>localStorage.removeItem(k));
+  [K_DATA,K_SEX,K_STATUS,K_DRENCH,K_COSTS,K_NOTES].forEach(k=>localStorage.removeItem(k));
   save([]); showToast('🗑 All data cleared');
 }
 function quickShare(){
-  const data={version:3,exported:new Date().toISOString(),records:load(),sex:loadSex(),status:loadStatus(),drench:loadDrench(),costs:loadCosts()};
+  const data={version:4,exported:new Date().toISOString(),records:load(),sex:loadSex(),status:loadStatus(),drench:loadDrench(),costs:loadCosts(),notes:loadNotes()};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const file=new File([blob],`sheep-backup-${new Date().toISOString().split('T')[0]}.json`,{type:'application/json'});
   if(navigator.canShare&&navigator.canShare({files:[file]})) navigator.share({title:'Sheep Tracker Backup',files:[file]}).catch(()=>{});
@@ -1465,8 +1675,400 @@ function quickShare(){
 }
 
 // ═══════════════════════════════════════════════════════
-//  UTILS
+//  NOTES
 // ═══════════════════════════════════════════════════════
+function onNotesSeq(){
+  updateTagPreview('n');
+  const seq=document.getElementById('nSeqInput').value.trim();
+  if(seq.length===3){
+    const tag=getActive()+seq.padStart(3,'0');
+    loadNotesProfile(tag);
+  } else {
+    document.getElementById('nSummary').classList.remove('show');
+    document.getElementById('notesHistoryWrap').style.display='none';
+    document.getElementById('notesEmpty').style.display='block';
+  }
+}
+
+function loadNotesProfile(tag){
+  const data=load(), sexMap=loadSex(), statusMap=loadStatus(), notes=loadNotes();
+  const sex=sexMap[tag], status=statusMap[tag];
+
+  // Show sheep summary card (like sold/dead screen)
+  const sumEl=document.getElementById('nSummary');
+  const weights=data.filter(r=>r.tag===tag&&r.weight>0).sort((a,b)=>a.date.localeCompare(b.date));
+  const latest=weights.at(-1);
+  document.getElementById('nSumTag').textContent=tag;
+  document.getElementById('nSumSex').textContent=sex?(SEX_META[sex]?.icon+' '+sex):'Sex unknown';
+  document.getElementById('nSumWeight').textContent=latest?'Last: '+latest.weight+'kg':'No weight recorded';
+  document.getElementById('nSumStatus').textContent=status?'Status: '+status.status:'Active';
+  sumEl.classList.add('show');
+
+  // Build history timeline — weights + notes
+  const tagNotes=notes.filter(n=>n.tag===tag).sort((a,b)=>a.date.localeCompare(b.date));
+  const timeline=[
+    ...weights.map(w=>({type:'weight',date:w.date,weight:w.weight,note:w.notes})),
+    ...tagNotes.map(n=>({type:'note',date:n.date,text:n.text,id:n.id}))
+  ].sort((a,b)=>a.date.localeCompare(b.date));
+
+  const histEl=document.getElementById('notesHistory');
+  if(!timeline.length){
+    histEl.innerHTML=`<p style="font-size:12px;color:var(--muted);padding:4px 0;">No history yet for this tag.</p>`;
+  } else {
+    histEl.innerHTML=timeline.map(item=>{
+      if(item.type==='weight') return `
+        <div style="display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--gp);">
+          <div style="background:var(--gl);color:white;border-radius:6px;padding:3px 7px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;">⚖️ WEIGHT</div>
+          <div>
+            <div style="font-size:15px;font-weight:800;color:var(--gd);">${item.weight}kg</div>
+            <div style="font-size:11px;color:var(--muted);">${fmtDate(item.date)}${item.note?' · '+item.note:''}</div>
+          </div>
+        </div>`;
+      else return `
+        <div style="display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--gp);">
+          <div style="background:var(--purple);color:white;border-radius:6px;padding:3px 7px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;">📝 NOTE</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:var(--text);">${item.text}</div>
+            <div style="font-size:11px;color:var(--muted);">${fmtDate(item.date)}</div>
+          </div>
+          <button onclick="deleteNote(${item.id},'${tag}')" style="background:none;border:none;color:#ccc;font-size:15px;cursor:pointer;padding:2px 6px;">✕</button>
+        </div>`;
+    }).join('');
+  }
+
+  document.getElementById('notesHistoryWrap').style.display='block';
+  document.getElementById('notesEmpty').style.display='none';
+  document.getElementById('noteText').value='';
+}
+
+function saveNote(){
+  const tag=buildTag('n');
+  const text=document.getElementById('noteText').value.trim();
+  if(!tag){ showToast('⚠️ Enter a tag number'); return; }
+  if(!text){ showToast('⚠️ Type a note first'); return; }
+  const date=new Date().toISOString().split('T')[0];
+  const notes=loadNotes();
+  notes.push({id:Date.now(),tag,text,date});
+  saveNotes2(notes);
+  showToast('✓ Note saved');
+  loadNotesProfile(tag);
+  updateLastUpdated();
+}
+
+function deleteNote(id,tag){
+  if(!confirm('Delete this note?')) return;
+  saveNotes2(loadNotes().filter(n=>n.id!==id));
+  loadNotesProfile(tag);
+  showToast('🗑 Note deleted');
+}
+
+function clearNotesForm(){
+  document.getElementById('nSeqInput').value='';
+  document.getElementById('nTagPreview').textContent='—';
+  document.getElementById('nSummary').classList.remove('show');
+  document.getElementById('notesHistoryWrap').style.display='none';
+  document.getElementById('notesEmpty').style.display='block';
+  document.getElementById('noteText').value='';
+}
+
+// Show notes in flock card timeline
+function getNotesForTag(tag){
+  return loadNotes().filter(n=>n.tag===tag).sort((a,b)=>a.date.localeCompare(b.date));
+}
+
+// ═══════════════════════════════════════════════════════
+//  YEAR STATS TOGGLE
+// ═══════════════════════════════════════════════════════
+// Year stats rendered by showStatsTab when By Year tab is tapped
+
+// ═══════════════════════════════════════════════════════
+//  NEW SHEEP / MARKING
+// ═══════════════════════════════════════════════════════
+let nsDir='asc', nsSexChoice=null, nsCurrentNum=1, nsAddedThisSession=[];
+
+function initNewSheep(){
+  nsDir='asc'; nsSexChoice=null; nsAddedThisSession=[];
+  // Set direction buttons
+  document.getElementById('nsBtnAsc').style.cssText='background:var(--gl);color:white;';
+  document.getElementById('nsBtnDesc').style.cssText='';
+  // Clear sex selection
+  ['nsSexRam','nsSexEwe','nsSexWeth'].forEach(id=>resetNsSexBtn(id));
+  // Reset start number
+  document.getElementById('nsStartNum').value='';
+  document.getElementById('nsCurrentTag').textContent='—';
+  document.getElementById('nsTagStatus').textContent='';
+  document.getElementById('nsRecentList').innerHTML='';
+}
+
+function setNsDir(dir){
+  nsDir=dir;
+  document.getElementById('nsBtnAsc').style.cssText=dir==='asc'?'background:var(--gl);color:white;':'';
+  document.getElementById('nsBtnDesc').style.cssText=dir==='desc'?'background:var(--gl);color:white;':'';
+  updateNsDisplay();
+}
+
+function setNsSex(sex){
+  nsSexChoice=sex;
+  ['nsSexRam','nsSexEwe','nsSexWeth'].forEach(id=>resetNsSexBtn(id));
+  const el=document.getElementById(sex==='ram'?'nsSexRam':sex==='ewe'?'nsSexEwe':'nsSexWeth');
+  if(el){
+    const colors={ram:'var(--blue)',ewe:'var(--pink)',wether:'var(--purple)'};
+    el.style.cssText=`padding:18px 8px;border-radius:12px;border:3px solid ${colors[sex]};background:${colors[sex]};color:white;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;transform:scale(1.05);`;
+  }
+}
+
+function resetNsSexBtn(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const map={nsSexRam:{c:'var(--blue)',b:'rgba(41,128,185,.1)',bc:'rgba(41,128,185,.3)'},nsSexEwe:{c:'var(--pink)',b:'rgba(192,57,122,.1)',bc:'rgba(192,57,122,.3)'},nsSexWeth:{c:'var(--purple)',b:'rgba(125,60,152,.1)',bc:'rgba(125,60,152,.3)'}};
+  const m=map[id];
+  el.style.cssText=`padding:18px 8px;border-radius:12px;border:3px solid ${m.bc};background:${m.b};color:${m.c};font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;`;
+}
+
+function updateNsDisplay(){
+  const startRaw=document.getElementById('nsStartNum').value;
+  if(!startRaw){ document.getElementById('nsCurrentTag').textContent='—'; document.getElementById('nsTagStatus').textContent='Enter starting number above'; return; }
+  const num=parseInt(startRaw);
+  if(isNaN(num)||num<1||num>999){ document.getElementById('nsCurrentTag').textContent='—'; return; }
+  nsCurrentNum=num;
+  const tag=getActive()+String(nsCurrentNum).padStart(3,'0');
+  document.getElementById('nsCurrentTag').textContent=tag;
+  // Check if already in system
+  const existing=load().find(r=>r.tag===tag);
+  const sex=loadSex()[tag];
+  const status=loadStatus()[tag];
+  let statusTxt='';
+  if(existing||sex||status){
+    statusTxt=`Already in system${sex?' · '+sex:''}${status?' · '+status.status:''}`;
+  }
+  document.getElementById('nsTagStatus').textContent=statusTxt;
+}
+
+function addNewSheep(){
+  const startRaw=document.getElementById('nsStartNum').value;
+  if(!startRaw){ showToast('⚠️ Enter a starting tag number'); return; }
+  const tag=getActive()+String(nsCurrentNum).padStart(3,'0');
+
+  // Check duplicate
+  const sexMap=loadSex();
+  const data=load();
+  const alreadyExists=data.some(r=>r.tag===tag)||sexMap[tag];
+  if(alreadyExists){
+    if(!confirm(`${tag} is already in the system. Add anyway?`)) {
+      // Still advance number
+      advanceNsNum();
+      return;
+    }
+  }
+
+  // Save sex if chosen
+  if(nsSexChoice) setSexForTag(tag, nsSexChoice);
+
+  // Add to flock data with no weight (weight=0 means no weight recorded)
+  const date=new Date().toISOString().split('T')[0];
+  const d=load();
+  if(!d.some(r=>r.tag===tag)){
+    d.push({tag,weight:0,date,notes:'Added to flock',id:Date.now()});
+    save(d);
+  }
+
+  showToast(`✓ ${tag} added`);
+  nsAddedThisSession.unshift(tag);
+  renderNsRecent();
+  advanceNsNum();
+}
+
+function advanceNsNum(){
+  nsCurrentNum = nsDir==='asc' ? nsCurrentNum+1 : nsCurrentNum-1;
+  if(nsCurrentNum<1) nsCurrentNum=1;
+  if(nsCurrentNum>999) nsCurrentNum=999;
+  // Update display but don't touch the start input — just update the current tag display
+  const tag=getActive()+String(nsCurrentNum).padStart(3,'0');
+  document.getElementById('nsCurrentTag').textContent=tag;
+  const existing=load().find(r=>r.tag===tag);
+  const sex=loadSex()[tag];
+  const status=loadStatus()[tag];
+  let statusTxt='';
+  if(existing||sex||status) statusTxt=`Already in system${sex?' · '+sex:''}${status?' · '+status.status:''}`;
+  document.getElementById('nsTagStatus').textContent=statusTxt;
+}
+
+function renderNsRecent(){
+  const el=document.getElementById('nsRecentList');
+  el.innerHTML=nsAddedThisSession.slice(0,12).map(t=>`
+    <div style="padding:9px 12px;background:var(--white);border:2px solid var(--border);border-radius:9px;font-family:'Courier Prime',monospace;font-size:14px;font-weight:700;color:var(--gd);">
+      ${t}${loadSex()[t]?` <span style="font-size:10px;color:var(--muted);font-weight:600;">${loadSex()[t]}</span>`:''}
+    </div>`).join('');
+}
+
+// Attach input listener for start number
+document.addEventListener('DOMContentLoaded',()=>{
+  const nsInput=document.getElementById('nsStartNum');
+  if(nsInput) nsInput.addEventListener('input', updateNsDisplay);
+});
+
+// ═══════════════════════════════════════════════════════
+//  YEAR STATS
+// ═══════════════════════════════════════════════════════
+let activeYearFilter=null;
+
+// ═══════════════════════════════════════════════════════
+//  STATS TAB SWITCHING
+// ═══════════════════════════════════════════════════════
+function showStatsTab(name, btn){
+  document.getElementById('stats-overview').style.display = name==='overview' ? 'block' : 'none';
+  document.getElementById('stats-year').style.display     = name==='year'     ? 'block' : 'none';
+  document.querySelectorAll('#panel-stats .sub-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(name==='year') renderYearStats();
+}
+
+function renderYearStats(){
+  const data=load(), sexMap=loadSex(), statusMap=loadStatus();
+  const pillsEl=document.getElementById('yearPills');
+  const detailEl=document.getElementById('yearDetail');
+
+  // Get all unique year prefixes from tag data
+  const allTags=[...new Set(data.map(r=>r.tag))];
+  const years=[...new Set(allTags.map(t=>t.slice(0,2)))].sort();
+
+  if(!years.length){ detailEl.innerHTML=`<div class="empty"><div class="ei">📅</div><p>No sheep data yet</p></div>`; return; }
+
+  // Build year pills
+  pillsEl.innerHTML=years.map(y=>`
+    <button onclick="selectYear('${y}')" id="ypill-${y}" style="
+      padding:10px 18px;border-radius:10px;border:2px solid var(--border);
+      background:${activeYearFilter===y?'var(--gm)':'var(--white)'};
+      color:${activeYearFilter===y?'white':'var(--muted)'};
+      font-family:'Courier Prime',monospace;font-size:18px;font-weight:700;cursor:pointer;
+      transition:all .15s;">${y}</button>`).join('');
+
+  if(!activeYearFilter || !years.includes(activeYearFilter)){
+    activeYearFilter=years[years.length-1]; // default to most recent year
+    // Re-render pills with selection
+    pillsEl.innerHTML=years.map(y=>`
+      <button onclick="selectYear('${y}')" id="ypill-${y}" style="
+        padding:10px 18px;border-radius:10px;border:2px solid var(--border);
+        background:${activeYearFilter===y?'var(--gm)':'var(--white)'};
+        color:${activeYearFilter===y?'white':'var(--muted)'};
+        font-family:'Courier Prime',monospace;font-size:18px;font-weight:700;cursor:pointer;
+        transition:all .15s;">${y}</button>`).join('');
+  }
+
+  renderYearDetail(activeYearFilter, data, sexMap, statusMap);
+}
+
+function selectYear(y){
+  activeYearFilter=y;
+  renderYearStats();
+}
+
+function renderYearDetail(year, data, sexMap, statusMap){
+  const detailEl=document.getElementById('yearDetail');
+  const yearTags=[...new Set(data.map(r=>r.tag))].filter(t=>t.startsWith(year));
+
+  if(!yearTags.length){ detailEl.innerHTML=`<p style="color:var(--muted);font-size:13px;padding:10px;text-align:center;">No sheep found for year prefix ${year}</p>`; return; }
+
+  const active=yearTags.filter(t=>{ const s=statusMap[t]?.status; return !s||(s!=='sold'&&s!=='dead'); });
+  const sold=yearTags.filter(t=>statusMap[t]?.status==='sold');
+  const dead=yearTags.filter(t=>statusMap[t]?.status==='dead');
+  const rams=yearTags.filter(t=>sexMap[t]==='ram').length;
+  const ewes=yearTags.filter(t=>sexMap[t]==='ewe').length;
+  const weth=yearTags.filter(t=>sexMap[t]==='wether').length;
+  const unk=yearTags.length-rams-ewes-weth;
+
+  let html=`
+    <div style="background:var(--gd);border-radius:12px;padding:13px;margin-bottom:12px;">
+      <div style="font-size:10px;font-weight:800;color:var(--gp);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">20${year} — Summary</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:26px;font-weight:900;color:var(--am);">${yearTags.length}</div>
+          <div style="font-size:10px;color:var(--gp);font-weight:700;text-transform:uppercase;">Total Tagged</div>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:26px;font-weight:900;color:var(--gp);">${active.length}</div>
+          <div style="font-size:10px;color:var(--gp);font-weight:700;text-transform:uppercase;">Active</div>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:26px;font-weight:900;color:var(--sold-c);">${sold.length}</div>
+          <div style="font-size:10px;color:var(--gp);font-weight:700;text-transform:uppercase;">Sold</div>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:26px;font-weight:900;color:var(--dead-c);">${dead.length}</div>
+          <div style="font-size:10px;color:var(--gp);font-weight:700;text-transform:uppercase;">Dead</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--white);border-radius:12px;padding:13px;margin-bottom:12px;border:1px solid var(--border);">
+      <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">By Sex</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="text-align:center;padding:10px;border-radius:9px;background:var(--blue-pale);">
+          <div style="font-size:24px;font-weight:900;color:var(--blue);">${rams}</div>
+          <div style="font-size:10px;color:var(--blue);font-weight:700;">♂ Rams</div>
+        </div>
+        <div style="text-align:center;padding:10px;border-radius:9px;background:var(--pink-pale);">
+          <div style="font-size:24px;font-weight:900;color:var(--pink);">${ewes}</div>
+          <div style="font-size:10px;color:var(--pink);font-weight:700;">♀ Ewes</div>
+        </div>
+        <div style="text-align:center;padding:10px;border-radius:9px;background:var(--purple-pale);">
+          <div style="font-size:24px;font-weight:900;color:var(--purple);">${weth}</div>
+          <div style="font-size:10px;color:var(--purple);font-weight:700;">✂ Wethers</div>
+        </div>
+        <div style="text-align:center;padding:10px;border-radius:9px;background:#f0f0f0;">
+          <div style="font-size:24px;font-weight:900;color:#999;">${unk}</div>
+          <div style="font-size:10px;color:#999;font-weight:700;">? Unknown</div>
+        </div>
+      </div>
+    </div>`;
+
+  // Sheep list — tappable to show history
+  html+=`<div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">All ${year} Tags (tap to expand)</div>`;
+  const g={};
+  data.filter(r=>r.tag.startsWith(year)).forEach(r=>{ (g[r.tag]=g[r.tag]||[]).push(r); });
+  Object.values(g).forEach(e=>e.sort((a,b)=>a.date.localeCompare(b.date)));
+  const sortedTags=[...yearTags].sort();
+  html+=sortedTags.map(tag=>{
+    const entries=g[tag]||[];
+    const wEntries=entries.filter(e=>e.weight>0);
+    const lat=wEntries.at(-1);
+    const sex=sexMap[tag], status=statusMap[tag];
+    const isSold=status?.status==='sold', isDead=status?.status==='dead';
+    const hdrClass=isSold?'sold-hdr':isDead?'dead-hdr':'';
+    return `<div class="sheep-card" style="margin-bottom:7px;">
+      <div class="sch ${hdrClass}" onclick="toggleH('yh-${tag}',this)" style="padding:10px 13px;">
+        <div>
+          <div class="stag" style="font-size:17px;">${tag}${sexBadgeHTML(sex)}${isSold?'<span class="status-badge sb-sold">Sold</span>':isDead?'<span class="status-badge sb-dead">Dead</span>':''}</div>
+          <div class="smeta">${wEntries.length} weight${wEntries.length!==1?'s':''}</div>
+        </div>
+        <div style="text-align:right;">
+          ${lat?`<div class="slw" style="font-size:20px;">${lat.weight}kg</div><div class="swu">${fmtDate(lat.date)}</div>`:'<div class="swu" style="font-size:11px;">No weight</div>'}
+        </div>
+        <span class="chev" style="color:var(--am);font-size:14px;margin-left:6px;">▼</span>
+      </div>
+      <div class="shist" id="yh-${tag}">
+        ${wEntries.length?wEntries.map((e,i,arr)=>{
+          const prev=arr[i-1];
+          const d=prev?e.weight-prev.weight:null;
+          const badge=d!==null?`<span class="hgain ${d>0?'gp':'gn'}">${d>0?'+':''}${d.toFixed(1)}kg</span>`:'';
+          return `<div class="hrow"><span class="hdate">${fmtDate(e.date)}</span>${badge}<span class="hwt">${e.weight}kg</span></div>`;
+        }).join(''):'<p style="font-size:12px;color:var(--muted);">No weight records.</p>'}
+        ${getNotesForTag(tag).map(n=>`
+          <div style="display:flex;gap:8px;padding:6px 0;border-top:1px solid var(--gp);">
+            <div style="background:var(--purple);color:white;border-radius:5px;padding:2px 6px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;">NOTE</div>
+            <div style="font-size:12px;color:var(--text);">${n.text} <span style="color:var(--muted);font-size:10px;">· ${fmtDate(n.date)}</span></div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  detailEl.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════════
+//  FLOCK — notes in sheep timeline (patched into sheepCard rows)
+// ═══════════════════════════════════════════════════════
+// getNotesForTag already defined above — used inline in sheepCard
+
 function fmtDate(d){
   if(!d) return '';
   const [y,m,day]=d.split('-');
