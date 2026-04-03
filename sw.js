@@ -1,4 +1,4 @@
-const CACHE_NAME = "sheep-tracker-v5";
+const CACHE_NAME = "sheep-tracker-v6";
 const urlsToCache = [
   "./index.html",
   "./manifest.json",
@@ -19,6 +19,7 @@ self.addEventListener("activate", event => {
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", event => {
