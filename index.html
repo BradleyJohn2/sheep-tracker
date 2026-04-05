@@ -347,6 +347,25 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
 .mrg-mck.on{background:#7d3c98;border-color:#7d3c98;}
 .mrg-mck-t{display:none;width:5px;height:9px;border:2.5px solid white;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);}
 .mrg-mck.on .mrg-mck-t{display:block;}
+/* ── PHASE 1: STORAGE HEALTH ── */
+.sh-wrap{background:var(--gd);border-radius:11px;padding:13px;margin-bottom:12px;}
+.sh-ttl{font-size:9px;font-weight:800;color:var(--gp);text-transform:uppercase;letter-spacing:.7px;margin-bottom:9px;}
+.sh-bar-bg{background:rgba(255,255,255,.1);border-radius:5px;height:10px;overflow:hidden;margin-bottom:7px;}
+.sh-bar{height:10px;border-radius:5px;transition:width .4s ease,background .4s ease;}
+.sh-row{display:flex;justify-content:space-between;align-items:center;}
+.sh-used{font-size:12px;font-weight:800;color:var(--cr);}
+.sh-pct{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;}
+.sh-g{background:rgba(22,160,133,.25);color:#7eecd8;}
+.sh-a{background:rgba(232,160,32,.25);color:var(--am);}
+.sh-o{background:rgba(230,126,34,.3);color:#f39c12;}
+.sh-r{background:rgba(192,57,43,.35);color:#ff8a80;}
+.sh-warn{margin-top:8px;border-radius:8px;padding:8px 10px;font-size:11px;font-weight:700;line-height:1.4;}
+.sh-warn-a{background:rgba(232,160,32,.15);color:var(--am);}
+.sh-warn-o{background:rgba(230,126,34,.2);color:#f39c12;}
+.sh-warn-r{background:rgba(192,57,43,.25);color:#ff8a80;}
+.sh-bd{margin-top:9px;display:flex;flex-direction:column;gap:3px;}
+.sh-brow{display:flex;justify-content:space-between;font-size:10px;color:var(--gp);font-weight:600;padding:1px 0;}
+.sh-brow span:last-child{color:var(--cr);font-weight:700;}
 </style>
 </head>
 <body>
@@ -847,6 +866,19 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
      EXPORT PANEL
 ══════════════════════════════════════ -->
 <div class="pnl" id="pnl-export">
+
+  <!-- PHASE 1: Storage health indicator -->
+  <div class="sh-wrap">
+    <div class="sh-ttl">💾 Storage Health</div>
+    <div class="sh-bar-bg"><div class="sh-bar" id="shBar" style="width:0%"></div></div>
+    <div class="sh-row">
+      <span class="sh-used" id="shUsed">Calculating…</span>
+      <span class="sh-pct sh-g" id="shPct"></span>
+    </div>
+    <div id="shWarn"></div>
+    <div class="sh-bd" id="shBd"></div>
+  </div>
+
   <div class="card">
     <h2>📤 Export to Spreadsheet</h2>
     <p style="font-size:12px;color:var(--mut);margin-bottom:13px;line-height:1.5;">Downloads a single file with all your data. Opens in Excel, Numbers, or Google Sheets.</p>
@@ -914,6 +946,19 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
   <span style="font-size:11px;color:rgba(232,160,32,.5);">↗</span>
 </div>
 
+<!-- ── PHASE 1: QUOTA ERROR MODAL ── -->
+<div id="quotaModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--wh);border-radius:var(--r);padding:22px;max-width:340px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.3);">
+    <h3 style="font-size:15px;font-weight:800;color:var(--red);margin-bottom:10px;">⚠️ Storage Full</h3>
+    <p id="quotaMsg" style="font-size:13px;color:var(--txt);margin-bottom:10px;line-height:1.5;">Storage is full — the last save could not be completed.</p>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:16px;line-height:1.5;">Go to Export and download a backup. Your backup file keeps everything and can be restored at any time.</p>
+    <div style="display:flex;gap:8px;">
+      <button onclick="document.getElementById('quotaModal').style.display='none'" style="flex:1;padding:12px;background:var(--cr);color:var(--mut);border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">Dismiss</button>
+      <button onclick="document.getElementById('quotaModal').style.display='none';goPnl('export')" style="flex:1;padding:12px;background:var(--red);color:white;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">Go to Export</button>
+    </div>
+  </div>
+</div>
+
 <!-- 3-STEP CLEAR MODAL -->
 <div id="clearModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center;padding:20px;">
   <div style="background:var(--wh);border-radius:var(--r);padding:22px;max-width:340px;width:100%;">
@@ -964,7 +1009,29 @@ const K = {
 };
 const load    = k => { try { return JSON.parse(localStorage.getItem(k))||[]; } catch { return []; } };
 const loadObj = k => { try { return JSON.parse(localStorage.getItem(k))||{}; } catch { return {}; } };
-const save    = (k,v) => { try { localStorage.setItem(k,JSON.stringify(v)); } catch(e) { showToast('⚠️ Save failed — storage full!'); } };
+
+// ── PHASE 1: Quota-safe save wrapper ──
+// All writes go through here. On quota error shows modal instead of silently failing.
+const FRIENDLY = {
+  [K.data]:'weight records',[K.sex]:'sex data',[K.status]:'status data',
+  [K.drench]:'drench records',[K.costs]:'cost records',[K.notes]:'notes',
+  [K.mobs]:'mob data',[K.mobhist]:'mob history',
+  'sheepDrenchEvents_v1':'drench events','sheepMobMoves_v1':'mob moves',
+  'sheepFlags_v1':'flags'
+};
+const save = (k,v) => {
+  try {
+    localStorage.setItem(k, JSON.stringify(v));
+  } catch(e) {
+    if(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22){
+      const what = FRIENDLY[k] || 'data';
+      const msg = document.getElementById('quotaMsg');
+      if(msg) msg.textContent = `Storage is full — the last save to ${what} could not be completed. Nothing from before this save was lost.`;
+      const qm = document.getElementById('quotaModal');
+      if(qm) qm.style.display='flex';
+    }
+  }
+};
 
 const loadData    = () => load(K.data);
 const saveData    = d  => { save(K.data,d); refreshCount(); updateLastUpdated(); };
@@ -1056,6 +1123,7 @@ function goPnl(n){
   document.getElementById('nt-'+n).classList.add('on');
   if(n==='flock'){ renderFlock(); renderMobList(); renderDrenchLog(); renderCostLog(); }
   if(n==='stats') renderStats();
+  if(n==='export') calcStorageHealth();
 }
 
 function goStab(n,btn){
@@ -3090,6 +3158,75 @@ function shareAppUrl(){
   const url=window.location.href.split('?')[0].split('#')[0];
   if(navigator.share) navigator.share({title:'Sheep Tracker',url}).catch(()=>{});
   else navigator.clipboard?.writeText(url).then(()=>showToast('🔗 Link copied!')).catch(()=>showToast('🔗 '+url));
+}
+
+// ═══════════════════════════════════════════════════════
+// PHASE 1: STORAGE HEALTH
+// ═══════════════════════════════════════════════════════
+function fmtBytes(b){
+  if(b<1024) return b+' B';
+  if(b<1024*1024) return (b/1024).toFixed(1)+' KB';
+  return (b/(1024*1024)).toFixed(2)+' MB';
+}
+function calcStorageHealth(){
+  const LIMIT = 5*1024*1024; // 5 MB — Safari iPhone ceiling
+  const tracked = [
+    {key:K.data,      label:'Weight records'},
+    {key:K.sex,       label:'Sex data'},
+    {key:K.status,    label:'Status data'},
+    {key:K.drench,    label:'Drench records'},
+    {key:K.costs,     label:'Cost records'},
+    {key:K.notes,     label:'Notes'},
+    {key:K.mobs,      label:'Mob data'},
+    {key:K.mobhist,   label:'Mob history'},
+    {key:'sheepDrenchEvents_v1', label:'Drench events'},
+    {key:'sheepMobMoves_v1',     label:'Mob moves'},
+    {key:'sheepFlags_v1',        label:'Flags'},
+    {key:'sheepActiveYr',        label:'Preferences'},
+    {key:'sheepLastUpdated',     label:'Last updated'},
+  ];
+  const knownKeys = new Set(tracked.map(t=>t.key));
+  let total = 0;
+  const breakdown = [];
+  tracked.forEach(({key, label}) => {
+    const v = localStorage.getItem(key) || '';
+    const bytes = v.length * 2; // UTF-16
+    total += bytes;
+    if(bytes > 0) breakdown.push({label, bytes});
+  });
+  // catch any other keys this origin has written
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!knownKeys.has(k)){
+      const bytes=(localStorage.getItem(k)||'').length*2;
+      total+=bytes;
+    }
+  }
+  breakdown.sort((a,b)=>b.bytes-a.bytes);
+  const pct = Math.round((total/LIMIT)*100);
+  const barEl=document.getElementById('shBar');
+  const usedEl=document.getElementById('shUsed');
+  const pctEl=document.getElementById('shPct');
+  const warnEl=document.getElementById('shWarn');
+  const bdEl=document.getElementById('shBd');
+  if(!barEl) return;
+  let barCol, pctCls, warnHTML='';
+  if(pct<50){      barCol='#16a085'; pctCls='sh-g'; }
+  else if(pct<70){ barCol='#e8a020'; pctCls='sh-a';
+    warnHTML='<div class="sh-warn sh-warn-a">Getting full — consider downloading a backup soon.</div>'; }
+  else if(pct<90){ barCol='#e67e22'; pctCls='sh-o';
+    warnHTML='<div class="sh-warn sh-warn-o">⚠️ Storage filling up — download a backup and clear old data.</div>'; }
+  else {           barCol='#c0392b'; pctCls='sh-r';
+    warnHTML='<div class="sh-warn sh-warn-r">🔴 Nearly full — saves may fail. Download a backup now.</div>'; }
+  barEl.style.width=Math.min(pct,100)+'%';
+  barEl.style.background=barCol;
+  usedEl.textContent=fmtBytes(total)+' of '+fmtBytes(LIMIT)+' used';
+  pctEl.textContent=pct+'%';
+  pctEl.className='sh-pct '+pctCls;
+  warnEl.innerHTML=warnHTML;
+  bdEl.innerHTML=breakdown.slice(0,4).map(({label,bytes})=>
+    `<div class="sh-brow"><span>${label}</span><span>${fmtBytes(bytes)}</span></div>`
+  ).join('');
 }
 
 // ═══════════════════════════════════════════════════════
