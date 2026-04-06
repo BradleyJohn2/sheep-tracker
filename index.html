@@ -39,7 +39,7 @@ nav button{flex:1;padding:9px 4px;background:none;border:none;border-bottom:3px 
 nav button .ni{font-size:16px;}
 nav button.on{color:var(--am);border-bottom-color:var(--am);background:rgba(255,255,255,.05);}
 
-main{flex:1;background:var(--cr);overflow-y:auto;}
+main{flex:1;background:var(--cr);overflow-y:auto;padding-bottom:36px;}
 .pnl{display:none;padding:12px;}
 .pnl.on{display:block;}
 
@@ -1054,7 +1054,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
 </div>
 
 <!-- SHARE APP BAR -->
-<div style="background:var(--gd);border-top:1px solid rgba(255,255,255,.08);padding:7px 16px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;position:sticky;bottom:0;z-index:99;" onclick="shareAppUrl()">
+<div style="background:var(--gd);border-top:1px solid rgba(255,255,255,.08);padding:7px 16px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;position:fixed;bottom:0;left:0;right:0;z-index:99;max-width:480px;margin:0 auto;" onclick="shareAppUrl()">
   <span style="font-size:13px;">🔗</span>
   <span style="font-size:10px;font-weight:800;color:rgba(212,232,196,.55);letter-spacing:.6px;text-transform:uppercase;">Share this app</span>
   <span style="font-size:11px;color:rgba(232,160,32,.5);">↗</span>
