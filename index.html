@@ -385,7 +385,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
   <button class="on" id="nt-record" onclick="goPnl('record')"><span class="ni">➕</span>Record</button>
   <button id="nt-flock"  onclick="goPnl('flock')"><span class="ni">🐑</span>Flock</button>
   <button id="nt-stats"  onclick="goPnl('stats')"><span class="ni">📊</span>Stats</button>
-  <button id="nt-export" onclick="goPnl('export')"><span class="ni">📤</span>Export</button>
+  <button id="nt-export" onclick="goPnl('export')"><span class="ni">⚙️</span>Settings</button>
 </nav>
 
 <main>
@@ -898,9 +898,123 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
     <p style="font-size:12px;color:var(--mut);margin-bottom:10px;">A full backup will be offered before any data is cleared.</p>
     <button class="btn btn-red btn-sm" onclick="openClearModal()">🗑 Clear All Data</button>
   </div>
+  <div class="card" style="border-color:var(--purple);">
+    <h2 style="color:var(--purple);">ℹ️ App info</h2>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:11px;line-height:1.5;">Version history, what's new, and what's coming next.</p>
+    <button class="btn" style="background:var(--purple);color:white;" onclick="openInfoModal()">📋 Open release log &amp; info</button>
+  </div>
 </div>
 
-</main>
+<!-- ══════════════════════════════════════
+     INFO MODAL (opened from Settings)
+══════════════════════════════════════ -->
+<div id="infoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:250;align-items:flex-end;justify-content:center;">
+  <div style="background:var(--cr);border-radius:20px 20px 0 0;padding:0;max-width:480px;width:100%;max-height:92dvh;display:flex;flex-direction:column;">
+    <!-- sticky header -->
+    <div style="padding:16px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gp);flex-shrink:0;">
+      <div style="font-size:16px;font-weight:900;color:var(--gd);">Sheep Tracker</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-family:'Courier Prime',monospace;font-size:22px;color:var(--am);font-weight:900;">v7</div>
+        <button onclick="closeInfoModal()" style="background:rgba(0,0,0,.08);border:none;border-radius:20px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;color:var(--txt);">✕ Close</button>
+      </div>
+    </div>
+    <!-- scrollable content -->
+    <div style="overflow-y:auto;padding:14px 14px 30px;flex:1;">
+
+      <!-- What's new in v7 -->
+      <div class="card" style="border-color:var(--gl);margin-bottom:11px;">
+        <h2 style="color:var(--gm);">✨ What's new in v7</h2>
+        <div>
+          <div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--gp);">
+            <div style="background:var(--gm);color:white;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;flex-shrink:0;">NEW</div>
+            <div><div style="font-size:13px;font-weight:800;color:var(--txt);">IndexedDB storage engine</div><div style="font-size:11px;color:var(--mut);margin-top:2px;line-height:1.4;">Data now stored in IndexedDB instead of localStorage. No 5 MB limit — handles years of records on any device.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--gp);">
+            <div style="background:var(--gm);color:white;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;flex-shrink:0;">NEW</div>
+            <div><div style="font-size:13px;font-weight:800;color:var(--txt);">12-month hot store + archive</div><div style="font-size:11px;color:var(--mut);margin-top:2px;line-height:1.4;">Weight records from the last 12 months show on each sheep card inline. Older records move to archive automatically — tap "View full history" on any card to see everything.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--gp);">
+            <div style="background:var(--am);color:var(--gd);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;flex-shrink:0;">FIX</div>
+            <div><div style="font-size:13px;font-weight:800;color:var(--txt);">Safe storage quota guard</div><div style="font-size:11px;color:var(--mut);margin-top:2px;line-height:1.4;">If storage ever fills up you get a clear warning modal with a direct link to Settings — no more silent data loss.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--gp);">
+            <div style="background:var(--am);color:var(--gd);border-radius:6px;padding:3px 8px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;flex-shrink:0;">FIX</div>
+            <div><div style="font-size:13px;font-weight:800;color:var(--txt);">Record ID collision fix</div><div style="font-size:11px;color:var(--mut);margin-top:2px;line-height:1.4;">Record IDs now use crypto.randomUUID() instead of timestamps — prevents duplicate IDs when saving rapidly or syncing between devices.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--gp);">
+            <div style="background:var(--blue);color:white;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;flex-shrink:0;">INFO</div>
+            <div><div style="font-size:13px;font-weight:800;color:var(--txt);">Backup includes archive</div><div style="font-size:11px;color:var(--mut);margin-top:2px;line-height:1.4;">Backup files now include all archived records — your complete history is always in the download regardless of age.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;padding:9px 0;">
+            <div style="background:var(--blue);color:white;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:800;white-space:nowrap;margin-top:2px;flex-shrink:0;">INFO</div>
+            <div><div style="font-size:13px;font-weight:800;color:var(--txt);">Storage health indicator</div><div style="font-size:11px;color:var(--mut);margin-top:2px;line-height:1.4;">Settings tab now shows a live storage health bar so you can see how much data you have at a glance.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full release log -->
+      <div class="card" style="margin-bottom:11px;">
+        <h2>📋 Release log</h2>
+        <div style="margin-bottom:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:800;color:var(--gd);">v7 — Storage overhaul</div>
+            <div style="font-size:10px;color:var(--mut);font-weight:600;">2026</div>
+          </div>
+          <div style="font-size:12px;color:var(--mut);line-height:1.6;padding-left:10px;border-left:2px solid var(--gl);">IndexedDB migration · 12-month archive · UUID record IDs · Storage health indicator · Quota error modal · Full history on sheep cards · Archive in all backups · Settings tab</div>
+        </div>
+        <div style="margin-bottom:14px;padding-top:11px;border-top:1px solid var(--gp);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:800;color:var(--gd);">v6 — Mob management</div>
+            <div style="font-size:10px;color:var(--mut);font-weight:600;">2026</div>
+          </div>
+          <div style="font-size:12px;color:var(--mut);line-height:1.6;padding-left:10px;border-left:2px solid var(--brd);">Mobs and mob history · Rapid weigh mode · Mob session progress · Unweighed sheep screen · Flag system · Move and merge mobs · Sire tag recording · Per-sheep drench events · Full life record timeline · Financial year filtering</div>
+        </div>
+        <div style="margin-bottom:14px;padding-top:11px;border-top:1px solid var(--gp);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:800;color:var(--gd);">v5 — Notes + sold/dead</div>
+            <div style="font-size:10px;color:var(--mut);font-weight:600;">2026</div>
+          </div>
+          <div style="font-size:12px;color:var(--mut);line-height:1.6;padding-left:10px;border-left:2px solid var(--brd);">Sheep notes with life record timeline · Sold/dead status · Restore to active · Drench log with withholding countdown · Cost/income log</div>
+        </div>
+        <div style="margin-bottom:14px;padding-top:11px;border-top:1px solid var(--gp);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:800;color:var(--gd);">v4 — Stats + export</div>
+            <div style="font-size:10px;color:var(--mut);font-weight:600;">2026</div>
+          </div>
+          <div style="font-size:12px;color:var(--mut);line-height:1.6;padding-left:10px;border-left:2px solid var(--brd);">Stats overview · Top 5 heaviest · Best weight gain · By Year breakdown · CSV export · JSON backup and restore · Quick Share AirDrop/iMessage · 3-step clear modal</div>
+        </div>
+        <div style="margin-bottom:14px;padding-top:11px;border-top:1px solid var(--gp);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:800;color:var(--gd);">v3 — New sheep + sex</div>
+            <div style="font-size:10px;color:var(--mut);font-weight:600;">2026</div>
+          </div>
+          <div style="font-size:12px;color:var(--mut);line-height:1.6;padding-left:10px;border-left:2px solid var(--brd);">New Sheep marking screen · Sequential tags ascending/descending · Sex assignment (ram/ewe/wether) · Sex badges · Sort by tag, weight, recent, gain</div>
+        </div>
+        <div style="margin-bottom:14px;padding-top:11px;border-top:1px solid var(--gp);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:800;color:var(--gd);">v2 — Flock list</div>
+            <div style="font-size:10px;color:var(--mut);font-weight:600;">2026</div>
+          </div>
+          <div style="font-size:12px;color:var(--mut);line-height:1.6;padding-left:10px;border-left:2px solid var(--brd);">Expandable sheep cards · Full weight history · Gain/loss between weigh-ins · Delete records · Search by tag · Year prefix chips · Duplicate weigh warning · PWA installable on iPhone</div>
+        </div>
+        <div style="padding-top:11px;border-top:1px solid var(--gp);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:800;color:var(--gd);">v1 — First build</div>
+            <div style="font-size:10px;color:var(--mut);font-weight:600;">2026</div>
+          </div>
+          <div style="font-size:12px;color:var(--mut);line-height:1.6;padding-left:10px;border-left:2px solid var(--brd);">Single-file HTML PWA · Weigh sheep by tag · Works offline · Date and notes on each weigh-in · Active sheep count in header</div>
+        </div>
+      </div>
+
+      <!-- Coming next -->
+      <div class="card" style="border-color:var(--purple);">
+        <h2 style="color:var(--purple);">🔭 Coming in v8</h2>
+        <div style="font-size:12px;color:var(--mut);line-height:1.7;">QR code sync between phones · iMessage/AirDrop smart merge · Share new records from a day's work · Self-hosted fonts for true first-load offline support</div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- UNWEIGHED SHEEP SCREEN — full screen overlay -->
 <div id="uw-screen" style="display:none;position:fixed;inset:0;background:var(--cr);z-index:150;flex-direction:column;max-width:480px;margin:0 auto;">
@@ -946,6 +1060,37 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
   <span style="font-size:11px;color:rgba(232,160,32,.5);">↗</span>
 </div>
 
+<!-- ── WHAT'S NEW MODAL (first launch after upgrade) ── -->
+<div id="whatsNewModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:flex-end;justify-content:center;padding:0;">
+  <div style="background:var(--cr);border-radius:20px 20px 0 0;padding:22px 18px 34px;max-width:480px;width:100%;max-height:85dvh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <div style="font-size:18px;font-weight:900;color:var(--gd);">✨ Sheep Tracker v7</div>
+        <div style="font-size:11px;color:var(--mut);font-weight:600;margin-top:2px;">Storage overhaul — here's what changed</div>
+      </div>
+      <button onclick="closeWhatsNew()" style="background:rgba(0,0,0,.08);border:none;border-radius:20px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;color:var(--txt);">Got it</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="background:white;border-radius:11px;padding:13px;border:1px solid var(--brd);">
+        <div style="font-size:13px;font-weight:800;color:var(--gm);margin-bottom:4px;">🗄️ No more storage limit</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Your data now lives in IndexedDB — effectively unlimited storage on any device. No more 5 MB ceiling.</div>
+      </div>
+      <div style="background:white;border-radius:11px;padding:13px;border:1px solid var(--brd);">
+        <div style="font-size:13px;font-weight:800;color:var(--gm);margin-bottom:4px;">📅 12-month live view + archive</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Each sheep card shows the last 12 months of weights inline. Older records are safely archived — tap <strong>View full history</strong> on any card to see everything.</div>
+      </div>
+      <div style="background:white;border-radius:11px;padding:13px;border:1px solid var(--brd);">
+        <div style="font-size:13px;font-weight:800;color:var(--gm);margin-bottom:4px;">💾 Backups include all history</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Backup files now contain every record including archive — your complete lifetime history is always in the download.</div>
+      </div>
+      <div style="background:rgba(45,90,27,.07);border-radius:11px;padding:11px 13px;border:1px solid rgba(45,90,27,.15);">
+        <div style="font-size:11px;color:var(--gm);font-weight:700;line-height:1.5;">Your existing data was automatically migrated to the new system on this launch. Nothing was lost.</div>
+      </div>
+    </div>
+    <button onclick="closeWhatsNew()" style="margin-top:16px;width:100%;padding:14px;background:linear-gradient(135deg,var(--gl),var(--gm));color:white;border:none;border-radius:11px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;">Let's go →</button>
+  </div>
+</div>
+
 <!-- ── PHASE 1: QUOTA ERROR MODAL ── -->
 <div id="quotaModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;align-items:center;justify-content:center;padding:20px;">
   <div style="background:var(--wh);border-radius:var(--r);padding:22px;max-width:340px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.3);">
@@ -954,7 +1099,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
     <p style="font-size:12px;color:var(--mut);margin-bottom:16px;line-height:1.5;">Go to Export and download a backup. Your backup file keeps everything and can be restored at any time.</p>
     <div style="display:flex;gap:8px;">
       <button onclick="document.getElementById('quotaModal').style.display='none'" style="flex:1;padding:12px;background:var(--cr);color:var(--mut);border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">Dismiss</button>
-      <button onclick="document.getElementById('quotaModal').style.display='none';goPnl('export')" style="flex:1;padding:12px;background:var(--red);color:white;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">Go to Export</button>
+      <button onclick="document.getElementById('quotaModal').style.display='none';goPnl('export')" style="flex:1;padding:12px;background:var(--red);color:white;border:none;border-radius:9px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">Go to Settings</button>
     </div>
   </div>
 </div>
@@ -1002,68 +1147,245 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gl);back
 // ═══════════════════════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// PHASE 2 — IndexedDB STORAGE ENGINE
+// Memory-first pattern: all data lives in JS objects in
+// memory. Reads are synchronous (no refactor of callers).
+// Writes go to memory immediately + async IDB in background.
+// ═══════════════════════════════════════════════════════
+
+const DB_NAME = 'SheepTrackerDB';
+const DB_VER  = 1;
+const STORE_HOT = 'hot';      // active data — last 12 months
+const STORE_ARC = 'archive';  // weight/drench/mobmove records > 12 months
+
+// Legacy localStorage keys (read-only during migration)
 const K = {
   data:'sheepData_v1', pre:'sheepPrefixes_v1', sex:'sheepSex_v1',
   status:'sheepStatus_v1', drench:'sheepDrench_v1', costs:'sheepCosts_v1',
   notes:'sheepNotes_v1', mobs:'sheepMobs_v1', mobhist:'sheepMobHist_v1'
 };
-const load    = k => { try { return JSON.parse(localStorage.getItem(k))||[]; } catch { return []; } };
-const loadObj = k => { try { return JSON.parse(localStorage.getItem(k))||{}; } catch { return {}; } };
 
-// ── PHASE 1: Quota-safe save wrapper ──
-// All writes go through here. On quota error shows modal instead of silently failing.
-const FRIENDLY = {
-  [K.data]:'weight records',[K.sex]:'sex data',[K.status]:'status data',
-  [K.drench]:'drench records',[K.costs]:'cost records',[K.notes]:'notes',
-  [K.mobs]:'mob data',[K.mobhist]:'mob history',
-  'sheepDrenchEvents_v1':'drench events','sheepMobMoves_v1':'mob moves',
-  'sheepFlags_v1':'flags'
+// ── In-memory cache (source of truth at runtime) ──
+let _mem = {
+  data:[], sex:{}, status:{}, drench:[], costs:[], notes:[],
+  mobs:[], mobhist:[], drenchEvents:[], mobMoves:[], flags:{},
+  prefixes:[], activeYr:'', lastUpdated:''
 };
-const save = (k,v) => {
-  try {
-    localStorage.setItem(k, JSON.stringify(v));
-  } catch(e) {
-    if(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22){
-      const what = FRIENDLY[k] || 'data';
-      const msg = document.getElementById('quotaMsg');
-      if(msg) msg.textContent = `Storage is full — the last save to ${what} could not be completed. Nothing from before this save was lost.`;
-      const qm = document.getElementById('quotaModal');
-      if(qm) qm.style.display='flex';
-    }
+
+// ── IDB helpers ──
+let _db = null;
+function openDB(){
+  return new Promise((res,rej)=>{
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if(!db.objectStoreNames.contains(STORE_HOT)) db.createObjectStore(STORE_HOT);
+      if(!db.objectStoreNames.contains(STORE_ARC)) db.createObjectStore(STORE_ARC);
+    };
+    req.onsuccess = e => res(e.target.result);
+    req.onerror   = e => rej(e.target.error);
+  });
+}
+function idbGet(store, key){
+  return new Promise((res,rej)=>{
+    const tx = _db.transaction(store,'readonly');
+    const req = tx.objectStore(store).get(key);
+    req.onsuccess = e => res(e.target.result);
+    req.onerror   = e => rej(e.target.error);
+  });
+}
+function idbSet(store, key, val){
+  return new Promise((res,rej)=>{
+    const tx = _db.transaction(store,'readwrite');
+    const req = tx.objectStore(store).put(val, key);
+    req.onsuccess = () => res();
+    req.onerror   = e => rej(e.target.error);
+  });
+}
+function idbGetAll(store){
+  return new Promise((res,rej)=>{
+    const tx = _db.transaction(store,'readonly');
+    const keys=[], vals=[];
+    tx.objectStore(store).openCursor().onsuccess = e => {
+      const cur = e.target.result;
+      if(cur){ keys.push(cur.key); vals.push(cur.value); cur.continue(); }
+      else res({keys,vals});
+    };
+    tx.onerror = e => rej(e.target.error);
+  });
+}
+
+// ── Write to IDB in background (fire and forget) ──
+function idbWrite(key, val){
+  if(!_db) return;
+  idbSet(STORE_HOT, key, val).catch(()=>{});
+}
+function idbWriteArc(key, val){
+  if(!_db) return;
+  idbSet(STORE_ARC, key, val).catch(()=>{});
+}
+
+// ── MIGRATION: localStorage → IDB ──
+async function migrateFromLocalStorage(){
+  const flag = await idbGet(STORE_HOT,'__migrated_v1').catch(()=>null);
+  if(flag) return; // already done
+
+  const lsGet  = k => { try{ return JSON.parse(localStorage.getItem(k)); }catch{return null;} };
+  const lsGetO = k => { try{ const v=JSON.parse(localStorage.getItem(k)); return v&&typeof v==='object'&&!Array.isArray(v)?v:null; }catch{return null;} };
+
+  const migrations = [
+    { key:'data',          ls: lsGet(K.data),          def:[] },
+    { key:'sex',           ls: lsGetO(K.sex),           def:{} },
+    { key:'status',        ls: lsGetO(K.status),        def:{} },
+    { key:'drench',        ls: lsGet(K.drench),         def:[] },
+    { key:'costs',         ls: lsGet(K.costs),          def:[] },
+    { key:'notes',         ls: lsGet(K.notes),          def:[] },
+    { key:'mobs',          ls: lsGet(K.mobs),           def:[] },
+    { key:'mobhist',       ls: lsGet(K.mobhist),        def:[] },
+    { key:'drenchEvents',  ls: lsGet('sheepDrenchEvents_v1'), def:[] },
+    { key:'mobMoves',      ls: lsGet('sheepMobMoves_v1'),     def:[] },
+    { key:'flags',         ls: lsGetO('sheepFlags_v1'),       def:{} },
+    { key:'prefixes',      ls: lsGet(K.pre),            def:[] },
+    { key:'activeYr',      ls: localStorage.getItem('sheepActiveYr'), def:'' },
+    { key:'lastUpdated',   ls: localStorage.getItem('sheepLastUpdated'), def:'' },
+  ];
+
+  // Write everything to IDB
+  for(const m of migrations){
+    const val = m.ls !== null && m.ls !== undefined ? m.ls : m.def;
+    await idbSet(STORE_HOT, m.key, val);
   }
-};
 
-const loadData    = () => load(K.data);
-const saveData    = d  => { save(K.data,d); refreshCount(); updateLastUpdated(); };
-const loadSex     = () => loadObj(K.sex);
-const saveSex     = s  => save(K.sex,s);
-const loadStatus  = () => loadObj(K.status);
-const saveStatusData = s => { save(K.status,s); refreshCount(); };
-const loadDrench  = () => load(K.drench);
-const saveDrenchData = d => save(K.drench,d);
-const loadCosts   = () => load(K.costs);
-const saveCostsData = c => save(K.costs,c);
-const loadNotes   = () => load(K.notes);
-const saveNotes   = n  => save(K.notes,n);
-const loadMobs    = () => load(K.mobs);
-const saveMobs    = m  => save(K.mobs,m);
-const loadMobHist = () => load(K.mobhist);
-const saveMobHist = h  => save(K.mobhist,h);
-const loadDrenchEvents = () => load('sheepDrenchEvents_v1');
-const saveDrenchEvents = e => save('sheepDrenchEvents_v1',e);
-const loadFlags = () => { try { return JSON.parse(localStorage.getItem('sheepFlags_v1'))||{}; } catch(e) { return {}; } };
-const saveFlags = f => save('sheepFlags_v1',f);
-const loadMobMoves = () => load('sheepMobMoves_v1');
-const saveMobMoves = m  => save('sheepMobMoves_v1',m);
+  // Verify: check data count matches
+  const written = await idbGet(STORE_HOT,'data');
+  const lsData  = lsGet(K.data)||[];
+  if(Array.isArray(written) && written.length >= lsData.length){
+    await idbSet(STORE_HOT,'__migrated_v1', true);
+    // Clear localStorage (keep nothing — IDB is now the source of truth)
+    Object.values(K).forEach(k=>localStorage.removeItem(k));
+    ['sheepDrenchEvents_v1','sheepMobMoves_v1','sheepFlags_v1',
+     'sheepActiveYr','sheepLastUpdated'].forEach(k=>localStorage.removeItem(k));
+  }
+}
+
+// ── LOAD ALL DATA INTO MEMORY ──
+async function loadAllIntoMemory(){
+  const keys = ['data','sex','status','drench','costs','notes','mobs','mobhist',
+                 'drenchEvents','mobMoves','flags','prefixes','activeYr','lastUpdated'];
+  for(const key of keys){
+    const val = await idbGet(STORE_HOT, key).catch(()=>null);
+    if(val !== null && val !== undefined) _mem[key] = val;
+  }
+  // Ensure prefixes has a sensible default
+  if(!Array.isArray(_mem.prefixes)||!_mem.prefixes.length){
+    const y = new Date().getFullYear();
+    _mem.prefixes = [String(y-2).slice(-2),String(y-1).slice(-2),String(y).slice(-2)];
+  }
+  if(!_mem.activeYr) _mem.activeYr = _mem.prefixes[0];
+}
+
+// ── ARCHIVE SWEEP: move records > 12 months to archive store ──
+async function runArchiveSweep(){
+  const today     = new Date();
+  const cutoff    = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-1);
+  const cutoffStr = cutoff.toISOString().split('T')[0];
+
+  // Check if already swept today
+  const lastSweep = await idbGet(STORE_HOT,'__lastSweep').catch(()=>null);
+  if(lastSweep === today.toISOString().split('T')[0]) return;
+
+  // Weight records
+  const hotData = _mem.data;
+  const archData = await idbGet(STORE_ARC,'data').catch(()=>[]) || [];
+  const toArchive = hotData.filter(r=>r.date && r.date < cutoffStr);
+  const toKeep    = hotData.filter(r=>!r.date || r.date >= cutoffStr);
+  if(toArchive.length){
+    _mem.data = toKeep;
+    const newArc = [...archData, ...toArchive];
+    await idbSet(STORE_HOT,'data', toKeep);
+    await idbSet(STORE_ARC,'data', newArc);
+  }
+
+  // Drench events
+  const hotDE = _mem.drenchEvents;
+  const arcDE = await idbGet(STORE_ARC,'drenchEvents').catch(()=>[]) || [];
+  const deArc = hotDE.filter(e=>e.date && e.date < cutoffStr);
+  const deKeep= hotDE.filter(e=>!e.date || e.date >= cutoffStr);
+  if(deArc.length){
+    _mem.drenchEvents = deKeep;
+    await idbSet(STORE_HOT,'drenchEvents', deKeep);
+    await idbSet(STORE_ARC,'drenchEvents', [...arcDE,...deArc]);
+  }
+
+  // Mob moves
+  const hotMM = _mem.mobMoves;
+  const arcMM = await idbGet(STORE_ARC,'mobMoves').catch(()=>[]) || [];
+  const mmArc = hotMM.filter(m=>m.date && m.date < cutoffStr);
+  const mmKeep= hotMM.filter(m=>!m.date || m.date >= cutoffStr);
+  if(mmArc.length){
+    _mem.mobMoves = mmKeep;
+    await idbSet(STORE_HOT,'mobMoves', mmKeep);
+    await idbSet(STORE_ARC,'mobMoves', [...arcMM,...mmArc]);
+  }
+
+  await idbSet(STORE_HOT,'__lastSweep', today.toISOString().split('T')[0]);
+}
+
+// ── LOAD FULL HISTORY (hot + archive) for a single tag ──
+async function loadFullHistoryForTag(tag){
+  const arcData = await idbGet(STORE_ARC,'data').catch(()=>[]) || [];
+  const arcDE   = await idbGet(STORE_ARC,'drenchEvents').catch(()=>[]) || [];
+  const arcMM   = await idbGet(STORE_ARC,'mobMoves').catch(()=>[]) || [];
+  return {
+    weights:    arcData.filter(r=>r.tag===tag),
+    drenchEvts: arcDE.filter(e=>e.tag===tag),
+    mobMoves:   arcMM.filter(m=>m.tag===tag),
+  };
+}
+
+// ── SYNCHRONOUS API (same shape as before — no caller changes) ──
+const loadData    = () => _mem.data;
+const loadSex     = () => _mem.sex;
+const loadStatus  = () => _mem.status;
+const loadDrench  = () => _mem.drench;
+const loadCosts   = () => _mem.costs;
+const loadNotes   = () => _mem.notes;
+const loadMobs    = () => _mem.mobs;
+const loadMobHist = () => _mem.mobhist;
+const loadDrenchEvents = () => _mem.drenchEvents;
+const loadFlags   = () => _mem.flags;
+const loadMobMoves= () => _mem.mobMoves;
 
 function loadPrefixes(){
-  try { const p=JSON.parse(localStorage.getItem(K.pre)); if(Array.isArray(p)&&p.length) return p; } catch {}
+  if(Array.isArray(_mem.prefixes)&&_mem.prefixes.length) return _mem.prefixes;
   const y=new Date().getFullYear();
   return [String(y-2).slice(-2),String(y-1).slice(-2),String(y).slice(-2)];
 }
-const savePrefixes = a => save(K.pre,a);
-const getActiveYr  = () => localStorage.getItem('sheepActiveYr')||loadPrefixes()[0];
-const setActiveYr  = y => localStorage.setItem('sheepActiveYr',y);
+const getActiveYr = () => _mem.activeYr || loadPrefixes()[0];
+const setActiveYr = y => { _mem.activeYr=y; idbWrite('activeYr',y); };
+const savePrefixes= a => { _mem.prefixes=a; idbWrite('prefixes',a); };
+
+// Write functions — update memory then write IDB async
+const saveData       = d => { _mem.data=d;         idbWrite('data',d);         refreshCount(); updateLastUpdated(); };
+const saveSex        = s => { _mem.sex=s;           idbWrite('sex',s); };
+const saveStatusData = s => { _mem.status=s;        idbWrite('status',s);       refreshCount(); };
+const saveDrenchData = d => { _mem.drench=d;        idbWrite('drench',d); };
+const saveCostsData  = c => { _mem.costs=c;         idbWrite('costs',c); };
+const saveNotes      = n => { _mem.notes=n;         idbWrite('notes',n); };
+const saveMobs       = m => { _mem.mobs=m;           idbWrite('mobs',m); };
+const saveMobHist    = h => { _mem.mobhist=h;       idbWrite('mobhist',h); };
+const saveDrenchEvents=e => { _mem.drenchEvents=e;  idbWrite('drenchEvents',e); };
+const saveFlags      = f => { _mem.flags=f;         idbWrite('flags',f); };
+const saveMobMoves   = m => { _mem.mobMoves=m;      idbWrite('mobMoves',m); };
+
+// Phase 1 quota modal still used for IDB write failures (rare but possible)
+const FRIENDLY = {
+  data:'weight records', sex:'sex data', status:'status data',
+  drench:'drench records', costs:'cost records', notes:'notes',
+  mobs:'mob data', mobhist:'mob history',
+  drenchEvents:'drench events', mobMoves:'mob moves', flags:'flags'
+};
 
 // ═══════════════════════════════════════════════════════
 // FINANCIAL YEAR HELPERS (Aus FY: 1 Jul – 30 Jun)
@@ -1101,7 +1423,30 @@ let mrgSel=new Set(), nmTags=[], nmYrF='all';
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+  // 1. Open IDB
+  try { _db = await openDB(); } catch(e) { console.error('IDB open failed',e); }
+
+  // 2. Migrate from localStorage if needed
+  if(_db) await migrateFromLocalStorage();
+
+  // 3. Load all data into memory
+  if(_db) await loadAllIntoMemory();
+
+  // 4. Run archive sweep (moves records > 12 months to archive)
+  if(_db) await runArchiveSweep();
+
+  // 5. Show "What's New" modal on first launch after Phase 2/v7 migration
+  const shownNew = await idbGet(STORE_HOT,'__whatsNew_v7').catch(()=>null);
+  if(!shownNew && _db){
+    await idbSet(STORE_HOT,'__whatsNew_v7', true);
+    setTimeout(()=>{
+      const m=document.getElementById('whatsNewModal');
+      if(m) m.style.display='flex';
+    }, 800);
+  }
+
+  // 6. Render UI
   const today = new Date().toISOString().split('T')[0];
   ['wDt','sDt','dDt','cDt'].forEach(id => { const el=document.getElementById(id); if(el) el.value=today; });
   document.getElementById('hDate').textContent = fmtD(today);
@@ -1173,12 +1518,12 @@ function refreshCount(){
 }
 function updateLastUpdated(){
   const now=new Date().toLocaleString('en-AU');
-  localStorage.setItem('sheepLastUpdated',now);
+  _mem.lastUpdated=now; idbWrite('lastUpdated',now);
   const el=document.getElementById('lastUpdated');
   if(el){el.style.display='block'; el.textContent='🕐 Last saved: '+now;}
 }
 function loadLastUpdated(){
-  const s=localStorage.getItem('sheepLastUpdated');
+  const s=_mem.lastUpdated||localStorage.getItem('sheepLastUpdated');
   if(s){const el=document.getElementById('lastUpdated'); if(el){el.style.display='block';el.textContent='🕐 Last saved: '+s;}}
 }
 
@@ -1590,7 +1935,7 @@ function saveWeigh(){
     ? (document.getElementById('wRapidNote')?.value.trim()||'')
     : document.getElementById('wNotes').value.trim();
   if(curSex){ const sx=loadSex(); sx[tag]=curSex; saveSex(sx); }
-  const d=loadData(); d.push({tag,weight:wt,date,notes,id:Date.now()}); saveData(d);
+  const d=loadData(); d.push({tag,weight:wt,date,notes,id:crypto.randomUUID()}); saveData(d);
   sessW.push({tag,wt}); sessTotal+=wt;
   if(activeMob&&!activeMob.done.includes(tag)){activeMob.done.push(tag);updMobProg();}
   document.getElementById('sessCount').textContent=sessW.length;
@@ -1675,7 +2020,7 @@ function saveStatus(){
   const cause=document.getElementById('sCause').value.trim();
   const st=loadStatus(); st[tag]={status:activeStatusChoice,date,cause}; saveStatusData(st);
   const d=loadData();
-  if(!d.find(r=>r.tag===tag)){d.push({tag,weight:0,date,notes:'',id:Date.now()});saveData(d);}
+  if(!d.find(r=>r.tag===tag)){d.push({tag,weight:0,date,notes:'',id:crypto.randomUUID()});saveData(d);}
   showToast('✓ '+tag+' marked as '+activeStatusChoice);
   clearStatusForm(); renderStatusRecent(); renderRecent();
 }
@@ -1721,7 +2066,7 @@ function saveDrench(){
 }
 function doSaveDrench(name,date,product,amount,localWH,exportWH){
   closeModal();
-  const drenchId=Date.now();
+  const drenchId=crypto.randomUUID();
   const d=loadDrench(); d.push({id:drenchId,name:name||'No mob',date,product,amount,localWH,exportWH});
   saveDrenchData(d);
   // write a drench event for every active sheep in this mob so it shows in their timeline (#4)
@@ -1762,7 +2107,7 @@ function saveCost(){
   const notes=document.getElementById('cNotes').value.trim();
   if(!title){showToast('⚠️ Enter a title');return;}
   if(!amount||amount<=0){showToast('⚠️ Enter a valid amount');return;}
-  const c=loadCosts(); c.push({id:Date.now(),title,type:activeCostType,amount,date,notes});
+  const c=loadCosts(); c.push({id:crypto.randomUUID(),title,type:activeCostType,amount,date,notes});
   saveCostsData(c);
   showToast('✓ Cost entry saved');
   document.getElementById('cTitle').value='';
@@ -1896,7 +2241,7 @@ function saveNote(){
   if(!raw){showToast('⚠️ Enter a tag number');return;}
   if(!text){showToast('⚠️ Type a note first');return;}
   const date=new Date().toISOString().split('T')[0];
-  const notes=loadNotes(); notes.push({id:Date.now(),tag,text,date}); saveNotes(notes);
+  const notes=loadNotes(); notes.push({id:crypto.randomUUID(),tag,text,date}); saveNotes(notes);
   showToast('✓ Note saved');
   loadNotesProfile(tag); updateLastUpdated();
 }
@@ -2033,16 +2378,16 @@ function addNewSheep(){
   if(nsSex){const sx=loadSex(); sx[tag]=nsSex; saveSex(sx);}
   const d=loadData();
   if(!d.some(r=>r.tag===tag)){
-    d.push({tag,weight:0,date,notes:'',id:Date.now()});
+    d.push({tag,weight:0,date,notes:'',id:crypto.randomUUID()});
     saveData(d);
     const moves=loadMobMoves();
-    moves.push({tag,from:null,fromLoc:null,to:null,toLoc:null,date,id:Date.now()+1,addedOnly:true});
+    moves.push({tag,from:null,fromLoc:null,to:null,toLoc:null,date,id:crypto.randomUUID(),addedOnly:true});
     saveMobMoves(moves);
   }
   // record sire tags as a note if any set
   if(nsSireTags.length){
     const notes=loadNotes();
-    notes.push({id:Date.now()+2,tag,text:'🐏 Sire: '+nsSireTags.join(', '),date});
+    notes.push({id:crypto.randomUUID(),tag,text:'🐏 Sire: '+nsSireTags.join(', '),date});
     saveNotes(notes);
   }
   showToast('✓ '+tag+' added'+(nsSireTags.length?' · sire recorded':''));
@@ -2085,10 +2430,10 @@ function setTagMob(tag, mobName, loc){
   const moves=loadMobMoves();
   if(prev && prev.currentMob && prev.currentMob!==mobName){
     // move between mobs
-    moves.push({tag,from:prev.currentMob,fromLoc:prev.currentLoc||'',to:mobName,toLoc:loc||'',date:today,id:Date.now()});
+    moves.push({tag,from:prev.currentMob,fromLoc:prev.currentLoc||'',to:mobName,toLoc:loc||'',date:today,id:crypto.randomUUID()});
   } else if(!prev || !prev.currentMob){
     // first-ever mob assignment — joined flock
-    moves.push({tag,from:null,fromLoc:null,to:mobName,toLoc:loc||'',date:today,id:Date.now()});
+    moves.push({tag,from:null,fromLoc:null,to:mobName,toLoc:loc||'',date:today,id:crypto.randomUUID()});
   }
   saveMobMoves(moves);
   const entry={tag,currentMob:mobName,currentLoc:loc||'',updated:today};
@@ -2232,7 +2577,7 @@ function createMob(){
   nmTags.forEach(t=>setTagMob(t,name,loc));
   // ensure tags exist in data
   const d=loadData();
-  nmTags.forEach((t,i)=>{if(!d.find(r=>r.tag===t)){d.push({tag:t,weight:0,date:new Date().toISOString().split('T')[0],notes:'',id:Date.now()+i});}});
+  nmTags.forEach((t,i)=>{if(!d.find(r=>r.tag===t)){d.push({tag:t,weight:0,date:new Date().toISOString().split('T')[0],notes:'',id:crypto.randomUUID()});}});
   if(nmTags.length) saveData(d);
   closeModal();
   showToast('✓ '+name+' created'+(nmTags.length?' with '+nmTags.length+' sheep':''));
@@ -2314,7 +2659,7 @@ function doAssignSex(tag,sex){
 function doAssignMob(tag,mob,loc){
   setTagMob(tag,mob,loc);
   const d=loadData();
-  if(!d.find(r=>r.tag===tag)){d.push({tag,weight:0,date:new Date().toISOString().split('T')[0],notes:'',id:Date.now()});saveData(d);}
+  if(!d.find(r=>r.tag===tag)){d.push({tag,weight:0,date:new Date().toISOString().split('T')[0],notes:'',id:crypto.randomUUID()});saveData(d);}
   closeModal(); showToast('✓ '+tag+' → '+mob); renderFlock(); renderMobList();
 }
 
@@ -2647,6 +2992,8 @@ function flockCard(tag,entries,sex,statusObj,mob,isFlagged){
     +(mob?'<span style="font-size:10px;font-weight:700;color:var(--gm);text-transform:none;letter-spacing:0;background:rgba(45,90,27,.1);border:1px solid rgba(45,90,27,.18);border-radius:5px;padding:1px 8px;">📍 '+mob+'</span>':'')
     +'</div>'
     +tl
+    +'<button onclick="showFullHistory(\''+tag+'\')" style="margin-top:10px;width:100%;padding:8px;background:rgba(45,90,27,.08);border:1.5px solid rgba(45,90,27,.2);border-radius:9px;font-family:Nunito,sans-serif;font-size:11px;font-weight:800;color:var(--gm);cursor:pointer;">📅 View full history (incl. archive)</button>'
+    +'<div id="fh-'+tag+'" style="display:none;margin-top:9px;"></div>'
     +'</div></div>';
 }
 
@@ -2759,6 +3106,30 @@ function reweigh(tag){
   document.getElementById('wSeq').value=seq;
   onWSeq();
   showEntry('weigh'); goPnl('record');
+}
+
+async function showFullHistory(tag){
+  const el=document.getElementById('fh-'+tag); if(!el) return;
+  if(el.style.display==='block'){ el.style.display='none'; return; }
+  el.style.display='block';
+  el.innerHTML='<div style="font-size:11px;color:var(--mut);padding:6px 0;">Loading archive…</div>';
+  const arc = await loadFullHistoryForTag(tag);
+  if(!arc.weights.length && !arc.drenchEvts.length && !arc.mobMoves.length){
+    el.innerHTML='<div style="font-size:11px;color:var(--mut);padding:6px 0;font-style:italic;">No archived records — all history is within the last 12 months.</div>';
+    return;
+  }
+  const sortedW = arc.weights.sort((a,b)=>a.date.localeCompare(b.date));
+  el.innerHTML='<div style="font-size:9px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;">Archived records (older than 12 months)</div>'
+    + sortedW.map((w,i,arr)=>{
+        const prev=arr[i-1];
+        const gain=prev?+(w.weight-prev.weight).toFixed(1):null;
+        const gainHtml=gain!==null?'<span class="tl-gain '+(gain>=0?'gpos':'gneg')+'">'+(gain>=0?'+':'')+gain+' kg</span>':'';
+        return '<div style="display:flex;align-items:baseline;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gp);font-size:12px;">'
+          +'<span style="color:var(--mut);">'+fmtD(w.date)+'</span>'
+          +gainHtml
+          +'<span style="font-weight:800;color:var(--gm);">'+w.weight+' kg</span>'
+          +'</div>';
+      }).join('');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2987,15 +3358,18 @@ function renderStats(){
 
 // ── YEAR STATS ──
 let activeYrStat=null;
-function renderYearStats(){
+async function renderYearStats(){
   const data=loadData(), sexMap=loadSex(), stMap=loadStatus();
-  const allTags=[...new Set(data.map(r=>r.tag))];
+  // Also get archive tags so year pills include cohorts older than 12 months
+  const arcData = _db ? (await idbGet(STORE_ARC,'data').catch(()=>[])||[]) : [];
+  const allData = [...data, ...arcData];
+  const allTags=[...new Set(allData.map(r=>r.tag))];
   const years=[...new Set(allTags.map(t=>t.slice(0,2)))].sort();
   const pillsEl=document.getElementById('yearPills');
   if(!years.length){document.getElementById('yearDetail').innerHTML='<div class="empty"><div class="ei">📅</div><p>No data yet</p></div>';return;}
   if(!activeYrStat||!years.includes(activeYrStat)) activeYrStat=years[years.length-1];
   pillsEl.innerHTML=years.map(y=>'<button onclick="selectYrStat(\''+y+'\')" style="padding:9px 16px;border-radius:9px;border:2px solid var(--brd);background:'+(activeYrStat===y?'var(--gm)':'var(--wh)')+';color:'+(activeYrStat===y?'white':'var(--mut)')+';font-family:\'Courier Prime\',monospace;font-size:17px;font-weight:700;cursor:pointer;">'+y+'</button>').join('');
-  renderYrDetail(activeYrStat, data, sexMap, stMap);
+  renderYrDetail(activeYrStat, allData, sexMap, stMap);
 }
 function selectYrStat(y){ activeYrStat=y; renderYearStats(); }
 function renderYrDetail(yr, data, sexMap, stMap){
@@ -3085,11 +3459,21 @@ function exportAllData(){
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   showToast('📊 All data exported!');
 }
-function exportBackup(){
-  const json=JSON.stringify({version:3,exported:new Date().toISOString(),records:loadData(),sex:loadSex(),status:loadStatus(),drench:loadDrench(),costs:loadCosts(),notes:loadNotes(),mobs:loadMobs(),mobhist:loadMobHist(),mobmoves:loadMobMoves(),drenchevents:loadDrenchEvents(),flags:loadFlags()},null,2);
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v2-'+new Date().toISOString().split('T')[0]+'.json'});
+async function exportBackup(){
+  // Include both hot and archive data in backup for complete export
+  const arcData = _db ? (await idbGet(STORE_ARC,'data').catch(()=>[])||[]) : [];
+  const arcDE   = _db ? (await idbGet(STORE_ARC,'drenchEvents').catch(()=>[])||[]) : [];
+  const arcMM   = _db ? (await idbGet(STORE_ARC,'mobMoves').catch(()=>[])||[]) : [];
+  const allRecords = [...loadData(),...arcData];
+  const allDE      = [...loadDrenchEvents(),...arcDE];
+  const allMM      = [...loadMobMoves(),...arcMM];
+  const json=JSON.stringify({version:4,exported:new Date().toISOString(),
+    records:allRecords,sex:loadSex(),status:loadStatus(),drench:loadDrench(),
+    costs:loadCosts(),notes:loadNotes(),mobs:loadMobs(),mobhist:loadMobHist(),
+    mobmoves:allMM,drenchevents:allDE,flags:loadFlags()},null,2);
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v4-'+new Date().toISOString().split('T')[0]+'.json'});
   document.body.appendChild(a);a.click();document.body.removeChild(a);
-  showToast('💾 Backup saved!');
+  showToast('💾 Backup saved! ('+allRecords.length+' records)');
 }
 function importBackup(ev){
   const f=ev.target.files[0]; if(!f) return;
@@ -3137,17 +3521,34 @@ function onDeleteInput(){
   if(v==='DELETE'){btn.style.opacity='1';btn.style.pointerEvents='auto';}
   else{btn.style.opacity='.4';btn.style.pointerEvents='none';}
 }
-function doFinalClear(){
-  Object.values(K).forEach(k=>localStorage.removeItem(k));
-  localStorage.removeItem('sheepMobMoves_v1');
-  localStorage.removeItem('sheepDrenchEvents_v1');
-  localStorage.removeItem('sheepFlags_v1');
-  saveData([]); closeClearModal();
+async function doFinalClear(){
+  // Clear memory
+  _mem={data:[],sex:{},status:{},drench:[],costs:[],notes:[],mobs:[],mobhist:[],
+        drenchEvents:[],mobMoves:[],flags:{},prefixes:_mem.prefixes,
+        activeYr:_mem.activeYr,lastUpdated:''};
+  // Clear both IDB stores
+  if(_db){
+    const keys=['data','sex','status','drench','costs','notes','mobs','mobhist',
+                 'drenchEvents','mobMoves','flags','lastUpdated'];
+    for(const k of keys){ await idbSet(STORE_HOT,k, Array.isArray(_mem[k])?[]:{}); }
+    await idbSet(STORE_ARC,'data',[]);
+    await idbSet(STORE_ARC,'drenchEvents',[]);
+    await idbSet(STORE_ARC,'mobMoves',[]);
+  }
+  closeClearModal();
   renderFlock(); renderMobList(); renderDrenchLog(); renderCostLog(); renderStats();
-  populateCostFySelect(); showToast('🗑 All data cleared');
+  populateCostFySelect(); refreshCount(); showToast('🗑 All data cleared');
 }
-function quickShare(){
-  const data={version:3,exported:new Date().toISOString(),records:loadData(),sex:loadSex(),status:loadStatus(),drench:loadDrench(),costs:loadCosts(),notes:loadNotes(),mobs:loadMobs(),mobhist:loadMobHist(),mobmoves:loadMobMoves(),drenchevents:loadDrenchEvents(),flags:loadFlags()};
+async function quickShare(){
+  // Full backup including archive
+  const arcData = _db ? (await idbGet(STORE_ARC,'data').catch(()=>[])||[]) : [];
+  const arcDE   = _db ? (await idbGet(STORE_ARC,'drenchEvents').catch(()=>[])||[]) : [];
+  const arcMM   = _db ? (await idbGet(STORE_ARC,'mobMoves').catch(()=>[])||[]) : [];
+  const data={version:4,exported:new Date().toISOString(),
+    records:[...loadData(),...arcData],sex:loadSex(),status:loadStatus(),
+    drench:loadDrench(),costs:loadCosts(),notes:loadNotes(),mobs:loadMobs(),
+    mobhist:loadMobHist(),mobmoves:[...loadMobMoves(),...arcMM],
+    drenchevents:[...loadDrenchEvents(),...arcDE],flags:loadFlags()};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const file=new File([blob],'sheep-backup-'+new Date().toISOString().split('T')[0]+'.json',{type:'application/json'});
   if(navigator.canShare&&navigator.canShare({files:[file]})) navigator.share({title:'Sheep Tracker Backup',files:[file]}).catch(()=>{});
@@ -3169,41 +3570,32 @@ function fmtBytes(b){
   return (b/(1024*1024)).toFixed(2)+' MB';
 }
 function calcStorageHealth(){
-  const LIMIT = 5*1024*1024; // 5 MB — Safari iPhone ceiling
+  // IDB has no fixed limit — estimate from in-memory data size
+  // Show actual data size vs a soft warning threshold of 50 MB
+  const WARN_LIMIT = 50*1024*1024;
   const tracked = [
-    {key:K.data,      label:'Weight records'},
-    {key:K.sex,       label:'Sex data'},
-    {key:K.status,    label:'Status data'},
-    {key:K.drench,    label:'Drench records'},
-    {key:K.costs,     label:'Cost records'},
-    {key:K.notes,     label:'Notes'},
-    {key:K.mobs,      label:'Mob data'},
-    {key:K.mobhist,   label:'Mob history'},
-    {key:'sheepDrenchEvents_v1', label:'Drench events'},
-    {key:'sheepMobMoves_v1',     label:'Mob moves'},
-    {key:'sheepFlags_v1',        label:'Flags'},
-    {key:'sheepActiveYr',        label:'Preferences'},
-    {key:'sheepLastUpdated',     label:'Last updated'},
+    {key:'data',         label:'Weight records (hot)'},
+    {key:'sex',          label:'Sex data'},
+    {key:'status',       label:'Status data'},
+    {key:'drench',       label:'Drench records'},
+    {key:'costs',        label:'Cost records'},
+    {key:'notes',        label:'Notes'},
+    {key:'mobs',         label:'Mob data'},
+    {key:'mobhist',      label:'Mob history'},
+    {key:'drenchEvents', label:'Drench events'},
+    {key:'mobMoves',     label:'Mob moves'},
+    {key:'flags',        label:'Flags'},
   ];
-  const knownKeys = new Set(tracked.map(t=>t.key));
   let total = 0;
   const breakdown = [];
   tracked.forEach(({key, label}) => {
-    const v = localStorage.getItem(key) || '';
-    const bytes = v.length * 2; // UTF-16
+    const val = _mem[key];
+    const bytes = new Blob([JSON.stringify(val||[])]).size;
     total += bytes;
-    if(bytes > 0) breakdown.push({label, bytes});
+    if(bytes > 100) breakdown.push({label, bytes});
   });
-  // catch any other keys this origin has written
-  for(let i=0;i<localStorage.length;i++){
-    const k=localStorage.key(i);
-    if(!knownKeys.has(k)){
-      const bytes=(localStorage.getItem(k)||'').length*2;
-      total+=bytes;
-    }
-  }
   breakdown.sort((a,b)=>b.bytes-a.bytes);
-  const pct = Math.round((total/LIMIT)*100);
+  const pct = Math.round((total/WARN_LIMIT)*100);
   const barEl=document.getElementById('shBar');
   const usedEl=document.getElementById('shUsed');
   const pctEl=document.getElementById('shPct');
@@ -3213,14 +3605,14 @@ function calcStorageHealth(){
   let barCol, pctCls, warnHTML='';
   if(pct<50){      barCol='#16a085'; pctCls='sh-g'; }
   else if(pct<70){ barCol='#e8a020'; pctCls='sh-a';
-    warnHTML='<div class="sh-warn sh-warn-a">Getting full — consider downloading a backup soon.</div>'; }
+    warnHTML='<div class="sh-warn sh-warn-a">Getting large — consider downloading a backup.</div>'; }
   else if(pct<90){ barCol='#e67e22'; pctCls='sh-o';
-    warnHTML='<div class="sh-warn sh-warn-o">⚠️ Storage filling up — download a backup and clear old data.</div>'; }
+    warnHTML='<div class="sh-warn sh-warn-o">⚠️ Large dataset — download a backup and review old data.</div>'; }
   else {           barCol='#c0392b'; pctCls='sh-r';
-    warnHTML='<div class="sh-warn sh-warn-r">🔴 Nearly full — saves may fail. Download a backup now.</div>'; }
+    warnHTML='<div class="sh-warn sh-warn-r">🔴 Very large — download a backup now.</div>'; }
   barEl.style.width=Math.min(pct,100)+'%';
   barEl.style.background=barCol;
-  usedEl.textContent=fmtBytes(total)+' of '+fmtBytes(LIMIT)+' used';
+  usedEl.textContent=fmtBytes(total)+' hot data · IDB (no fixed limit)';
   pctEl.textContent=pct+'%';
   pctEl.className='sh-pct '+pctCls;
   warnEl.innerHTML=warnHTML;
@@ -3232,6 +3624,19 @@ function calcStorageHealth(){
 // ═══════════════════════════════════════════════════════
 // UTILS
 // ═══════════════════════════════════════════════════════
+function closeWhatsNew(){
+  const m=document.getElementById('whatsNewModal');
+  if(m) m.style.display='none';
+}
+function openInfoModal(){
+  const m=document.getElementById('infoModal');
+  if(m) m.style.display='flex';
+}
+function closeInfoModal(){
+  const m=document.getElementById('infoModal');
+  if(m) m.style.display='none';
+}
+
 function sexIcon(sex){ return sex==='ram'?'♂':sex==='ewe'?'♀':'✂'; }
 </script>
 </body>
