@@ -2913,26 +2913,193 @@ function generateQRDisplay() {
 
 function showQRChunk(idx) {
   const area = document.getElementById('qrDisplayArea');
-  // Use a QR code API that returns an image — Google Charts (works offline once cached)
-  // or encode as text link for manual entry fallback
-  const data = encodeURIComponent(qrChunks[idx]);
-  const size = 260;
-  area.innerHTML=`
-    <div style="background:white;padding:14px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${data}&color=0c1508&bgcolor=ffffff&margin=1"
-           style="width:${size}px;height:${size}px;border-radius:6px;"
-           onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block'">
-      <div id="qrFallback" style="display:none;background:#1a1a1a;border-radius:8px;padding:10px;width:100%;">
-        <div style="font-size:9px;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:6px;text-transform:uppercase;">QR data — copy to share manually</div>
-        <div style="font-size:8px;color:rgba(255,255,255,.5);word-break:break-all;font-family:monospace;line-height:1.4;">${qrChunks[idx].slice(0,120)}…</div>
-      </div>
-    </div>`;
+  area.innerHTML='<canvas id="qrCanvas" style="border-radius:12px;display:block;margin:0 auto;"></canvas>';
+  try {
+    drawQR(document.getElementById('qrCanvas'), qrChunks[idx], 280);
+  } catch(e) {
+    area.innerHTML='<div style="color:#ff8060;font-size:12px;padding:10px;text-align:center;">QR generation failed: '+e.message+'</div>';
+  }
   const lbl=document.getElementById('qrChunkLbl');
   if(lbl) lbl.textContent=`QR ${idx+1} of ${qrChunks.length}`;
   const prev=document.getElementById('qrPrevBtn'), next=document.getElementById('qrNextBtn');
   if(prev) prev.style.opacity=idx===0?'0.3':'1';
   if(next) { next.textContent=idx===qrChunks.length-1?'✓ Done':'Next →'; next.onclick=idx===qrChunks.length-1?renderSyncHome:nextQRChunk; }
 }
+
+// ── INLINE QR ENCODER (no library needed) ──────────────────────
+// Implements QR code version 1–10, byte mode, with Reed-Solomon ECC
+// Sufficient for our ST9: payloads (up to ~900 bytes per chunk)
+function drawQR(canvas, text, px) {
+  const qr = generateQRMatrix(text);
+  if(!qr) throw new Error('QR encode failed');
+  const n = qr.length;
+  const cell = Math.floor(px / n);
+  const size = cell * n;
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,size,size);
+  ctx.fillStyle = '#0c1508';
+  for(let r=0;r<n;r++) for(let c=0;c<n;c++) if(qr[r][c]) ctx.fillRect(c*cell,r*cell,cell,cell);
+}
+
+function generateQRMatrix(data) {
+  // Encode as bytes
+  const bytes = [];
+  for(let i=0;i<data.length;i++) bytes.push(data.charCodeAt(i)&0xff);
+  const len = bytes.length;
+
+  // Pick version (1-10) based on data length (M error correction)
+  const caps = [0,16,28,44,64,86,108,124,154,182,216];
+  let ver = 1;
+  while(ver<=10 && caps[ver]<len) ver++;
+  if(ver>10) return null;
+
+  const ecInfo = [
+    null,
+    {ec:10,bl:1,bc:19,ecl:7},   // 1
+    {ec:16,bl:1,bc:34,ecl:10},  // 2
+    {ec:26,bl:1,bc:55,ecl:15},  // 3
+    {ec:18,bl:2,bc:25,ecl:20},  // 4
+    {ec:24,bl:2,bc:33,ecl:26},  // 5
+    {ec:16,bl:4,bc:27,ecl:18},  // 6
+    {ec:18,bl:4,bc:31,ecl:20},  // 7
+    {ec:22,bl:2,bc:38,ecl:24},  // 8
+    {ec:22,bl:3,bc:36,ecl:30},  // 9
+    {ec:26,bl:4,bc:43,ecl:18},  // 10
+  ];
+  const info = ecInfo[ver];
+
+  // Build data codewords
+  const bits = [];
+  const pushBits = (val,n) => { for(let i=n-1;i>=0;i--) bits.push((val>>i)&1); };
+  pushBits(4,4); // byte mode
+  pushBits(len, ver<10?8:16);
+  bytes.forEach(b=>pushBits(b,8));
+  // Terminator
+  for(let i=0;i<4&&bits.length<info.bc*info.bl*8;i++) bits.push(0);
+  // Pad to byte boundary
+  while(bits.length%8) bits.push(0);
+  // Pad bytes
+  const padBytes=[0xEC,0x11];
+  let pi=0;
+  while(bits.length<info.bc*info.bl*8){padBytes.forEach(p=>{ if(bits.length<info.bc*info.bl*8) pushBits(p,8); }); }
+
+  // Convert bits to codewords
+  const cw=[];
+  for(let i=0;i<bits.length;i+=8){
+    let v=0;for(let j=0;j<8;j++) v=(v<<1)|bits[i+j];
+    cw.push(v);
+  }
+
+  // Reed-Solomon
+  const rs = rsEncode(cw, info.ec*info.bl);
+  const allCW = [...cw,...rs];
+
+  // Build matrix
+  const size = ver*4+17;
+  const M = Array.from({length:size},()=>new Array(size).fill(null));
+
+  const set=(r,c,v)=>{ if(r>=0&&r<size&&c>=0&&c<size) M[r][c]=v; };
+  const isSet=(r,c)=>M[r][c]!==null;
+
+  // Finder patterns
+  const finder=(r,c)=>{
+    for(let i=-1;i<=7;i++) for(let j=-1;j<=7;j++){
+      if(i<0||i>6||j<0||j>6) set(r+i,c+j,false);
+      else if(i===0||i===6||j===0||j===6) set(r+i,c+j,true);
+      else if(i>=2&&i<=4&&j>=2&&j<=4) set(r+i,c+j,true);
+      else set(r+i,c+j,false);
+    }
+  };
+  finder(0,0); finder(0,size-7); finder(size-7,0);
+
+  // Timing
+  for(let i=8;i<size-8;i++){ set(6,i,i%2===0); set(i,6,i%2===0); }
+
+  // Dark module
+  set(4*ver+9,8,true);
+
+  // Alignment patterns (version >= 2)
+  const alignPos = [[],[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,28,46],[6,32,50]];
+  if(ver>=2 && alignPos[ver]){
+    const pos=alignPos[ver];
+    for(const r of pos) for(const c of pos){
+      if(isSet(r,c)) continue;
+      for(let i=-2;i<=2;i++) for(let j=-2;j<=2;j++){
+        if(i===-2||i===2||j===-2||j===2) set(r+i,c+j,true);
+        else if(i===0&&j===0) set(r+i,c+j,true);
+        else set(r+i,c+j,false);
+      }
+    }
+  }
+
+  // Format info (mask 0, M level)
+  const fmtBits = getFormatBits(2,0); // EC level M=2, mask 0
+  const fmtPos=[[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],[7,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8]];
+  const fmtPos2=[[size-1,8],[size-2,8],[size-3,8],[size-4,8],[size-5,8],[size-6,8],[size-7,8],[8,size-8],[8,size-7],[8,size-6],[8,size-5],[8,size-4],[8,size-3],[8,size-2],[8,size-1]];
+  for(let i=0;i<15;i++){ set(fmtPos[i][0],fmtPos[i][1],(fmtBits>>i)&1); set(fmtPos2[i][0],fmtPos2[i][1],(fmtBits>>i)&1); }
+
+  // Place data bits with mask 0: (row+col)%2===0
+  let bitIdx=0;
+  const dataBits=[];
+  allCW.forEach(b=>{for(let i=7;i>=0;i--) dataBits.push((b>>i)&1);});
+
+  let up=true;
+  for(let col=size-1;col>=1;col-=2){
+    if(col===6) col=5;
+    for(let row=up?size-1:0; up?row>=0:row<size; row+=up?-1:1){
+      for(let dc=0;dc<2;dc++){
+        const c=col-dc, r=row;
+        if(!isSet(r,c)){
+          const bit=bitIdx<dataBits.length?dataBits[bitIdx++]:0;
+          const masked=(r+c)%2===0?bit^1:bit; // mask 0
+          set(r,c,masked===1);
+        }
+      }
+    }
+    up=!up;
+  }
+
+  // Fill remaining nulls
+  for(let r=0;r<size;r++) for(let c=0;c<size;c++) if(M[r][c]===null) M[r][c]=false;
+
+  return M;
+}
+
+function getFormatBits(ecLevel, mask) {
+  const data=(ecLevel<<3)|mask;
+  let rem=data;
+  for(let i=0;i<10;i++) rem=(rem<<1)^((rem>>9)?0x537:0);
+  return ((data<<10)|rem)^0x5412;
+}
+
+function rsEncode(data, ecCount) {
+  const poly = rsGeneratorPoly(ecCount);
+  const msg = [...data,...new Array(ecCount).fill(0)];
+  for(let i=0;i<data.length;i++){
+    const coef=msg[i];
+    if(coef!==0){
+      const log=GF_LOG[coef];
+      for(let j=0;j<poly.length;j++) msg[i+j]^=GF_EXP[(log+poly[j])%255];
+    }
+  }
+  return msg.slice(data.length);
+}
+function rsGeneratorPoly(ecCount){
+  let poly=[1];
+  for(let i=0;i<ecCount;i++){
+    const newPoly=new Array(poly.length+1).fill(0);
+    for(let j=0;j<poly.length;j++){
+      newPoly[j]^=poly[j];
+      newPoly[j+1]^=gfMul(poly[j],GF_EXP[i]);
+    }
+    poly=newPoly;
+  }
+  return poly.slice(1).map(v=>GF_LOG[v]);
+}
+function gfMul(a,b){ return (a===0||b===0)?0:GF_EXP[(GF_LOG[a]+GF_LOG[b])%255]; }
+const GF_EXP=new Array(512), GF_LOG=new Array(256);
+(()=>{ let x=1; for(let i=0;i<255;i++){ GF_EXP[i]=x; GF_LOG[x]=i; x<<=1; if(x&256) x^=285; } for(let i=255;i<512;i++) GF_EXP[i]=GF_EXP[i-255]; GF_LOG[0]=0; })();
 
 function prevQRChunk() { if(qrCurrentChunk>0){qrCurrentChunk--;showQRChunk(qrCurrentChunk);} }
 function nextQRChunk() { if(qrCurrentChunk<qrChunks.length-1){qrCurrentChunk++;showQRChunk(qrCurrentChunk);} }
@@ -3013,16 +3180,14 @@ function startCamera2() {
 function processScannedChunk(raw) {
   // format: ST9:1/3:BASE64DATA
   const parts=raw.split(':');
-  if(parts.length<3||parts[0]!=='ST9')return;
+  if(parts.length<3||parts[0]!=='ST9') return;
   const frac=parts[1].split('/');
   const idx=parseInt(frac[0])-1, total=parseInt(frac[1]);
-  const data=parts.slice(2).join(':');
   scanExpectedTotal=total;
   // avoid duplicates
-  if(scanChunksReceived.some(c=>c.idx===idx)){
-    scanAnimFrame=requestAnimationFrame(scanFrame);
-    return;
-  }
+  if(scanChunksReceived.some(c=>c.idx===idx)) return;
+  // got a new chunk — stop scanner briefly, haptic
+  if(navigator.vibrate) navigator.vibrate(40);
   scanChunksReceived.push({idx,data:raw});
   updateScanProgress();
   if(scanChunksReceived.length===total) {
@@ -3031,7 +3196,7 @@ function processScannedChunk(raw) {
   } else {
     const status=document.getElementById('scanStatus');
     if(status) status.textContent=`Got ${scanChunksReceived.length} of ${total} — scan next QR`;
-    scanAnimFrame=requestAnimationFrame(scanFrame);
+    // keep scanning (interval continues automatically)
   }
 }
 
