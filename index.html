@@ -810,6 +810,28 @@ textarea{resize:none;height:68px;font-size:13px;}
   </div>
   <div style="padding:0 13px 13px;">
     <div class="card" style="padding:0;overflow:hidden;margin-top:11px;">
+      <div class="set-sec">Farm setup</div>
+      <div class="set-item" onclick="openFarmDetails()">
+        <div class="set-accent" style="background:var(--t-set);"></div>
+        <div class="si-ico">🏡</div>
+        <div><div class="si-t">Farm details</div><div class="si-s" id="farmNameSub">Durran Durra · Charleyong NSW</div></div>
+        <div class="si-arr">›</div>
+      </div>
+      <div class="set-item" onclick="toast('🌿 Paddocks — structured paddock management coming in v10')">
+        <div class="set-accent" style="background:var(--c-teal);"></div>
+        <div class="si-ico">🌿</div>
+        <div><div class="si-t">Paddocks</div><div class="si-s">Structured paddock management — v10</div></div>
+        <div class="si-badge" style="background:var(--c-purple-l);color:var(--c-purple);font-size:8px;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:auto;white-space:nowrap;">v10</div>
+        <div class="si-arr">›</div>
+      </div>
+      <div class="set-item" onclick="openPrefixManager()">
+        <div class="set-accent" style="background:var(--t-set);"></div>
+        <div class="si-ico">🏷️</div>
+        <div><div class="si-t">Year prefixes</div><div class="si-s" id="prefixSub">Tag year prefixes</div></div>
+        <div class="si-arr">›</div>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;margin-top:11px;">
       <div class="set-sec">Export</div>
       <div class="set-item" onclick="exportAllData()">
         <div class="set-accent" style="background:var(--c-teal);"></div>
@@ -1277,7 +1299,8 @@ async function migrateFromLocalStorage(){
 
 async function loadAllIntoMemory(){
   const keys = ['data','sex','status','drench','costs','notes','mobs','mobhist',
-                 'drenchEvents','mobMoves','flags','prefixes','activeYr','lastUpdated','lastSync'];
+                 'drenchEvents','mobMoves','flags','prefixes','activeYr','lastUpdated','lastSync',
+                 'farmName','farmLoc'];
   for(const key of keys){
     const val = await idbGet(STORE_HOT, key).catch(()=>null);
     if(val !== null && val !== undefined) _mem[key] = val;
@@ -1423,6 +1446,14 @@ window.addEventListener('load', async () => {
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('hDate').textContent = fmtD(today);
   ['wDt','sDt','dDt','cDt'].forEach(id => { const el=document.getElementById(id); if(el) el.value=today; });
+  // Apply saved farm name/location
+  if(_mem.farmName) {
+    const hn=document.querySelector('.fh-name'); if(hn) hn.textContent=_mem.farmName;
+    const hs=document.querySelector('.fh-sub'); if(hs) hs.textContent=(_mem.farmLoc||'')+' · Sheep Tracker v9';
+    const sub=document.getElementById('farmNameSub'); if(sub) sub.textContent=_mem.farmName+' · '+(_mem.farmLoc||'');
+  }
+  const prefixSubEl=document.getElementById('prefixSub');
+  if(prefixSubEl) prefixSubEl.textContent=loadPrefixes().join(' · ')+' active';
   refreshCount();
   renderChips();
   renderHome();
@@ -2712,6 +2743,60 @@ function renderHome() {
   </div>`;
 }
 
+function openFarmDetails() {
+  const name = _mem.farmName || 'Durran Durra';
+  const loc  = _mem.farmLoc  || 'Charleyong NSW';
+  showModal(`<h3 style="margin-bottom:12px;">🏡 Farm details</h3>
+    <div class="fg"><span class="lbl">Farm name</span>
+      <input id="fdName" type="text" value="${name}" autocomplete="off" style="width:100%;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:inherit;font-size:15px;font-weight:700;">
+    </div>
+    <div class="fg"><span class="lbl">Location</span>
+      <input id="fdLoc" type="text" value="${loc}" autocomplete="off" style="width:100%;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:inherit;font-size:15px;font-weight:700;">
+    </div>
+    <div class="modal-btns">
+      <button onclick="saveFarmDetails()" style="background:var(--ac);color:white;flex:2;">Save</button>
+      <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);">Cancel</button>
+    </div>`);
+  setTimeout(()=>document.getElementById('fdName')?.focus(), 100);
+}
+function saveFarmDetails() {
+  const name = (document.getElementById('fdName')?.value||'').trim();
+  const loc  = (document.getElementById('fdLoc')?.value||'').trim();
+  if(!name) return;
+  _mem.farmName = name; _mem.farmLoc = loc;
+  idbWrite('farmName', name); idbWrite('farmLoc', loc);
+  document.querySelector('.fh-name').textContent = name;
+  document.querySelector('.fh-sub').textContent = loc + ' · Sheep Tracker v9';
+  const sub = document.getElementById('farmNameSub');
+  if(sub) sub.textContent = name + ' · ' + loc;
+  closeModal({target:document.getElementById('modalOv')});
+  toast('✓ Farm details saved');
+}
+function openPrefixManager() {
+  const prefixes = loadPrefixes();
+  showModal(`<h3 style="margin-bottom:12px;">🏷️ Year prefixes</h3>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:12px;line-height:1.5;">These are the 2-digit year codes used for tagging (e.g. 25 for 2025). Long-press a chip in any tag entry screen to remove one.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;">
+      ${prefixes.map(p=>`<div style="padding:8px 14px;background:var(--ac);color:white;border-radius:9px;font-family:'Courier Prime',monospace;font-size:17px;font-weight:700;">${p}</div>`).join('')}
+    </div>
+    <div style="display:flex;gap:7px;margin-bottom:12px;">
+      <input id="newPrefix" type="text" inputmode="numeric" maxlength="2" placeholder="e.g. 26" style="flex:1;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:'Courier Prime',monospace;font-size:20px;font-weight:700;text-align:center;">
+      <button onclick="addPrefixFromSettings()" style="padding:11px 18px;background:var(--ac);color:white;border:none;border-radius:9px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;">Add</button>
+    </div>
+    <div class="modal-btns">
+      <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);flex:1;">Done</button>
+    </div>`);
+  setTimeout(()=>{ const el=document.getElementById('prefixSub'); if(el) el.textContent=prefixes.join(' · ')+' active'; }, 100);
+}
+function addPrefixFromSettings() {
+  const v = (document.getElementById('newPrefix')?.value||'').trim();
+  if(!/^\d{1,2}$/.test(v)){ toast('⚠️ Enter 1 or 2 digits'); return; }
+  const p = v.padStart(2,'0');
+  const list = loadPrefixes();
+  if(!list.includes(p)){ list.push(p); list.sort(); savePrefixes(list); }
+  closeModal({target:document.getElementById('modalOv')});
+  openPrefixManager();
+}
 function showWtLossSheep() {
   const tags = window._pendingWtLoss || [];
   if(!tags.length) return;
@@ -2768,7 +2853,7 @@ function describeDelta(payload) {
 }
 
 // ── CHUNK + ENCODE ─────────────────────────────────────────────
-const QR_MAX_BYTES = 900; // safe single-QR payload (base64 chars)
+const QR_MAX_BYTES = 150; // fits within QR version 10 (216 byte capacity minus prefix overhead)
 
 function chunkPayload(payload) {
   const json = JSON.stringify(payload);
@@ -2879,7 +2964,7 @@ function generateQRDisplay() {
   const airRow   = document.getElementById('qrAirdropRow');
   const desc = describeDelta(payload);
 
-  if(chunks.length > 3) {
+  if(chunks.length > 5) {
     subtitle.textContent = 'Too much data for QR — use AirDrop';
     area.innerHTML=`<div style="background:#2a0808;border:1.5px solid rgba(180,50,30,.3);border-radius:12px;padding:20px;text-align:center;width:100%;">
       <div style="font-size:32px;margin-bottom:9px;">⚠️</div>
