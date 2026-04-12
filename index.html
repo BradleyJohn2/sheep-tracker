@@ -73,7 +73,7 @@
   --r:12px;--sh:0 1px 8px rgba(0,0,0,.07);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--txt);}
+body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--txt);display:flex;flex-direction:column;height:100dvh;overflow:hidden;}
 
 /* ═══ HEADER ═══ */
 header{background:var(--hbg);padding:12px 15px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;}
@@ -118,7 +118,7 @@ header{background:var(--hbg);padding:12px 15px 10px;display:flex;align-items:cen
 .fr-arr{font-size:13px;color:#2a2a2a;margin-left:auto;}
 
 /* ═══ MAIN SCROLL ═══ */
-main{flex:1;overflow-y:auto;background:var(--bg);-webkit-overflow-scrolling:touch;}
+main{flex:1;overflow-y:auto;background:var(--bg);-webkit-overflow-scrolling:touch;min-height:0;}
 .pnl{display:none;}
 .pnl.on{display:block;}
 
@@ -530,21 +530,6 @@ textarea{resize:none;height:68px;font-size:13px;}
 .empty p{font-weight:600;font-size:12px;}
 .new-mob-btn{width:100%;padding:12px;border:1.5px dashed var(--bor);border-radius:12px;background:none;color:var(--mut);font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:4px;}
 .last-upd{text-align:center;font-size:9px;color:var(--mut);padding:5px;background:var(--ac-l);border-radius:8px;margin-bottom:10px;font-weight:600;}
-</style>
-
-/* ═══ WHAT'S NEW MODAL ═══ */
-.wn-ov{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);z-index:9999;align-items:flex-end;justify-content:center;padding:0;}
-.wn-ov.show{display:flex;}
-.wn-box{background:var(--card);border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;box-shadow:0 -4px 40px rgba(0,0,0,.4);max-height:90vh;overflow-y:auto;}
-.wn-badge{display:inline-block;background:var(--ac);color:white;font-size:9px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:11px;}
-.wn-title{font-size:20px;font-weight:900;color:var(--txt);margin-bottom:5px;}
-.wn-sub{font-size:11px;color:var(--mut);font-weight:600;margin-bottom:16px;}
-.wn-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--bor);}
-.wn-item:last-of-type{border-bottom:none;}
-.wn-ico{font-size:18px;flex-shrink:0;width:24px;text-align:center;}
-.wn-txt{font-size:12px;font-weight:700;color:var(--txt);line-height:1.4;}
-.wn-txt span{display:block;font-size:10px;font-weight:600;color:var(--mut);margin-top:2px;}
-
 /* ═══ RELEASE LOG MODAL ═══ */
 .rl-version{font-size:9px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.7px;margin:14px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--bor);}
 .rl-version:first-child{margin-top:0;}
@@ -553,19 +538,39 @@ textarea{resize:none;height:68px;font-size:13px;}
 </style>
 <body>
 
-<!-- WHAT'S NEW MODAL -->
-<div class="wn-ov" id="whatsNewModal">
-  <div class="wn-box">
-    <span class="wn-badge">New in v9</span>
-    <div class="wn-title">What's new</div>
-    <div class="wn-sub">Sheep Tracker v9 — here's what changed</div>
-    <div class="wn-item"><div class="wn-ico">🏠</div><div class="wn-txt">New home dashboard<span>Alerts, mob overview with weigh schedules, and sync status at a glance</span></div></div>
-    <div class="wn-item"><div class="wn-ico">📲</div><div class="wn-txt">QR code sync<span>Generate a QR, the other person scans it — new records merge automatically. No files, no internet needed</span></div></div>
-    <div class="wn-item"><div class="wn-ico">⚖️</div><div class="wn-txt">Per-mob weigh schedule<span>Set how often each mob should be weighed — dashboard shows when it's due or overdue</span></div></div>
-    <div class="wn-item"><div class="wn-ico">📉</div><div class="wn-txt">Weight loss alerts<span>Tap the alert to go straight to the affected sheep in your flock</span></div></div>
-    <div class="wn-item"><div class="wn-ico">➕</div><div class="wn-txt">New recording menu<span>The + button opens a quick-action sheet — faster to reach any record type</span></div></div>
-    <div class="wn-item"><div class="wn-ico">✨</div><div class="wn-txt">Cleaner design<span>Easier to read in sunlight, bigger tap targets, haptic feedback on save</span></div></div>
-    <button onclick="document.getElementById('whatsNewModal').classList.remove('show')" style="margin-top:18px;width:100%;padding:14px;background:var(--ac);border:none;border-radius:12px;color:white;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">Got it — let's go 🐑</button>
+<!-- WHAT'S NEW MODAL — v8 pattern, inline styles, display toggle -->
+<div id="whatsNewModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:flex-end;justify-content:center;padding:0;">
+  <div style="background:var(--card);border-radius:20px 20px 0 0;padding:22px 18px 34px;max-width:480px;width:100%;max-height:85dvh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <div style="font-size:18px;font-weight:900;color:var(--txt);">✨ Sheep Tracker v9</div>
+        <div style="font-size:11px;color:var(--mut);font-weight:600;margin-top:2px;">New dashboard, QR sync &amp; more — here's what's new</div>
+      </div>
+      <button onclick="closeWhatsNew()" style="background:rgba(0,0,0,.08);border:none;border-radius:20px;padding:6px 14px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;color:var(--txt);">Got it</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="background:var(--bg);border-radius:11px;padding:13px;border:1px solid var(--bor);">
+        <div style="font-size:13px;font-weight:800;color:var(--ac-d);margin-bottom:4px;">🏠 New home dashboard</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Alerts for flagged sheep, withholding, weight loss and overdue weighs — all on the first screen. Mob tiles show when each mob is due for weighing.</div>
+      </div>
+      <div style="background:var(--bg);border-radius:11px;padding:13px;border:1px solid var(--bor);">
+        <div style="font-size:13px;font-weight:800;color:var(--ac-d);margin-bottom:4px;">📲 QR code sync</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Generate a QR code — the other person scans it and new records merge automatically. No files, no internet needed. Find it in <strong>Home → Sync strip</strong> or <strong>Settings → Share &amp; Sync</strong>.</div>
+      </div>
+      <div style="background:var(--bg);border-radius:11px;padding:13px;border:1px solid var(--bor);">
+        <div style="font-size:13px;font-weight:800;color:var(--ac-d);margin-bottom:4px;">⚖️ Per-mob weigh schedule</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Set how often each mob should be weighed — the dashboard shows due/overdue badges per mob. Set it when creating or editing a mob.</div>
+      </div>
+      <div style="background:var(--bg);border-radius:11px;padding:13px;border:1px solid var(--bor);">
+        <div style="font-size:13px;font-weight:800;color:var(--ac-d);margin-bottom:4px;">📉 Weight loss drill-through</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Tap the weight loss alert on the dashboard to go straight to the affected sheep in Flock — no searching needed.</div>
+      </div>
+      <div style="background:var(--bg);border-radius:11px;padding:13px;border:1px solid var(--bor);">
+        <div style="font-size:13px;font-weight:800;color:var(--ac-d);margin-bottom:4px;">➕ New recording menu &amp; cleaner design</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">The + button opens a quick-action sheet — faster to reach any record type. Haptic feedback on save. Easier to read in sunlight.</div>
+      </div>
+    </div>
+    <button onclick="closeWhatsNew()" style="margin-top:16px;width:100%;padding:14px;background:linear-gradient(135deg,var(--ac),var(--ac-d));color:white;border:none;border-radius:11px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">Let's go →</button>
   </div>
 </div>
 
@@ -625,24 +630,6 @@ textarea{resize:none;height:68px;font-size:13px;}
       <button onclick="uwClearSel()" style="flex:1;padding:8px;background:var(--card);border:1.5px solid var(--bor);border-radius:8px;font-family:inherit;font-size:10px;font-weight:800;cursor:pointer;color:var(--mut);">Clear</button>
       <button onclick="uwBulkFlag()" style="flex:1;padding:8px;background:var(--c-flag-l);border:1.5px solid rgba(180,50,30,.2);border-radius:8px;font-family:inherit;font-size:10px;font-weight:800;cursor:pointer;color:var(--c-flag);">🚩 Flag sel.</button>
     </div>
-    <div id="uwList"></div>
-    <div class="uw-dest">
-      <div class="uw-dest-lbl">Move selected to mob</div>
-      <div class="uw-mob-opts" id="uwDestOpts"></div>
-      <button class="uw-move-btn" id="uwMoveBtn" onclick="doUwMove()">Select sheep + destination above</button>
-    </div>
-  </div>
-</div>
-
-<!-- HEADER -->
-<header>
-  <div class="h-brand"><h1>Sheep Tracker</h1><p id="hDate"></p></div>
-  <div class="h-right">
-    <div class="h-count"><div class="n" id="hCount">0</div><div class="l">SHEEP</div></div>
-  </div>
-</header>
-
-<main id="mainScroll">
     <div id="uwList"></div>
     <div class="uw-dest">
       <div class="uw-dest-lbl">Move selected to mob</div>
@@ -1164,37 +1151,16 @@ textarea{resize:none;height:68px;font-size:13px;}
 
 <!-- BOTTOM NAV -->
 <div class="nav-wrap">
-  <div class="nav-gap">
-    <div class="fab tab-home" id="fabBtn" onclick="toggleFab()">＋</div>
-  </div>
   <div class="nav-inner">
     <button class="nav-btn on" data-tab="home" onclick="goTab('home')"><span class="ni">🏠</span>Home</button>
     <button class="nav-btn" data-tab="flock" onclick="goTab('flock')"><span class="ni">🐑</span>Flock</button>
-    <div class="nav-gap" style="position:relative;">
+    <div class="nav-gap">
       <div class="fab tab-home" id="fabBtn" onclick="toggleFab()">＋</div>
     </div>
     <button class="nav-btn" data-tab="stats" onclick="goTab('stats')"><span class="ni">📊</span>Stats</button>
     <button class="nav-btn" data-tab="set" onclick="goTab('set')"><span class="ni">⚙️</span>Settings</button>
   </div>
 </div>
-
-</main>
-
-<!-- FAB OVERLAY -->
-<div class="fab-ov" id="fabOv" onclick="closeFabOv(event)">
-  <div class="fab-sheet" onclick="event.stopPropagation()">
-    <div class="fab-notch"></div>
-    <div class="fab-ttl">New record</div>
-    <div class="fab-row" onclick="openEntry('weigh')"><div class="fr-ico">⚖️</div><div><div class="fr-main">Weigh sheep</div><div class="fr-sub">Record a weight</div></div><div class="fr-arr">›</div></div>
-    <div class="fab-row" onclick="openEntry('newsheep')"><div class="fr-ico">🍼</div><div><div class="fr-main">New sheep / Lamb marking</div><div class="fr-sub">Add or mark lambs with sire record</div></div><div class="fr-arr">›</div></div>
-    <div class="fab-row" onclick="openEntry('status')"><div class="fr-ico">🏷️</div><div><div class="fr-main">Sold / Dead</div><div class="fr-sub">Update status</div></div><div class="fr-arr">›</div></div>
-    <div class="fab-row" onclick="openEntry('drench')"><div class="fr-ico">💉</div><div><div class="fr-main">Drench log</div><div class="fr-sub">Record treatment &amp; withholding</div></div><div class="fr-arr">›</div></div>
-    <div class="fab-row" onclick="openEntry('cost')"><div class="fr-ico">💰</div><div><div class="fr-main">Cost / Income</div><div class="fr-sub">Track finances</div></div><div class="fr-arr">›</div></div>
-    <div class="fab-row" onclick="openEntry('notes')"><div class="fr-ico">📝</div><div><div class="fr-main">Notes</div><div class="fr-sub">Tag history &amp; notes</div></div><div class="fr-arr">›</div></div>
-  </div>
-</div>
-
-<!-- SYNC OVERLAY -->
 <style>
 .sync-ov{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:500;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .sync-ov.open{display:flex;flex-direction:column;}
@@ -1449,7 +1415,7 @@ window.addEventListener('load', async () => {
     await idbSet(STORE_HOT,'__whatsNew_v9', true);
     setTimeout(()=>{
       const m=document.getElementById('whatsNewModal');
-      if(m) m.classList.add('show');
+      if(m) m.style.display='flex';
     }, 800);
   }
 
@@ -1483,7 +1449,8 @@ window.addEventListener('load', async () => {
 });
 
 function closeWhatsNew(){
-  document.getElementById('whatsNewModal').classList.remove('show');
+  const m=document.getElementById('whatsNewModal');
+  if(m) m.style.display='none';
 }
 
 function focusWeight() {
