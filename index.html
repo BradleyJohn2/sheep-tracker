@@ -76,27 +76,27 @@
 body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--txt);display:flex;flex-direction:column;height:100dvh;overflow:hidden;}
 
 /* ═══ HEADER ═══ */
-header{background:var(--hbg);padding:12px 15px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;}
-.h-brand h1{font-size:16px;font-weight:900;color:#fff;letter-spacing:-.3px;}
-.h-brand p{font-size:8px;color:var(--gp);font-weight:700;margin-top:1px;}
+header{background:var(--hbg);padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;}
+.h-brand h1{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.3px;}
+.h-brand p{font-size:10px;color:var(--gp);font-weight:700;margin-top:2px;}
 .h-right{display:flex;align-items:center;gap:10px;}
 .h-share{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5px 10px;color:#bbb;font-family:inherit;font-size:10px;font-weight:800;cursor:pointer;transition:background .15s;}
 .h-share:active{background:rgba(255,255,255,.15);}
-.h-count .n{font-size:22px;font-weight:900;color:var(--am);line-height:1;text-align:right;}
-.h-count .l{font-size:7px;color:var(--gp);font-weight:700;text-align:right;letter-spacing:.5px;}
+.h-count .n{font-size:28px;font-weight:900;color:var(--am);line-height:1;text-align:right;}
+.h-count .l{font-size:9px;color:var(--gp);font-weight:700;text-align:right;letter-spacing:.5px;}
 
 /* ═══ BOTTOM NAV ═══ */
 .nav-wrap{background:var(--hbg);flex-shrink:0;position:relative;border-top:1px solid rgba(255,255,255,.04);}
-.nav-inner{display:flex;height:58px;}
-.nav-btn{flex:1;padding:8px 4px 6px;border:none;border-top:3px solid transparent;background:none;color:#283820;font-size:7px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit;cursor:pointer;transition:color .15s;}
-.nav-btn .ni{font-size:16px;}
+.nav-inner{display:flex;height:70px;}
+.nav-btn{flex:1;padding:10px 4px 8px;border:none;border-top:3px solid transparent;background:none;color:#283820;font-size:11px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:inherit;cursor:pointer;transition:color .15s;}
+.nav-btn .ni{font-size:22px;}
 .nav-btn.on[data-tab="home"]{color:var(--t-home);border-top-color:var(--t-home);}
 .nav-btn.on[data-tab="flock"]{color:var(--t-flock);border-top-color:var(--t-flock);}
 .nav-btn.on[data-tab="stats"]{color:var(--t-stats);border-top-color:var(--t-stats);}
 .nav-btn.on[data-tab="set"]{color:var(--t-set);border-top-color:var(--t-set);}
 .nav-gap{flex:1;position:relative;}
 /* FAB */
-.fab{position:absolute;top:-24px;left:50%;transform:translateX(-50%);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:white;border:4px solid var(--hbg);z-index:20;cursor:pointer;transition:all .2s;font-weight:900;box-shadow:0 4px 16px rgba(0,0,0,.4);}
+.fab{position:absolute;top:-26px;left:50%;transform:translateX(-50%);width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:white;border:4px solid var(--hbg);z-index:20;cursor:pointer;transition:all .2s;font-weight:900;box-shadow:0 4px 16px rgba(0,0,0,.4);}
 .fab.tab-home{background:var(--t-home);}
 .fab.tab-flock{background:var(--t-flock);}
 .fab.tab-stats{background:var(--t-stats);}
@@ -238,7 +238,7 @@ textarea{resize:none;height:68px;font-size:13px;}
 
 /* ═══ SUB TABS ═══ */
 .stabs{display:flex;background:var(--hbg);border-bottom:1px solid rgba(255,255,255,.04);}
-.stab{flex:1;padding:12px 4px;border:none;border-bottom:3px solid transparent;background:none;color:#3a4a30;font-size:10px;font-weight:800;font-family:inherit;cursor:pointer;transition:color .15s;}
+.stab{flex:1;padding:14px 4px;border:none;border-bottom:3px solid transparent;background:none;color:#3a4a30;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;transition:color .15s;}
 .stab.on[data-sec="flock"]{color:var(--t-flock);border-bottom-color:var(--t-flock);}
 .stab.on[data-sec="stats"]{color:var(--t-stats);border-bottom-color:var(--t-stats);}
 .sub-pnl{display:none;}
@@ -857,6 +857,12 @@ textarea{resize:none;height:68px;font-size:13px;}
     </div>
     <div class="card" style="padding:0;overflow:hidden;margin-top:11px;">
       <div class="set-sec">App</div>
+      <div class="set-item" onclick="shareAppUrl()">
+        <div class="set-accent" style="background:var(--c-blue);"></div>
+        <div class="si-ico">🔗</div>
+        <div><div class="si-t">Share app</div><div class="si-s">Send the app link to another phone</div></div>
+        <div class="si-arr">›</div>
+      </div>
       <div class="set-item" onclick="document.getElementById('releaseLogModal').classList.add('open')">
         <div class="set-accent" style="background:var(--c-purple);"></div>
         <div class="si-ico">📋</div>
@@ -2917,24 +2923,28 @@ function closeSync() {
 function renderSyncHome() {
   syncMode='home';
   document.getElementById('syncContent').innerHTML=`
-    <div style="text-align:center;padding:8px 0 18px;">
+    <div style="text-align:center;padding:8px 0 16px;">
       <div style="font-size:36px;margin-bottom:8px;">📲</div>
       <div style="font-size:16px;font-weight:900;color:#fff;margin-bottom:5px;">Share &amp; Sync</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.35);font-weight:600;line-height:1.5;">Share your changes via QR code.<br>The other person scans to merge.</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.35);font-weight:600;line-height:1.5;">Share your records with another phone.<br>Only new records are shared — nothing gets overwritten.</div>
     </div>
     <button class="sync-big-btn sync-send" onclick="startSend()">
       <div style="font-size:28px;margin-bottom:6px;">📤</div>
-      <div class="sbb-t">Show my QR</div>
-      <div class="sbb-s">Generate QR code for the other person to scan</div>
+      <div class="sbb-t">Show my QR code</div>
+      <div class="sbb-s">Generate a QR — the other person scans it to receive your changes</div>
     </button>
-    <button class="sync-big-btn sync-scan" onclick="startScan()">
-      <div style="font-size:28px;margin-bottom:6px;">📷</div>
-      <div class="sbb-t">Scan QR</div>
-      <div class="sbb-s">Point camera at their QR code to import changes</div>
+    <button class="sync-big-btn" onclick="doAirdrop()" style="border-color:rgba(100,180,255,.3);">
+      <div style="font-size:28px;margin-bottom:6px;">📡</div>
+      <div class="sbb-t">Share via AirDrop / iMessage</div>
+      <div class="sbb-s">Send full backup — they import it to merge</div>
     </button>
-    <div style="margin-top:14px;padding:11px 13px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.07);">
-      <div style="font-size:9px;font-weight:800;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;">How it works</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.3);line-height:1.6;font-weight:600;">One person taps Show my QR · the other taps Scan QR · only new records are shared · both apps merge automatically · no files, no internet needed</div>
+    <div style="margin-top:12px;padding:11px 13px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.07);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <div style="font-size:14px;">📷</div>
+        <div style="font-size:10px;font-weight:800;color:rgba(255,255,255,.4);">Scan QR — coming in v10</div>
+        <div style="margin-left:auto;font-size:8px;font-weight:800;padding:2px 8px;background:rgba(104,32,160,.3);color:rgba(200,150,255,.8);border-radius:20px;">v10</div>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,.25);line-height:1.5;font-weight:600;">For now — one person shows their QR, the other uses AirDrop or iMessage to receive the full sync file.</div>
     </div>`;
 }
 
@@ -3515,6 +3525,12 @@ async function doAirdrop(){
   if(navigator.canShare&&navigator.canShare({files:[file]})) navigator.share({title:'Sheep Tracker Backup',files:[file]}).catch(()=>{});
   else if(navigator.share) navigator.share({title:'Sheep Tracker Backup',text:JSON.stringify(data)}).catch(()=>{});
   else { exportBackup(); toast('💾 Backup downloaded'); }
+}
+
+function shareAppUrl(){
+  const url=window.location.href.split('?')[0].split('#')[0];
+  if(navigator.share) navigator.share({title:'Sheep Tracker',text:'Track sheep weights, mobs and drench records on your phone.',url}).catch(()=>{});
+  else navigator.clipboard?.writeText(url).then(()=>toast('🔗 Link copied!')).catch(()=>toast('🔗 '+url));
 }
 
 // ═══════════════════════════════════════════════════════
