@@ -1,4 +1,4 @@
-const CACHE_NAME = "sheep-tracker-v9.3";
+const CACHE_NAME = "sheep-tracker-v9.5";
 const urlsToCache = [
   "./index.html",
   "./manifest.json",
