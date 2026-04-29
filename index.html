@@ -1189,15 +1189,20 @@ textarea{resize:none;height:68px;font-size:13px;}
       <!-- ADD JOINING FORM -->
       <div id="joiningForm" style="display:none;background:var(--card);border:1.5px solid rgba(104,32,160,.3);border-radius:var(--r);padding:14px;margin-bottom:12px;">
         <div style="font-size:12px;font-weight:900;color:var(--c-purple);margin-bottom:12px;">Record Joining Event</div>
-        <div class="fg"><span class="lbl">Mob / Ewe group</span><select id="jEweMob" style="font-size:14px;"></select></div>
+        <div class="fg"><span class="lbl">Mob / Ewe group</span><select id="jEweMob" onchange="joiningMobChanged()" style="font-size:14px;"></select></div>
         <div class="fg"><span class="lbl">Ram tag(s) — comma separated</span><input type="text" id="jRamTags" placeholder="e.g. 25004, 25005" autocomplete="off" style="font-family:'Courier Prime',monospace;font-weight:700;font-size:15px;"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;">
-          <div><span class="lbl">Joining start</span><input type="date" id="jStartDate"></div>
-          <div><span class="lbl">Joining end</span><input type="date" id="jEndDate"></div>
+          <div><span class="lbl">Ram in (joining start)</span><input type="date" id="jStartDate" oninput="joiningStartChanged()"></div>
+          <div><span class="lbl">Ram out (joining end)</span><input type="date" id="jEndDate"><div style="font-size:9px;color:var(--mut);margin-top:4px;font-weight:600;">Auto: 6 weeks — edit if different</div></div>
         </div>
-        <div class="fg"><span class="lbl">Expected lambing start</span><input type="date" id="jLambDate"><div style="font-size:9px;color:var(--mut);margin-top:4px;font-weight:600;">Sheep gestation ~147 days (21 weeks)</div></div>
-        <div class="fg"><span class="lbl">Ewe count at joining</span><input type="number" id="jEweCount" placeholder="0" min="0" inputmode="numeric" style="font-size:20px;font-weight:900;text-align:center;"></div>
-        <div class="fg"><span class="lbl">Notes (optional)</span><textarea id="jNotes" placeholder="e.g. back paddock, good body condition..."></textarea></div>
+        <div class="fg"><span class="lbl">Est. lambing start</span><input type="date" id="jLambDate"><div style="font-size:9px;color:var(--mut);margin-top:4px;font-weight:600;">Auto: ram in + 147 days (21 weeks gestation) — edit if different</div></div>
+        <div class="fg"><span class="lbl">Actual lambing start <span style="font-size:9px;color:var(--mut);font-weight:600;text-transform:none;letter-spacing:0;">— fill in once lambing begins</span></span><input type="date" id="jActualLambDate" placeholder=""></div>
+        <div class="fg">
+          <span class="lbl">Ewe count at joining</span>
+          <input type="number" id="jEweCount" placeholder="0" min="0" inputmode="numeric" style="font-size:20px;font-weight:900;text-align:center;">
+          <div style="font-size:9px;color:var(--mut);margin-top:4px;font-weight:600;" id="jEweCountHint"></div>
+        </div>
+        <div class="fg"><span class="lbl">Notes (optional)</span><textarea id="jNotes" placeholder="e.g. good body condition..."></textarea></div>
         <div style="display:flex;gap:8px;">
           <button style="flex:2;padding:11px;background:var(--c-purple);color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;" onclick="saveJoining()">Save Joining</button>
           <button style="flex:1;padding:11px;background:var(--bg);color:var(--mut);border:1.5px solid var(--bor);border-radius:9px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;" onclick="cancelJoining()">Cancel</button>
@@ -1608,7 +1613,174 @@ textarea{resize:none;height:68px;font-size:13px;}
   </div>
 </div>
 
-</main>
+<!-- BUY-IN PANEL -->
+<div class="pnl" id="pnl-buyin">
+  <button class="back-btn" style="margin:12px 13px 0;" onclick="closeFabEntry()">← Back</button>
+  <div class="ep">
+    <div class="card" style="padding:13px;">
+      <h2>🏪 Add sheep</h2>
+      <p style="font-size:11px;color:var(--mut);margin-bottom:13px;line-height:1.5;">For a bought animal or any sheep not yet in the system. Only the tag number is required.</p>
+      <span class="lbl">Tag number</span>
+      <input type="text" id="buyinTag" inputmode="text" placeholder="e.g. 24087 or full tag" autocomplete="off"
+        style="font-family:'Courier Prime',monospace;font-size:26px;font-weight:900;text-align:center;letter-spacing:3px;margin-bottom:4px;" oninput="buyinTagCheck()">
+      <div id="buyinTagStatus" style="font-size:10px;color:var(--mut);margin-bottom:12px;font-weight:600;min-height:14px;"></div>
+      <span class="lbl">Sex <span style="font-size:9px;font-weight:600;text-transform:none;letter-spacing:0;"> — skip if unknown</span></span>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:13px;">
+        <button id="buyinSexRam" onclick="setBuyinSex('ram')" style="padding:18px 8px;border-radius:12px;border:2px solid rgba(41,128,185,.25);background:rgba(41,128,185,.08);color:#2980b9;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">♂ Ram</button>
+        <button id="buyinSexEwe" onclick="setBuyinSex('ewe')" style="padding:18px 8px;border-radius:12px;border:2px solid rgba(192,57,122,.25);background:rgba(192,57,122,.08);color:#c0397a;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">♀ Ewe</button>
+        <button id="buyinSexWeth" onclick="setBuyinSex('wether')" style="padding:18px 8px;border-radius:12px;border:2px solid rgba(125,60,152,.25);background:rgba(125,60,152,.08);color:#7d3c98;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">✂ Wether</button>
+      </div>
+      <div style="border-top:1px solid var(--bor);padding-top:12px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:800;color:var(--txt);margin-bottom:9px;">Assign <span style="font-size:9px;font-weight:600;color:var(--mut);text-transform:none;letter-spacing:0;">— optional</span></div>
+        <span class="lbl">Mob</span>
+        <select id="buyinMob" style="font-size:14px;margin-bottom:9px;">
+          <option value="">— No mob —</option>
+        </select>
+      </div>
+      <div style="border-top:1px solid var(--bor);padding-top:12px;margin-bottom:13px;">
+        <div style="font-size:10px;font-weight:800;color:var(--txt);margin-bottom:9px;">Purchase details <span style="font-size:9px;font-weight:600;color:var(--mut);text-transform:none;letter-spacing:0;">— optional, creates a cost entry if price entered</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+          <div>
+            <span class="lbl">Vendor / Source</span>
+            <input type="text" id="buyinVendor" placeholder="e.g. Braidwood saleyards" autocomplete="off" style="font-size:13px;">
+          </div>
+          <div>
+            <span class="lbl">Price ($AUD)</span>
+            <input type="number" id="buyinPrice" placeholder="0.00" step="0.01" min="0" inputmode="decimal" style="font-size:20px;font-weight:900;text-align:center;">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-g" style="font-size:18px;padding:16px;" onclick="saveBuyin()">＋ Add sheep</button>
+    </div>
+    <div class="sl">Added this session</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;" id="buyinAdded"></div>
+  </div>
+</div>
+
+<!-- LAMB MARKING PANEL -->
+<div class="pnl" id="pnl-lambmark">
+  <button class="back-btn" style="margin:12px 13px 0;" onclick="closeFabEntry()">← Back</button>
+  <div class="ep">
+
+    <!-- SETUP SCREEN -->
+    <div id="lmSetup">
+      <div class="card" style="padding:13px;border-color:rgba(104,32,160,.4);">
+        <h2 style="color:var(--c-purple);margin-bottom:13px;">🐣 Lamb marking — session setup</h2>
+
+        <!-- Link to joining event -->
+        <span class="lbl">Link to joining event <span style="font-size:9px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">— auto-fills mob below</span></span>
+        <select id="lmJoiningId" onchange="lmJoiningChanged()" style="font-size:13px;margin-bottom:5px;">
+          <option value="">— No joining event —</option>
+        </select>
+        <div id="lmJoiningDetail" style="font-size:10px;color:var(--c-purple);font-weight:700;margin-bottom:11px;min-height:14px;padding:0 2px;"></div>
+
+        <div style="border-top:1px solid var(--bor);padding-top:11px;margin-bottom:11px;">
+          <span class="lbl">Mob</span>
+          <select id="lmMob" onchange="lmMobChanged()" style="font-size:14px;margin-bottom:0;"></select>
+        </div>
+      </div>
+
+      <div class="card" style="padding:13px;">
+        <h2 style="margin-bottom:11px;">Starting tag</h2>
+        <div style="background:var(--hbg,#1a3a0f);border-radius:10px;padding:11px;margin-bottom:11px;">
+          <div class="ta-lbl" style="margin-bottom:8px;">Year prefix</div>
+          <div class="chips" id="lmChips"></div>
+        </div>
+        <span class="lbl">First tag number</span>
+        <input type="number" id="lmStartNum" placeholder="001" min="1" max="999" inputmode="numeric"
+          style="font-size:28px;font-weight:900;text-align:center;letter-spacing:3px;margin-bottom:9px;"
+          oninput="lmUpdatePreview()">
+        <div style="background:var(--hbg,#1a3a0f);border-radius:10px;padding:11px;text-align:center;">
+          <div style="font-size:9px;font-weight:800;color:rgba(212,232,196,.7);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;">First tag will be</div>
+          <div id="lmPreviewTag" style="font-family:'Courier Prime',monospace;font-size:34px;font-weight:900;color:#e8a020;letter-spacing:4px;">—</div>
+          <div style="font-size:9px;color:rgba(212,232,196,.6);margin-top:4px;font-weight:600;">Advances automatically after each lamb</div>
+        </div>
+      </div>
+
+      <button class="btn btn-g" style="font-size:18px;padding:16px;margin-bottom:8px;" onclick="lmStartSession()">Start marking session →</button>
+      <button onclick="closeFabEntry()" style="width:100%;padding:11px;background:none;border:1.5px solid var(--bor);border-radius:10px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;color:var(--mut);">Cancel</button>
+    </div>
+
+    <!-- MARKING SCREEN (hidden until session started) -->
+    <div id="lmMarking" style="display:none;">
+      <!-- Live count bar -->
+      <div style="background:var(--hbg,#1a3a0f);border-radius:12px;padding:13px;margin-bottom:11px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div style="text-align:center;">
+          <div id="lmCountRam" style="font-size:28px;font-weight:900;color:#7ab8f5;line-height:1;">0</div>
+          <div style="font-size:9px;color:rgba(212,232,196,.7);font-weight:700;text-transform:uppercase;margin-top:2px;">Rams</div>
+        </div>
+        <div style="text-align:center;">
+          <div id="lmCountEwe" style="font-size:28px;font-weight:900;color:#f5a0c8;line-height:1;">0</div>
+          <div style="font-size:9px;color:rgba(212,232,196,.7);font-weight:700;text-transform:uppercase;margin-top:2px;">Ewes</div>
+        </div>
+        <div style="text-align:center;">
+          <div id="lmCountWeth" style="font-size:28px;font-weight:900;color:#c8a0f5;line-height:1;">0</div>
+          <div style="font-size:9px;color:rgba(212,232,196,.7);font-weight:700;text-transform:uppercase;margin-top:2px;">Wethers</div>
+        </div>
+      </div>
+
+      <!-- Current tag -->
+      <div style="background:var(--hbg,#1a3a0f);border-radius:12px;padding:13px;text-align:center;margin-bottom:11px;">
+        <div style="font-size:9px;font-weight:800;color:rgba(212,232,196,.7);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">Tag this lamb</div>
+        <div id="lmCurrentTag" style="font-family:'Courier Prime',monospace;font-size:38px;font-weight:900;color:#e8a020;letter-spacing:4px;">—</div>
+        <div style="font-size:10px;color:rgba(212,232,196,.6);margin-top:5px;font-weight:600;">Tap sex to record and advance</div>
+      </div>
+
+      <!-- Big sex buttons -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:11px;">
+        <button onclick="lmAddLamb('ram')"
+          style="padding:24px 6px;border-radius:14px;border:2.5px solid rgba(41,128,185,.3);background:rgba(41,128,185,.1);color:#2980b9;font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;transition:all .1s;min-height:80px;">
+          ♂<br>Ram</button>
+        <button onclick="lmAddLamb('ewe')"
+          style="padding:24px 6px;border-radius:14px;border:2.5px solid rgba(192,57,122,.3);background:rgba(192,57,122,.1);color:#c0397a;font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;transition:all .1s;min-height:80px;">
+          ♀<br>Ewe</button>
+        <button onclick="lmAddLamb('wether')"
+          style="padding:24px 6px;border-radius:14px;border:2.5px solid rgba(125,60,152,.3);background:rgba(125,60,152,.1);color:#7d3c98;font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;transition:all .1s;min-height:80px;">
+          ✂<br>Wether</button>
+      </div>
+
+      <!-- Recent strip -->
+      <div style="font-size:9px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">Recent</div>
+      <div id="lmRecentStrip" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;min-height:28px;"></div>
+
+      <!-- End session at bottom -->
+      <button onclick="lmEndSession()"
+        style="width:100%;padding:14px;background:#e8a020;color:#1a2010;border:none;border-radius:11px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;"
+        id="lmEndBtn">End session — 0 marked</button>
+    </div>
+
+    <!-- SESSION SUMMARY (shown after end) -->
+    <div id="lmSummary" style="display:none;">
+      <div style="text-align:center;padding:16px 0 10px;">
+        <div style="font-size:36px;margin-bottom:6px;">🐣</div>
+        <div style="font-size:16px;font-weight:900;color:var(--txt);">Session complete</div>
+        <div id="lmSumMeta" style="font-size:11px;color:var(--mut);margin-top:3px;font-weight:600;"></div>
+      </div>
+      <div style="background:var(--hbg,#1a3a0f);border-radius:12px;padding:13px;margin-bottom:11px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div style="text-align:center;">
+          <div id="lmSumRam" style="font-size:26px;font-weight:900;color:#7ab8f5;line-height:1;">0</div>
+          <div style="font-size:9px;color:rgba(212,232,196,.7);font-weight:700;text-transform:uppercase;margin-top:2px;">Rams</div>
+        </div>
+        <div style="text-align:center;">
+          <div id="lmSumEwe" style="font-size:26px;font-weight:900;color:#f5a0c8;line-height:1;">0</div>
+          <div style="font-size:9px;color:rgba(212,232,196,.7);font-weight:700;text-transform:uppercase;margin-top:2px;">Ewes</div>
+        </div>
+        <div style="text-align:center;">
+          <div id="lmSumWeth" style="font-size:26px;font-weight:900;color:#c8a0f5;line-height:1;">0</div>
+          <div style="font-size:9px;color:rgba(212,232,196,.7);font-weight:700;text-transform:uppercase;margin-top:2px;">Wethers</div>
+        </div>
+      </div>
+      <div class="card" style="padding:13px;">
+        <div id="lmSumDetails"></div>
+      </div>
+      <button class="btn btn-g" style="margin-bottom:9px;font-size:16px;padding:14px;" onclick="closeFabEntry()">Done</button>
+      <button onclick="lmAnotherSession()"
+        style="width:100%;padding:12px;background:none;border:1.5px solid var(--bor);border-radius:10px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;color:var(--mut);">
+        Start another session for this mob</button>
+    </div>
+
+  </div>
+</div>
 
 <!-- FAB OVERLAY -->
 <div class="fab-ov" id="fabOv" onclick="closeFabOv(event)">
@@ -1616,7 +1788,8 @@ textarea{resize:none;height:68px;font-size:13px;}
     <div class="fab-notch"></div>
     <div class="fab-ttl">New record</div>
     <div class="fab-row" onclick="openEntry('weigh')"><div class="fr-ico">⚖️</div><div><div class="fr-main">Weigh sheep</div><div class="fr-sub">Record a weight</div></div><div class="fr-arr">›</div></div>
-    <div class="fab-row" onclick="openEntry('newsheep')"><div class="fr-ico">🍼</div><div><div class="fr-main">New sheep / Lamb marking</div><div class="fr-sub">Add or mark lambs with sire record</div></div><div class="fr-arr">›</div></div>
+    <div class="fab-row" onclick="openEntry('lambmark')"><div class="fr-ico">🐣</div><div><div class="fr-main">Lamb marking</div><div class="fr-sub">Fast tap session, links to joining record</div></div><div class="fr-arr">›</div></div>
+    <div class="fab-row" onclick="openEntry('buyin')"><div class="fr-ico">🏪</div><div><div class="fr-main">Buy-in / Add unrecorded sheep</div><div class="fr-sub">Manual tag, optional purchase details</div></div><div class="fr-arr">›</div></div>
     <div class="fab-row" onclick="openEntry('status')"><div class="fr-ico">🏷️</div><div><div class="fr-main">Sold / Dead</div><div class="fr-sub">Update status</div></div><div class="fr-arr">›</div></div>
     <div class="fab-row" onclick="openEntry('drench')"><div class="fr-ico">💉</div><div><div class="fr-main">Drench log</div><div class="fr-sub">Record treatment &amp; withholding</div></div><div class="fr-arr">›</div></div>
     <div class="fab-row" onclick="openEntry('cost')"><div class="fr-ico">💰</div><div><div class="fr-main">Cost / Income</div><div class="fr-sub">Track finances</div></div><div class="fr-arr">›</div></div>
@@ -1699,6 +1872,14 @@ textarea{resize:none;height:68px;font-size:13px;}
     <button onclick="closePaddockScreen()" style="background:none;border:none;color:rgba(255,255,255,.5);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;">← Back</button>
     <div style="font-size:15px;font-weight:900;color:#fff;flex:1;">🌿 Paddocks</div>
     <button onclick="openAddPaddockModal()" style="padding:6px 13px;background:var(--am);color:var(--hbg);border:none;border-radius:8px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;">＋ Add</button>
+  </div>
+  <!-- Return-to-mob banner — shown when opened from move paddock flow -->
+  <div id="paddockReturnBanner" style="display:none;align-items:center;gap:10px;background:rgba(74,138,46,.15);border-bottom:1.5px solid rgba(74,138,46,.3);padding:10px 14px;">
+    <div style="font-size:16px;">📍</div>
+    <div style="flex:1;">
+      <div style="font-size:11px;font-weight:800;color:var(--ac-d);">Adding paddock for <span class="prb-mob" style="color:var(--txt);"></span></div>
+      <div style="font-size:10px;color:var(--mut);font-weight:600;">Add your paddock below, then tap ← Back to assign it</div>
+    </div>
   </div>
   <div style="padding:13px;" id="paddockList">
     <!-- rendered by renderPaddockList() -->
@@ -1966,12 +2147,39 @@ function obFinish(){
 // V10 — PADDOCK MANAGER
 // ═══════════════════════════════════════════════════════
 function openPaddockManager(){
+  window._paddockReturnMob = null;
   renderPaddockList();
   document.getElementById('paddockScreen').style.display='block';
+  const banner=document.getElementById('paddockReturnBanner');
+  if(banner) banner.style.display='none';
+}
+function openPaddockManagerFrom(mobName){
+  // Open paddock manager with a return path back to the mob's paddock picker
+  window._paddockReturnMob = mobName;
+  goTab('settings');
+  renderPaddockList();
+  document.getElementById('paddockScreen').style.display='block';
+  // Show a banner so they know why they're here
+  const banner = document.getElementById('paddockReturnBanner');
+  if(banner){
+    banner.style.display='flex';
+    banner.querySelector('.prb-mob').textContent = mobName;
+  }
 }
 function closePaddockScreen(){
   document.getElementById('paddockScreen').style.display='none';
   updateSettingsDisplay();
+  // If we came from a mob's paddock picker, go back to it
+  const returnMob = window._paddockReturnMob;
+  window._paddockReturnMob = null;
+  if(returnMob){
+    goTab('flock');
+    setTimeout(()=>{
+      const mobsTab = document.querySelectorAll('#flock-stabs .stab')[1];
+      if(mobsTab) showFlockTab('mobs', mobsTab);
+      setTimeout(()=>openMovePaddock(returnMob), 100);
+    }, 50);
+  }
 }
 
 function renderPaddockList(){
@@ -2443,8 +2651,8 @@ function goTab(tab) {
   document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
   curTab = tab; prevTab = tab;
-  document.getElementById('pnl-'+tab).classList.add('on');
-  document.querySelector(`.nav-btn[data-tab="${tab}"]`).classList.add('on');
+  const pnlEl=document.getElementById('pnl-'+tab); if(pnlEl) pnlEl.classList.add('on');
+  const navEl=document.querySelector(`.nav-btn[data-tab="${tab}"]`); if(navEl) navEl.classList.add('on');
   const fab = document.getElementById('fabBtn');
   fab.className = `fab tab-${tab}`;
   document.getElementById('mainScroll').scrollTop = 0;
@@ -2459,9 +2667,9 @@ function goTab(tab) {
 }
 
 function showFlockTab(name, btn) {
-  ['ft-sheep','ft-mobs','ft-drench','ft-costs'].forEach(id => document.getElementById(id).classList.remove('on'));
+  ['ft-sheep','ft-mobs','ft-drench','ft-costs'].forEach(id => { const el=document.getElementById(id); if(el) el.classList.remove('on'); });
   document.querySelectorAll('#flock-stabs .stab').forEach(b => b.classList.remove('on'));
-  document.getElementById('ft-'+name).classList.add('on');
+  const target=document.getElementById('ft-'+name); if(target) target.classList.add('on');
   if(btn) btn.classList.add('on');
   // Sync sidebar sub-nav
   document.querySelectorAll('#ssub-flock .ssub-btn').forEach(b=>b.classList.remove('active'));
@@ -2516,6 +2724,8 @@ function openEntry(screen) {
   if(screen==='weigh') { renderChips('w'); updateWRecent(); dismissBanners(); }
   if(screen==='status') { renderChips('s'); activeStatusChoice=null; document.getElementById('btnSold').classList.remove('sel-sold'); document.getElementById('btnDead').classList.remove('sel-dead'); document.getElementById('causeGrp').style.display='none'; document.getElementById('sSummary').style.display='none'; document.getElementById('sSeq').value=''; document.getElementById('sTagVal').textContent='—'; updateSRecent(); }
   if(screen==='newsheep') { renderChips('ns'); initNewSheep(); }
+  if(screen==='buyin') { initBuyin(); }
+  if(screen==='lambmark') { initLambMark(); }
   if(screen==='notes') { renderChips('n'); clearNotesForm(); }
   if(screen==='drench') { populateDrenchMobSelect(); document.getElementById('dDt').value=new Date().toISOString().split('T')[0]; }
   if(screen==='cost') { document.getElementById('cDt').value=new Date().toISOString().split('T')[0]; }
@@ -2523,7 +2733,7 @@ function openEntry(screen) {
 function closeFabEntry() {
   document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
-  document.getElementById('pnl-'+prevTab).classList.add('on');
+  const prevEl=document.getElementById('pnl-'+prevTab); if(prevEl) prevEl.classList.add('on');
   const btn = document.querySelector(`.nav-btn[data-tab="${prevTab}"]`);
   if(btn) btn.classList.add('on');
   document.getElementById('mainScroll').scrollTop = 0;
@@ -2537,14 +2747,14 @@ function closeFabEntry() {
 // CHIPS
 // ═══════════════════════════════════
 function renderChips(ctx) {
-  const map = {w:'wChips',s:'sChips',n:'nChips',ns:'nsChips'};
+  const map = {w:'wChips',s:'sChips',n:'nChips',ns:'nsChips',lm:'lmChips'};
   const preMap = {w:'wPre',s:'sPre',n:'nPre'};
   const ctxs = ctx ? [ctx] : ['w','s','n','ns'];
   ctxs.forEach(c => {
     const el = document.getElementById(map[c]); if(!el) return;
     el.innerHTML = _mem.prefixes.map(p =>
       `<div class="chip ${p===_mem.activeYr?'on':''}" onclick="selectPrefix('${p}','${c}')">${p}</div>`
-    ).join('') + (c!=='ns' ? `<div class="chip add-c" onclick="openPrefixManager()">＋</div>` : '');
+    ).join('') + (c!=='ns'&&c!=='lm' ? `<div class="chip add-c" onclick="openPrefixManager()">＋</div>` : '');
     if(preMap[c]) document.getElementById(preMap[c]).textContent = _mem.activeYr;
   });
 }
@@ -2553,6 +2763,7 @@ function selectPrefix(p, ctx) {
   renderChips(ctx);
   updateTagPrev(ctx);
   if(ctx==='ns') updNsDisplay();
+  if(ctx==='lm') lmUpdatePreview();
 }
 function updateTagPrev(ctx) {
   const sm={w:'wSeq',s:'sSeq',n:'nSeq'}, vm={w:'wTagVal',s:'sTagVal',n:'nTagVal'};
@@ -2930,11 +3141,11 @@ function loadNotesProfile(tag) {
   const timeline=[
     ...weights.map((w,i,arr)=>({type:'weight',date:w.date,wt:w.weight,gain:i>0?+(w.weight-arr[i-1].weight).toFixed(1):null,note:w.notes,id:w.id})),
     ...notesArr.map(n=>({type:'note',date:n.date,text:n.text,id:n.id})),
-    ...movesArr.map(m=>({type:'mob',date:m.date,from:m.from,to:m.to,toLoc:m.toLoc})),
+    ...movesArr.filter(m=>!m.addedOnly).map(m=>({type:m.type||'mob',date:m.date,from:m.from,to:m.to,toLoc:m.toLoc})),
     ...drenchArr.map(e=>({type:'drench',date:e.date,product:e.product,amount:e.amount,mob:e.mob})),
     ...(st?[{type:'status',date:st.date,status:st.status,cause:st.cause}]:[])
   ].sort((a,b)=>a.date.localeCompare(b.date));
-  const dotC={weight:'#2d5818',note:'#6820a0',mob:'#d4920a',drench:'#1a58a0',status:'#0a7860'};
+  const dotC={weight:'#2d5818',note:'#6820a0',mob:'#d4920a',paddock:'#0a7860',drench:'#1a58a0',status:'#0a7860'};
   const histEl=document.getElementById('notesHist');
   if(!timeline.length){histEl.innerHTML='<p style="font-size:12px;color:var(--mut);">No history yet.</p>';}
   else histEl.innerHTML=timeline.map((e,i)=>{
@@ -2943,6 +3154,7 @@ function loadNotesProfile(tag) {
     if(e.type==='weight') content=`<div class="tl-type" style="color:#2d5818;">Weighed</div><div class="tl-wt" style="color:var(--ac);">${e.wt} kg</div>${e.gain!==null?`<span class="tl-gain ${e.gain>=0?'gpos':'gneg'}">${e.gain>=0?'+':''}${e.gain} kg</span>`:''}${e.note&&e.note!=='Added to flock'?`<div style="font-size:10px;color:var(--mut);margin-top:2px;">📝 ${e.note}</div>`:''}`;
     else if(e.type==='note') content=`<div class="tl-type" style="color:#6820a0;">Note</div><div class="tl-note-txt">${e.text}</div>`;
     else if(e.type==='mob') content=`<div class="tl-type" style="color:var(--am-d);">${e.from?'📍 Mob move':'🐑 Added to flock'}</div><div style="font-size:12px;font-weight:800;color:var(--txt);">${e.to||'—'}${e.toLoc?' · '+e.toLoc:''}</div>${e.from?`<div style="font-size:10px;color:var(--mut);">From: ${e.from}</div>`:''}`;
+    else if(e.type==='paddock') content=`<div class="tl-type" style="color:#0a7860;">📍 Paddock move</div><div style="font-size:12px;font-weight:800;color:var(--txt);">${e.toLoc||'—'}</div>${e.from?`<div style="font-size:10px;color:var(--mut);">From: ${e.from}</div>`:''}`;
     else if(e.type==='drench') content=`<div class="tl-type" style="color:#1a58a0;">💉 Drenched</div><div style="font-size:12px;font-weight:800;color:var(--txt);">${e.product}${e.amount?' · '+e.amount+'ml':''}</div>`;
     else if(e.type==='status') content=`<div class="tl-type" style="color:var(--c-teal);">${e.status==='sold'?'💰 Sold':'💀 Dead'}</div>${e.cause?`<div style="font-size:10px;color:var(--mut);">${e.cause}</div>`:''}`;
     return `<div class="tl-item"><div class="tl-col"><div class="tl-dot" style="background:${dotC[e.type]||'#888'};"></div>${!isLast?`<div class="tl-line" style="flex:1;background:rgba(0,0,0,.08);width:2px;margin:3px auto 0;min-height:20px;"></div>`:''}</div><div style="flex:1;"><div class="tl-date">${fmtD(e.date)}</div>${content}</div></div>`;
@@ -3067,6 +3279,43 @@ function addNewSheep() {
   let tag;
   if(nsManualMode){const raw=document.getElementById('nsManualTag').value.trim(); if(!raw){toast('⚠️ Enter a tag number');return;} tag=raw.length<=3?_mem.activeYr+raw.padStart(3,'0'):raw;}
   else{if(!document.getElementById('nsStart').value){toast('⚠️ Enter a starting tag number');return;} tag=_mem.activeYr+String(nsCurrentNum).padStart(3,'0');}
+  // Check if already in system — show modal warning instead of silent confirm
+  const alreadyInData = _mem.data.some(r=>r.tag===tag);
+  const alreadySex = _mem.sex[tag];
+  if(alreadyInData || alreadySex) {
+    const existingSex = alreadySex ? (alreadySex==='ram'?'♂ Ram':alreadySex==='ewe'?'♀ Ewe':'✂ Wether') : 'sex unknown';
+    const existingWt = (_mem.data.filter(r=>r.tag===tag&&r.weight>0).at(-1)||{}).weight;
+    const existingStatus = (_mem.status||{})[tag]?.status;
+    showModal(`
+      <div style="text-align:center;margin-bottom:14px;">
+        <div style="font-size:32px;margin-bottom:6px;">⚠️</div>
+        <h3 style="color:#c0392b;margin-bottom:6px;">Tag already exists</h3>
+        <div style="font-family:'Courier Prime',monospace;font-size:22px;font-weight:900;color:var(--ac);margin-bottom:10px;">${tag}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:10px;padding:11px 13px;margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bor);font-size:12px;">
+          <span style="color:var(--mut);font-weight:600;">Sex</span>
+          <span style="font-weight:700;color:var(--txt);">${existingSex}</span>
+        </div>
+        ${existingWt?`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bor);font-size:12px;">
+          <span style="color:var(--mut);font-weight:600;">Last weight</span>
+          <span style="font-weight:700;color:var(--txt);">${existingWt}kg</span>
+        </div>`:''}
+        ${existingStatus?`<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;">
+          <span style="color:var(--mut);font-weight:600;">Status</span>
+          <span style="font-weight:700;color:var(--txt);">${existingStatus}</span>
+        </div>`:''}
+      </div>
+      <p style="font-size:12px;color:var(--mut);margin-bottom:14px;line-height:1.5;">Double-check the tag number. If this is correct and you want to add it again, tap Add Anyway.</p>
+      <div class="modal-btns">
+        <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);flex:1;">Cancel</button>
+        <button onclick="closeModal();doAddNewSheep('${tag}','${date}')" style="background:#c0392b;color:white;flex:1;">Add Anyway</button>
+      </div>`);
+    return;
+  }
+  doAddNewSheep(tag, date);
+}
+function doAddNewSheep(tag, date) {
   if(nsSex){ _mem.sex[tag]=nsSex; saveSex(_mem.sex); }
   if(!_mem.data.some(r=>r.tag===tag)){
     _mem.data.push({id:'r'+Date.now(),tag,weight:0,date,notes:''});
@@ -3195,18 +3444,19 @@ function buildTimeline(tag, entries, currentMob) {
   const events=[
     ...wE.map((w,i,arr)=>({type:'weight',date:w.date,wt:w.weight,gain:i>0?+(w.weight-arr[i-1].weight).toFixed(1):null,note:w.notes,id:w.id})),
     ...notesArr.map(n=>({type:'note',date:n.date,text:n.text,id:n.id})),
-    ...movesArr.filter(m=>!m.addedOnly).map(m=>({type:'mob',date:m.date,from:m.from,to:m.to,toLoc:m.toLoc})),
+    ...movesArr.filter(m=>!m.addedOnly).map(m=>({type:m.type||'mob',date:m.date,from:m.from,to:m.to,toLoc:m.toLoc})),
     ...drenchArr.map(e=>({type:'drench',date:e.date,product:e.product,amount:e.amount})),
     ...(st?[{type:'status',date:st.date,status:st.status,cause:st.cause}]:[])
   ].sort((a,b)=>a.date.localeCompare(b.date));
   if(!events.length) return '<p style="font-size:12px;color:var(--mut);">No history yet.</p>';
-  const dotC={weight:'#2d5818',note:'#6820a0',mob:'#d4920a',drench:'#1a58a0',status:'#0a7860'};
+  const dotC={weight:'#2d5818',note:'#6820a0',mob:'#d4920a',paddock:'#0a7860',drench:'#1a58a0',status:'#0a7860'};
   return events.map((e,i)=>{
     const isLast=i===events.length-1;
     let content='';
     if(e.type==='weight') content=`<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;"><div><div class="tl-type" style="color:#2d5818;">Weighed</div><div class="tl-wt" style="color:var(--ac);">${e.wt} kg</div>${e.gain!==null?`<span class="tl-gain ${e.gain>=0?'gpos':'gneg'}">${e.gain>=0?'+':''}${e.gain} kg</span>`:''} ${e.note&&e.note!=='Added to flock'?`<div style="font-size:10px;color:var(--mut);margin-top:2px;">📝 ${e.note}</div>`:''}</div><div class="tl-actions">${e.id?`<button class="tl-edit" onclick="editWeight('${e.id}','${tag}')">✏️</button><button class="tl-del" onclick="deleteWeight('${e.id}','${tag}')">✕</button>`:''}</div></div>`;
     else if(e.type==='note') content=`<div class="tl-type" style="color:#6820a0;">Note</div><div class="tl-note-txt">${e.text}</div>`;
     else if(e.type==='mob') content=`<div class="tl-type" style="color:var(--am-d);">${e.from?'📍 Mob move':'🐑 Joined flock'}</div><div style="font-size:12px;font-weight:800;">${e.to||'—'}</div>`;
+    else if(e.type==='paddock') content=`<div class="tl-type" style="color:#0a7860;">📍 Paddock move</div><div style="font-size:12px;font-weight:800;">${e.toLoc||'—'}</div>${e.from?`<div style="font-size:10px;color:var(--mut);">From: ${e.from}</div>`:''}`;
     else if(e.type==='drench') content=`<div class="tl-type" style="color:#1a58a0;">💉 Drenched</div><div style="font-size:11px;font-weight:800;">${e.product}${e.amount?' · '+e.amount+'ml':''}</div>`;
     else if(e.type==='status') content=`<div class="tl-type" style="color:#0a7860;">${e.status==='sold'?'💰 Sold':'💀 Dead'}</div>${e.cause?`<div style="font-size:10px;color:var(--mut);">${e.cause}</div>`:''}`;
     return `<div class="tl-item"><div class="tl-col"><div class="tl-dot" style="background:${dotC[e.type]||'#888'};"></div>${!isLast?'<div class="tl-line" style="flex:1;background:rgba(0,0,0,.08);width:2px;margin:3px auto 0;min-height:20px;"></div>':''}</div><div style="flex:1;"><div class="tl-date">${fmtD(e.date)}</div>${content}</div></div>`;
@@ -3510,32 +3760,44 @@ function openMovePaddock(name) {
   const currentPaddockIds = mob?.paddocks||[];
 
   const paddockOpts = paddocks.length
-    ? `<div class="fg"><span class="lbl">Select paddock(s) — tap to toggle</span>
-        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;">
+    ? `<div class="fg">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span class="lbl" style="margin:0;">Select paddock — tap to choose</span>
+          <button onclick="closeModal();openPaddockManagerFrom('${escMob(name)}')" 
+            style="display:flex;align-items:center;gap:5px;padding:6px 11px;background:var(--ac);color:white;border:none;border-radius:8px;font-family:inherit;font-size:11px;font-weight:800;cursor:pointer;">
+            ＋ New paddock
+          </button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
           ${paddocks.map(p=>`
             <button id="psel-${p.id}" onclick="togglePaddockSel('${p.id}')"
-              style="padding:8px 13px;border-radius:9px;border:2px solid ${currentPaddockIds.includes(p.id)?'var(--c-teal)':'var(--bor)'};
+              style="width:100%;padding:12px 14px;border-radius:10px;border:2px solid ${currentPaddockIds.includes(p.id)?'var(--c-teal)':'var(--bor)'};
               background:${currentPaddockIds.includes(p.id)?'var(--c-teal-l)':'var(--card)'};
-              color:${currentPaddockIds.includes(p.id)?'var(--c-teal)':'var(--mut)'};
-              font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;">
-              🌿 ${p.name}${p.hectares?' ('+p.hectares+'ha)':''}
+              color:${currentPaddockIds.includes(p.id)?'var(--c-teal)':'var(--txt)'};
+              font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px;">
+              <span style="font-size:18px;">🌿</span>
+              <span>${p.name}${p.hectares?' <span style=\"font-size:10px;font-weight:600;color:var(--mut);\">('+p.hectares+'ha)</span>':''}</span>
+              ${currentPaddockIds.includes(p.id)?'<span style=\"margin-left:auto;font-size:16px;\">✓</span>':''}
             </button>`).join('')}
         </div>
       </div>`
-    : `<div style="background:var(--am-l);border:1.5px solid #e8c060;border-radius:9px;padding:10px;margin-bottom:11px;font-size:11px;color:var(--am-d);font-weight:700;">
-        No paddocks set up yet — <button onclick="openPaddockManager()" style="background:none;border:none;color:var(--c-teal);font-weight:800;cursor:pointer;font-family:inherit;font-size:11px;">set up paddocks</button> in Settings, or use free text below.
+    : `<div style="text-align:center;padding:16px 0;">
+        <div style="font-size:32px;margin-bottom:8px;">🌿</div>
+        <div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:5px;">No paddocks set up yet</div>
+        <div style="font-size:11px;color:var(--mut);margin-bottom:14px;font-weight:600;">Add your paddocks first, then assign this mob</div>
+        <button onclick="closeModal();openPaddockManagerFrom('${escMob(name)}')"
+          style="padding:13px 24px;background:var(--ac);color:white;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;">
+          ＋ Add paddocks
+        </button>
       </div>`;
 
-  showModal(`<h3 style="margin-bottom:9px;">📍 Assign paddock — ${name}</h3>
+  showModal(`<h3 style="margin-bottom:9px;">📍 Move paddock — ${name}</h3>
     ${paddockOpts}
-    <div class="fg"><span class="lbl">Or free-text location</span>
-      <input id="mpLoc" type="text" value="${mob?.loc||''}" placeholder="e.g. Back Paddock, North Flat…"
-        style="width:100%;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:inherit;font-size:15px;font-weight:700;" autocomplete="off">
-    </div>
-    <div class="modal-btns">
+    <div class="modal-btns" style="${paddocks.length?'':'display:none;'}">
       <button onclick="confirmMovePaddock('${escMob(name)}')" style="background:var(--am);color:var(--hbg);flex:2;">📍 Save</button>
       <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);">Cancel</button>
-    </div>`);
+    </div>
+    ${!paddocks.length?'<div class="modal-btns"><button onclick="closeModal()" style="background:var(--bg);color:var(--mut);flex:1;">Cancel</button></div>':''}`);
   // set initial selection state in JS
   window._paddockSel = new Set(currentPaddockIds);
 }
@@ -3553,33 +3815,49 @@ function togglePaddockSel(id){
   }
 }
 function confirmMovePaddock(name) {
-  const loc=(document.getElementById('mpLoc')?.value||'').trim();
   const mob=_mem.mobs.find(m=>m.name===name); if(!mob)return;
   const date=new Date().toISOString().split('T')[0];
-  // Save structured paddock assignments
+  // Capture old paddock name BEFORE updating mob
+  const oldMobLoc = mob.loc||'';
+  // Structured paddock only — derive loc string from selected paddock names
   if(window._paddockSel){
     mob.paddocks=[...window._paddockSel];
-    // Derive loc string from paddock names if no free-text
-    if(!loc && mob.paddocks.length){
-      mob.loc = mob.paddocks.map(pid=>(_mem.paddocks||[]).find(p=>p.id===pid)?.name||'').filter(Boolean).join(', ');
-    } else if(loc) { mob.loc=loc; }
-  } else if(loc) { mob.loc=loc; }
+    mob.loc = mob.paddocks.map(pid=>(_mem.paddocks||[]).find(p=>p.id===pid)?.name||'').filter(Boolean).join(', ');
+  }
   if(!mob.locationLog) mob.locationLog=[];
-  const logEntry = loc || (mob.paddocks||[]).map(pid=>(_mem.paddocks||[]).find(p=>p.id===pid)?.name||'').filter(Boolean).join(', ');
+  const logEntry = mob.paddocks?.map(pid=>(_mem.paddocks||[]).find(p=>p.id===pid)?.name||'').filter(Boolean).join(', ')||mob.loc||'';
   if(logEntry) mob.locationLog.push({loc:logEntry,date});
   mob.movedDate=date;
-  _mem.mobhist.filter(h=>h.currentMob===name).forEach(h=>h.currentLoc=mob.loc);
-  saveMobsData(_mem.mobs); saveMobHist(_mem.mobhist);
+  // Update currentLoc on every sheep in this mob AND write a paddock-move entry
+  // to each sheep's individual timeline so movement history is traceable
+  const sheepInMob = _mem.mobhist.filter(h=>h.currentMob===name);
+  // Only write move entries if paddock actually changed
+  const paddockChanged = logEntry && logEntry !== oldMobLoc;
+  sheepInMob.forEach(h=>{
+    h.currentLoc = mob.loc;
+    if(paddockChanged){
+      _mem.mobMoves.push({
+        tag: h.tag,
+        type: 'paddock',
+        from: oldMobLoc||null,
+        to: name,
+        toLoc: logEntry,
+        date
+      });
+    }
+  });
+  saveMobsData(_mem.mobs); saveMobHist(_mem.mobhist); saveMobMoves(_mem.mobMoves);
   window._paddockSel=null;
   closeModal({target:document.getElementById('modalOv')});
-  toast(`✓ ${name} paddock updated`); renderMobList(); renderHome();
+  const moved=sheepInMob.length;
+  toast(`✓ ${name} moved to ${logEntry||'new paddock'}${moved?' · '+moved+' sheep updated':''}`); renderMobList(); renderFlock(); renderHome();
 }
 function openEditMob(name) {
   const mob=_mem.mobs.find(m=>m.name===name); if(!mob)return;
   showModal(`<h3 style="margin-bottom:9px;">✏️ Edit — ${name}</h3>
     <div class="fg"><span class="lbl">Name</span><input id="emN" type="text" value="${mob.name}" style="width:100%;padding:9px;border:2px solid var(--bor);border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;"></div>
-    <div class="fg"><span class="lbl">Location</span><input id="emL" type="text" value="${mob.loc}" style="width:100%;padding:9px;border:2px solid var(--bor);border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;"></div>
     <div class="fg"><span class="lbl">Weigh every (days) — leave blank for no reminder</span><input id="emW" type="number" min="1" max="365" inputmode="numeric" value="${mob.weighEvery||''}" placeholder="e.g. 14, 21, 28…" style="width:100%;padding:9px;border:2px solid var(--bor);border-radius:8px;font-family:inherit;font-size:18px;font-weight:800;text-align:center;"></div>
+    <div style="font-size:10px;color:var(--mut);font-weight:600;padding:6px 2px;">Paddock: <strong>${mob.loc||'Not set'}</strong> — use the Paddock button on the mob card to move paddocks</div>
     <div class="modal-btns">
       <button onclick="saveEditMob('${escMob(name)}')" style="background:var(--ac);color:white;">Save</button>
       <button onclick="confirmDelMob('${escMob(name)}')" style="background:var(--c-red);color:white;">Delete</button>
@@ -3587,12 +3865,13 @@ function openEditMob(name) {
     </div>`);
 }
 function saveEditMob(oldName) {
-  const n=document.getElementById('emN').value.trim(), l=document.getElementById('emL').value.trim();
+  const n=document.getElementById('emN').value.trim();
   const we=parseInt(document.getElementById('emW')?.value)||null;
   if(!n)return;
   const mob=_mem.mobs.find(m=>m.name===oldName); if(!mob)return;
-  mob.name=n; mob.loc=l; mob.weighEvery=we||null;
-  _mem.mobhist.forEach(h=>{if(h.currentMob===oldName){h.currentMob=n;h.currentLoc=l;}});
+  mob.name=n; mob.weighEvery=we||null;
+  // Update mob name in mobhist but preserve currentLoc (paddock moves handled separately)
+  _mem.mobhist.forEach(h=>{if(h.currentMob===oldName){h.currentMob=n;}});
   saveMobsData(_mem.mobs); saveMobHist(_mem.mobhist);
   closeModal({target:document.getElementById('modalOv')}); toast('✓ Mob updated'); renderMobList(); renderFlock(); renderHome();
 }
@@ -3613,9 +3892,22 @@ function doDelMob(name) {
 }
 function openCreateMob() {
   if(_mem.mobs.length>=20){toast('⚠️ Maximum 20 mobs reached');return;}
+  const paddocks = _mem.paddocks||[];
+  const paddockOpts = paddocks.length
+    ? paddocks.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')
+    : '';
+  const paddockSel = paddocks.length
+    ? `<select id="cmPaddock" style="width:100%;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:inherit;font-size:14px;font-weight:700;">
+        <option value="">— No paddock selected —</option>
+        ${paddockOpts}
+       </select>
+       <div style="font-size:10px;color:var(--mut);margin-top:4px;font-weight:600;">Add paddocks in Settings → Paddocks</div>`
+    : `<div style="background:var(--bg);border:1.5px dashed var(--bor);border-radius:9px;padding:11px;font-size:12px;color:var(--mut);font-weight:600;">
+        No paddocks set up yet. <button onclick="closeModal();openPaddockManager();" style="background:none;border:none;color:var(--ac);font-weight:800;font-family:inherit;font-size:12px;cursor:pointer;padding:0;">Add paddocks in Settings →</button>
+       </div>`;
   showModal(`<h3 style="margin-bottom:9px;">＋ Create new mob</h3>
     <div class="fg"><span class="lbl">Mob name</span><input id="cmName" type="text" placeholder="e.g. 2025 Wether Mob" autocomplete="off" style="width:100%;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:inherit;font-size:15px;font-weight:700;"></div>
-    <div class="fg"><span class="lbl">Location / paddock</span><input id="cmLoc" type="text" placeholder="e.g. Back Paddock" autocomplete="off" style="width:100%;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:inherit;font-size:15px;font-weight:700;"></div>
+    <div class="fg"><span class="lbl">Paddock</span>${paddockSel}</div>
     <div class="fg"><span class="lbl">Weigh every (days) — optional</span><input id="cmWe" type="number" min="1" max="365" inputmode="numeric" placeholder="e.g. 14, 21, 28…" style="width:100%;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:inherit;font-size:18px;font-weight:800;text-align:center;"></div>
     <div class="modal-btns">
       <button onclick="doCreateMob()" style="background:var(--ac);color:white;flex:2;">＋ Create</button>
@@ -3686,46 +3978,154 @@ function doAssignMobFromCard(tag, mobName) {
   renderFlock(); renderMobList(); renderHome();
 }
 
-function openAddSheepToMob(mobName) {
+function openAddSheepToMob(mobName, mode) {
   const mob = _mem.mobs.find(m=>m.name===mobName); if(!mob) return;
-  // Build list of tags currently in this mob
   const mobTags = _mem.mobhist.filter(h=>h.currentMob===mobName).map(h=>h.tag)
     .filter(t=>{ const s=_mem.status[t]?.status; return !s||!['sold','dead'].includes(s); });
-
-  showModal(`<h3 style="margin-bottom:9px;">🐑 Add sheep to ${mobName}</h3>
+  const currentMode = mode || 'one';
+  const sexBtns = (prefix)=>`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px;">
+      <button id="${prefix}SexRam" onclick="atsSetSex('${prefix}','ram')" style="padding:14px 4px;border-radius:10px;border:2px solid rgba(41,128,185,.25);background:rgba(41,128,185,.08);color:#2980b9;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;">&#9794; Ram</button>
+      <button id="${prefix}SexEwe" onclick="atsSetSex('${prefix}','ewe')" style="padding:14px 4px;border-radius:10px;border:2px solid rgba(192,57,122,.25);background:rgba(192,57,122,.08);color:#c0397a;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;">&#9792; Ewe</button>
+      <button id="${prefix}SexWeth" onclick="atsSetSex('${prefix}','wether')" style="padding:14px 4px;border-radius:10px;border:2px solid rgba(125,60,152,.25);background:rgba(125,60,152,.08);color:#7d3c98;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;">&#9984; Wether</button>
+    </div>`;
+  const oneAtATime = `
+    <div style="background:#1a3a0f;border-radius:10px;padding:11px;margin-bottom:10px;">
+      <div style="font-size:9px;font-weight:800;color:rgba(212,232,196,.7);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Year prefix</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;" id="atsChips">
+        ${loadPrefixes().map(p=>`<button onclick="atsSelectPrefix('${p}')" id="atsPre-${p}"
+          style="padding:10px 15px;border-radius:9px;border:1.5px solid rgba(255,255,255,.1);
+          background:${p===_mem.activeYr?'#e8a020':'rgba(255,255,255,.06)'};
+          color:${p===_mem.activeYr?'#1a2010':'rgba(212,232,196,.8)'};
+          font-family:'Courier Prime',monospace;font-size:18px;font-weight:700;cursor:pointer;">${p}</button>`).join('')}
+      </div>
+      <div style="display:flex;border-radius:9px;overflow:hidden;border:2px solid #e8a020;">
+        <div id="atsPreBox" style="padding:10px 12px;min-width:52px;text-align:center;font-family:'Courier Prime',monospace;font-size:22px;font-weight:700;color:#b87818;background:#fff8ee;border-right:2px solid #f0d080;">${_mem.activeYr}</div>
+        <input id="atsSeq" type="text" inputmode="numeric" maxlength="3" placeholder="001" autocomplete="off"
+          style="flex:1;border:none;background:#fff;padding:10px;font-family:'Courier Prime',monospace;font-size:26px;font-weight:900;text-align:center;letter-spacing:3px;color:#1a2010;"
+          oninput="atsOnePreview()">
+      </div>
+      <div id="atsOneStatus" style="font-size:10px;color:rgba(212,232,196,.6);margin-top:6px;font-weight:600;min-height:14px;"></div>
+    </div>
+    <div style="font-size:9px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">Sex <span style="font-size:9px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">skip if unknown</span></div>
+    ${sexBtns('atsOne')}
+    <button onclick="atsAddOne('${escMob(mobName)}')" style="width:100%;padding:13px;background:#2d5a1b;color:white;border:none;border-radius:10px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:8px;">+ Add to mob</button>
+    <div id="atsOneAdded" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;"></div>`;
+  const bulkPaste = `
     <div class="fg">
-      <span class="lbl">Tag number(s) — one per line or comma separated</span>
-      <textarea id="atsInput" placeholder="e.g. 25001&#10;25002&#10;25003" autocomplete="off"
+      <span class="lbl">Paste or type tag numbers — mixed years ok, spaces or commas</span>
+      <textarea id="atsInput" placeholder="e.g. 25001 25002 24087 23104" autocomplete="off"
         style="width:100%;padding:13px;border:2.5px solid var(--bor);border-radius:10px;
-        font-family:'Courier Prime',monospace;font-size:20px;font-weight:700;
-        color:var(--txt);background:var(--bg);resize:none;height:130px;letter-spacing:2px;"></textarea>
+        font-family:'Courier Prime',monospace;font-size:18px;font-weight:700;
+        color:var(--txt);background:var(--bg);resize:none;height:110px;letter-spacing:2px;"></textarea>
       <div id="atsPreview" style="margin-top:7px;font-size:10px;color:var(--mut);font-weight:600;min-height:16px;"></div>
     </div>
-    <div class="fg" style="margin-bottom:0;">
-      <span class="lbl">Tap a tag to remove it from this mob</span>
-      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;" id="atsCurrentTags">
-        ${mobTags.length
-          ? mobTags.map(t=>`<button onclick="removeSheepFromMob('${t}','${escMob(mobName)}')" 
-              style="padding:13px 16px;background:#fde8e8;color:#c0392b;
-              border:2px solid rgba(192,57,43,.25);border-radius:10px;
-              font-family:'Courier Prime',monospace;font-size:16px;font-weight:800;cursor:pointer;
-              display:flex;align-items:center;gap:8px;">
-              <span>${t}</span><span style="font-size:18px;font-family:inherit;">✕</span></button>`).join('')
-          : '<span style="color:var(--mut);font-size:11px;">No sheep in this mob yet</span>'
-        }
+    <div style="font-size:9px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">Sex for all <span style="font-size:9px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">skip if mixed or unknown</span></div>
+    ${sexBtns('atsBulk')}
+    <button onclick="doAddSheepToMob('${escMob(mobName)}')" style="width:100%;padding:13px;background:#2d5a1b;color:white;border:none;border-radius:10px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;">+ Add to mob</button>`;
+  const currentTagsSection = mobTags.length ? `
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--bor);">
+      <div style="font-size:9px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;">In this mob — tap to remove</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        ${mobTags.map(t=>`<button onclick="removeSheepFromMob('${t}','${escMob(mobName)}')"
+          style="padding:8px 11px;background:#fde8e8;color:#c0392b;border:1.5px solid rgba(192,57,43,.25);
+          border-radius:8px;font-family:'Courier Prime',monospace;font-size:14px;font-weight:800;cursor:pointer;">
+          ${t} x</button>`).join('')}
       </div>
+    </div>` : '';
+  showModal(`
+    <h3 style="margin-bottom:10px;">Add sheep — ${mobName}</h3>
+    <div style="display:flex;gap:0;border-radius:8px;overflow:hidden;border:1.5px solid var(--bor);margin-bottom:12px;">
+      <button onclick="openAddSheepToMob('${escMob(mobName)}','one')"
+        style="flex:1;padding:10px;border:none;background:${currentMode==='one'?'#2d5a1b':'var(--bg)'};
+        color:${currentMode==='one'?'white':'var(--mut)'};font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;border-right:1px solid var(--bor);">
+        One at a time</button>
+      <button onclick="openAddSheepToMob('${escMob(mobName)}','bulk')"
+        style="flex:1;padding:10px;border:none;background:${currentMode==='bulk'?'#2d5a1b':'var(--bg)'};
+        color:${currentMode==='bulk'?'white':'var(--mut)'};font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;">
+        Bulk paste</button>
     </div>
-    <div class="modal-btns" style="margin-top:14px;">
-      <button onclick="doAddSheepToMob('${escMob(mobName)}')" style="background:var(--ac);color:white;flex:2;font-size:16px;padding:15px;">＋ Add to mob</button>
-      <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);">Cancel</button>
+    ${currentMode==='one' ? oneAtATime : bulkPaste}
+    ${currentTagsSection}
+    <div class="modal-btns" style="margin-top:12px;">
+      <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);">Done</button>
     </div>`);
+  window._atsSex = {};
   setTimeout(()=>{
-    const inp = document.getElementById('atsInput');
-    if(inp){
-      inp.focus();
-      inp.addEventListener('input', ()=>previewAtsTags(mobName));
+    if(currentMode==='bulk'){
+      const inp = document.getElementById('atsInput');
+      if(inp) inp.addEventListener('input', ()=>previewAtsTags(mobName));
+    } else {
+      const seqEl = document.getElementById('atsSeq');
+      if(seqEl) seqEl.focus();
     }
   }, 120);
+}
+window._atsSex = {};
+function atsSetSex(prefix, sex) {
+  window._atsSex[prefix] = window._atsSex[prefix]===sex ? null : sex;
+  const s = window._atsSex[prefix];
+  const ids={ram:prefix+'SexRam',ewe:prefix+'SexEwe',wether:prefix+'SexWeth'};
+  const cols={ram:{c:'#2980b9',bg:'rgba(41,128,185,.08)',brd:'rgba(41,128,185,.25)'},
+              ewe:{c:'#c0397a',bg:'rgba(192,57,122,.08)',brd:'rgba(192,57,122,.25)'},
+              wether:{c:'#7d3c98',bg:'rgba(125,60,152,.08)',brd:'rgba(125,60,152,.25)'}};
+  Object.entries(ids).forEach(([sx,id])=>{
+    const el=document.getElementById(id); if(!el) return;
+    const m=cols[sx];
+    el.style.background = (s===sx) ? m.c : m.bg;
+    el.style.color = (s===sx) ? 'white' : m.c;
+    el.style.borderColor = (s===sx) ? m.c : m.brd;
+  });
+}
+function atsSelectPrefix(p) {
+  _mem.activeYr = p;
+  document.querySelectorAll('[id^="atsPre-"]').forEach(el=>{
+    const pp=el.id.replace('atsPre-','');
+    el.style.background = pp===p ? '#e8a020' : 'rgba(255,255,255,.06)';
+    el.style.color = pp===p ? '#1a2010' : 'rgba(212,232,196,.8)';
+  });
+  const pb=document.getElementById('atsPreBox'); if(pb) pb.textContent=p;
+  atsOnePreview();
+}
+function atsOnePreview() {
+  const seq=(document.getElementById('atsSeq')?.value||'').trim();
+  const st=document.getElementById('atsOneStatus'); if(!st) return;
+  if(!seq){ st.textContent=''; return; }
+  const tag=_mem.activeYr+seq.padStart(3,'0');
+  const inMob=_mem.mobhist.find(h=>h.tag===tag&&h.currentMob);
+  const inData=_mem.data.some(r=>r.tag===tag);
+  const sex=_mem.sex[tag];
+  if(inMob&&inMob.currentMob){ st.textContent='Already in '+inMob.currentMob; st.style.color='#e8a020'; }
+  else if(inData||sex){ st.textContent=tag+' — in system'+(sex?' · '+sex:''); st.style.color='rgba(212,232,196,.8)'; }
+  else { st.textContent=tag+' — new, will be created'; st.style.color='rgba(212,232,196,.5)'; }
+}
+function atsAddOne(mobName) {
+  const seq=(document.getElementById('atsSeq')?.value||'').trim();
+  if(!seq){ toast('Enter a tag number'); return; }
+  const tag=_mem.activeYr+seq.padStart(3,'0');
+  const mob=_mem.mobs.find(m=>m.name===mobName); if(!mob) return;
+  const date=new Date().toISOString().split('T')[0];
+  const sex=window._atsSex['atsOne'];
+  if(sex){ _mem.sex[tag]=sex; saveSex(_mem.sex); }
+  const existing=_mem.mobhist.find(h=>h.tag===tag);
+  if(existing){ existing.currentMob=mobName; existing.currentLoc=mob.loc||''; }
+  else _mem.mobhist.push({tag,currentMob:mobName,currentLoc:mob.loc||''});
+  if(!_mem.data.some(r=>r.tag===tag)){
+    _mem.data.push({tag,weight:0,date,notes:'Added to mob',id:'d'+Date.now()});
+    saveData(_mem.data);
+  }
+  _mem.mobMoves.push({tag,from:null,to:mobName,toLoc:mob.loc||'',date});
+  saveMobHist(_mem.mobhist); saveMobMoves(_mem.mobMoves);
+  toast('Added '+tag);
+  const addedEl=document.getElementById('atsOneAdded');
+  if(addedEl){
+    const sm={ram:'#1a58a0',ewe:'#a01860',wether:'#6820a0'};
+    const sexIcon=sex?(sex==='ram'?'M':sex==='ewe'?'F':'W'):'';
+    addedEl.innerHTML='<span style="padding:5px 9px;background:#1a3a0f;color:#d4e8c4;border-radius:6px;font-family:\'Courier Prime\',monospace;font-size:12px;font-weight:700;">'+tag+(sexIcon?' <span style="color:'+( sm[sex]||'#888')+'">'+sexIcon+'</span>':'')+'</span>'+addedEl.innerHTML;
+  }
+  const seqEl=document.getElementById('atsSeq'); if(seqEl){ seqEl.value=''; seqEl.focus(); }
+  document.getElementById('atsOneStatus').textContent='';
+  renderMobList(); renderFlock(); refreshCount();
 }
 
 function previewAtsTags(mobName) {
@@ -3795,12 +4195,13 @@ function removeSheepFromMob(tag, mobName) {
 
 function doCreateMob() {
   const name=(document.getElementById('cmName')?.value||'').trim();
-  const loc=(document.getElementById('cmLoc')?.value||'').trim();
+  const paddockId=document.getElementById('cmPaddock')?.value||'';
   const we=parseInt(document.getElementById('cmWe')?.value)||null;
   if(!name){toast('⚠️ Enter a mob name');return;}
   const date=new Date().toISOString().split('T')[0];
-  const locVal = loc || 'Not set';
-  _mem.mobs.push({id:'m'+Date.now(),name,loc:locVal,weighEvery:we,locationLog:[{loc:locVal,date}],movedDate:date});
+  const paddock = (_mem.paddocks||[]).find(p=>p.id===paddockId);
+  const locVal = paddock ? paddock.name : 'Not set';
+  _mem.mobs.push({id:'m'+Date.now(),name,loc:locVal,paddockId:paddockId||null,weighEvery:we,locationLog:[{loc:locVal,date}],movedDate:date});
   saveMobsData(_mem.mobs);
   closeModal({target:document.getElementById('modalOv')}); toast(`✓ ${name} created`); renderMobList(); renderHome();
 }
@@ -3865,24 +4266,44 @@ function openAddJoining() {
   if(!form) return;
   form.style.display = 'block';
   populateJoiningMobSelect();
-  // Default dates
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('jStartDate').value = today;
-  // Default end: 3 weeks out (typical joining period)
-  const endDate = new Date(); endDate.setDate(endDate.getDate()+21);
+  // Default ram out: 6 weeks
+  const endDate = new Date(); endDate.setDate(endDate.getDate()+42);
   document.getElementById('jEndDate').value = endDate.toISOString().split('T')[0];
-  // Auto-calc lambing: start + 147 days
+  // Default lambing: ram in + 147 days
   const lambDate = new Date(); lambDate.setDate(lambDate.getDate()+147);
   document.getElementById('jLambDate').value = lambDate.toISOString().split('T')[0];
+  document.getElementById('jActualLambDate').value = '';
   document.getElementById('jRamTags').value = '';
   document.getElementById('jEweCount').value = '';
+  document.getElementById('jEweCountHint').textContent = '';
   document.getElementById('jNotes').value = '';
-  // Auto-update lambing date when start changes
-  document.getElementById('jStartDate').oninput = function() {
-    const d = new Date(this.value); d.setDate(d.getDate()+147);
-    document.getElementById('jLambDate').value = d.toISOString().split('T')[0];
-  };
   form.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function joiningStartChanged() {
+  const val = document.getElementById('jStartDate').value;
+  if(!val) return;
+  const d = new Date(val);
+  // Ram out: +6 weeks
+  const endD = new Date(d); endD.setDate(endD.getDate()+42);
+  document.getElementById('jEndDate').value = endD.toISOString().split('T')[0];
+  // Est lambing: +147 days
+  const lambD = new Date(d); lambD.setDate(lambD.getDate()+147);
+  document.getElementById('jLambDate').value = lambD.toISOString().split('T')[0];
+}
+function joiningMobChanged() {
+  const mobName = document.getElementById('jEweMob').value;
+  if(!mobName) { document.getElementById('jEweCountHint').textContent=''; return; }
+  const mobTags = _mem.mobhist.filter(h=>h.currentMob===mobName).map(h=>h.tag);
+  const ewes = mobTags.filter(t=>_mem.sex[t]==='ewe').length;
+  const total = mobTags.length;
+  if(total>0) {
+    document.getElementById('jEweCount').value = ewes>0 ? ewes : total;
+    document.getElementById('jEweCountHint').textContent = ewes>0
+      ? `Auto-filled: ${ewes} ewes in ${mobName} — edit if not all joining`
+      : `Auto-filled: ${total} sheep in ${mobName} (sex unknown) — edit as needed`;
+  }
 }
 
 function cancelJoining() {
@@ -3896,6 +4317,7 @@ function saveJoining() {
   const start = document.getElementById('jStartDate')?.value;
   const end   = document.getElementById('jEndDate')?.value;
   const lamb  = document.getElementById('jLambDate')?.value;
+  const actualLamb = document.getElementById('jActualLambDate')?.value || '';
   const count = parseInt(document.getElementById('jEweCount')?.value)||0;
   const notes = document.getElementById('jNotes')?.value?.trim();
   if(!mob)   { toast('Select a mob / ewe group'); return; }
@@ -3906,6 +4328,7 @@ function saveJoining() {
     startDate: start,
     endDate: end||'',
     lambDate: lamb||'',
+    actualLambDate: actualLamb,
     eweCount: count,
     notes,
     created: new Date().toISOString().split('T')[0]
@@ -3924,6 +4347,27 @@ function deleteJoining(id) {
   renderJoiningList();
   toast('Deleted');
 }
+function openRecordActualLambing(id) {
+  const j = loadJoining().find(x=>x.id===id); if(!j) return;
+  showModal(`<h3 style="margin-bottom:9px;">🐣 Actual lambing start</h3>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:12px;line-height:1.5;">Record when lambing actually started for <strong>${j.mob}</strong>. This builds a year-on-year comparison against your estimates.</p>
+    <div class="fg"><span class="lbl">Actual lambing start date</span><input type="date" id="actualLambInp" value="${j.actualLambDate||new Date().toISOString().split('T')[0]}"></div>
+    ${j.lambDate?`<div style="font-size:11px;color:var(--mut);margin-bottom:12px;font-weight:600;">Est. lambing was ${fmtD(j.lambDate)}</div>`:''}
+    <div class="modal-btns">
+      <button onclick="saveActualLambing(${id})" style="background:var(--c-purple);color:white;flex:2;">Save</button>
+      <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);">Cancel</button>
+    </div>`);
+}
+function saveActualLambing(id) {
+  const val = document.getElementById('actualLambInp')?.value; if(!val) return;
+  const list = loadJoining();
+  const j = list.find(x=>x.id===id); if(!j) return;
+  j.actualLambDate = val;
+  saveJoiningData(list);
+  closeModal({target:document.getElementById('modalOv')});
+  renderJoiningList();
+  toast('✓ Actual lambing date saved');
+}
 
 function renderJoiningList() {
   const el = document.getElementById('joiningList');
@@ -3939,7 +4383,7 @@ function renderJoiningList() {
     const start = j.startDate ? fmtD(j.startDate) : '—';
     const end   = j.endDate   ? fmtD(j.endDate)   : '—';
     const lamb  = j.lambDate  ? fmtD(j.lambDate)   : '—';
-    // Days until lambing
+    // Days until / since lambing
     let lambStatus = '', lambBadgeStyle = '';
     if(j.lambDate) {
       const ld = new Date(j.lambDate); ld.setHours(0,0,0,0);
@@ -3955,6 +4399,16 @@ function renderJoiningList() {
         lambBadgeStyle = 'background:var(--ac-l);color:var(--ac-d);';
       }
     }
+    // Actual vs estimated lambing comparison
+    let earlyLateStr = '';
+    if(j.actualLambDate && j.lambDate) {
+      const estD = new Date(j.lambDate); estD.setHours(0,0,0,0);
+      const actD = new Date(j.actualLambDate); actD.setHours(0,0,0,0);
+      const diff = Math.round((actD - estD) / 864e5);
+      if(diff === 0) earlyLateStr = `<span style="font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;background:var(--ac-l);color:var(--ac-d);">On estimate</span>`;
+      else if(diff < 0) earlyLateStr = `<span style="font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;background:rgba(104,32,160,.12);color:var(--c-purple);">${Math.abs(diff)}d early</span>`;
+      else earlyLateStr = `<span style="font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;background:var(--am-l);color:var(--am-d);">${diff}d late</span>`;
+    }
     return `<div style="background:var(--card);border-radius:var(--r);border:1px solid var(--bor);border-left:3px solid var(--c-purple);margin-bottom:8px;overflow:hidden;">
       <div style="padding:11px 13px;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px;">
@@ -3967,14 +4421,14 @@ function renderJoiningList() {
             <button onclick="deleteJoining(${j.id})" style="background:none;border:none;color:var(--mut);font-size:14px;cursor:pointer;padding:2px 6px;">✕</button>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:7px;">
           <div style="background:var(--bg);border-radius:8px;padding:7px;text-align:center;">
             <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;margin-bottom:2px;">Joining</div>
             <div style="font-size:10px;font-weight:800;color:var(--txt);">${start}</div>
             <div style="font-size:9px;color:var(--mut);">to ${end}</div>
           </div>
           <div style="background:var(--bg);border-radius:8px;padding:7px;text-align:center;">
-            <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;margin-bottom:2px;">Lambing</div>
+            <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;margin-bottom:2px;">Est. lambing</div>
             <div style="font-size:10px;font-weight:800;color:var(--c-purple);">${lamb}</div>
           </div>
           <div style="background:var(--bg);border-radius:8px;padding:7px;text-align:center;">
@@ -3982,7 +4436,16 @@ function renderJoiningList() {
             <div style="font-size:16px;font-weight:900;color:var(--txt);">${j.eweCount||'—'}</div>
           </div>
         </div>
-        ${j.notes?`<div style="font-size:10px;color:var(--mut);margin-top:7px;padding-top:7px;border-top:1px solid var(--bor);">📝 ${j.notes}</div>`:''}
+        ${j.actualLambDate?`
+        <div style="background:rgba(104,32,160,.07);border-radius:8px;padding:8px 10px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;margin-bottom:2px;">Actual lambing start</div>
+            <div style="font-size:11px;font-weight:800;color:var(--c-purple);">${fmtD(j.actualLambDate)}</div>
+          </div>
+          ${earlyLateStr}
+        </div>`:`
+        <button onclick="openRecordActualLambing(${j.id})" style="width:100%;padding:8px;background:none;border:1.5px dashed rgba(104,32,160,.3);border-radius:8px;font-family:inherit;font-size:11px;font-weight:700;color:var(--c-purple);cursor:pointer;margin-bottom:7px;">+ Record actual lambing start date</button>`}
+        ${j.notes?`<div style="font-size:10px;color:var(--mut);padding-top:7px;border-top:1px solid var(--bor);">📝 ${j.notes}</div>`:''}
       </div>
     </div>`;
   }).join('');
@@ -4341,10 +4804,18 @@ function saveFarmDetails() {
 }
 function openPrefixManager() {
   const prefixes = loadPrefixes();
-  showModal(`<h3 style="margin-bottom:12px;">🏷️ Year prefixes</h3>
-    <p style="font-size:12px;color:var(--mut);margin-bottom:12px;line-height:1.5;">These are the 2-digit year codes used for tagging (e.g. 25 for 2025). Long-press a chip in any tag entry screen to remove one.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;">
-      ${prefixes.map(p=>`<div style="padding:8px 14px;background:var(--ac);color:white;border-radius:9px;font-family:'Courier Prime',monospace;font-size:17px;font-weight:700;">${p}</div>`).join('')}
+  showModal(`<h3 style="margin-bottom:8px;">🏷️ Year prefixes</h3>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:12px;line-height:1.5;">2-digit year codes used for tagging (e.g. 25 for 2025). Removing a prefix does not affect any sheep data.</p>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px;">
+      ${prefixes.map(p=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1.5px solid var(--bor);border-radius:10px;padding:10px 13px;">
+          <span style="font-family:'Courier Prime',monospace;font-size:20px;font-weight:700;color:var(--ac);">${p}</span>
+          <span style="font-size:11px;color:var(--mut);font-weight:600;">20${p}</span>
+          ${prefixes.length>1
+            ? `<button onclick="removePrefixFromManager('${p}')" style="background:none;border:1.5px solid rgba(192,57,30,.3);border-radius:7px;padding:5px 11px;color:#c0392b;font-family:inherit;font-size:11px;font-weight:800;cursor:pointer;">Remove</button>`
+            : `<span style="font-size:10px;color:var(--mut);font-style:italic;">Last prefix</span>`
+          }
+        </div>`).join('')}
     </div>
     <div style="display:flex;gap:7px;margin-bottom:12px;">
       <input id="newPrefix" type="text" inputmode="numeric" maxlength="2" placeholder="e.g. 26" style="flex:1;padding:11px;border:2px solid var(--bor);border-radius:9px;font-family:'Courier Prime',monospace;font-size:20px;font-weight:700;text-align:center;">
@@ -4354,6 +4825,17 @@ function openPrefixManager() {
       <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);flex:1;">Done</button>
     </div>`);
   setTimeout(()=>{ const el=document.getElementById('prefixSub'); if(el) el.textContent=prefixes.join(' · ')+' active'; }, 100);
+}
+function removePrefixFromManager(p) {
+  const list = loadPrefixes();
+  if(list.length<=1){ toast('⚠️ Need at least one prefix'); return; }
+  if(!confirm(`Remove year prefix "${p}"?\n\nThis only removes it from the selector — no sheep data is affected.`)) return;
+  const nl = list.filter(x=>x!==p);
+  savePrefixes(nl);
+  if(getActiveYr()===p) { localStorage.setItem('sheepActive_v1', nl[nl.length-1]); }
+  ['w','s','n','ns'].forEach(ctx=>renderChips(ctx));
+  openPrefixManager();
+  toast(`✓ Prefix "${p}" removed`);
 }
 function addPrefixFromSettings() {
   const v = (document.getElementById('newPrefix')?.value||'').trim();
@@ -5265,6 +5747,323 @@ function summariseMerge(counts){
 // ═══════════════════════════════════════════════════════
 // SERVICE WORKER
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════
+// BUY-IN / ADD UNRECORDED SHEEP
+// ═══════════════════════════════════
+let _buyinSex = null;
+function initBuyin() {
+  _buyinSex = null;
+  const tagEl=document.getElementById('buyinTag'); if(tagEl) { tagEl.value=''; tagEl.focus(); }
+  const statusEl=document.getElementById('buyinTagStatus'); if(statusEl) statusEl.textContent='';
+  ['buyinSexRam','buyinSexEwe','buyinSexWeth'].forEach(id=>resetBuyinSexBtn(id));
+  const vendorEl=document.getElementById('buyinVendor'); if(vendorEl) vendorEl.value='';
+  const priceEl=document.getElementById('buyinPrice'); if(priceEl) priceEl.value='';
+  const addedEl=document.getElementById('buyinAdded'); if(addedEl) addedEl.innerHTML='';
+  // Populate mob select
+  const mobSel=document.getElementById('buyinMob');
+  if(mobSel){
+    mobSel.innerHTML='<option value="">— No mob —</option>'+
+      (_mem.mobs||[]).map(m=>`<option value="${m.name}">${m.name}</option>`).join('');
+  }
+}
+function resetBuyinSexBtn(id) {
+  const el=document.getElementById(id); if(!el) return;
+  const map={buyinSexRam:{c:'#2980b9',bg:'rgba(41,128,185,.08)',brd:'rgba(41,128,185,.25)'},
+             buyinSexEwe:{c:'#c0397a',bg:'rgba(192,57,122,.08)',brd:'rgba(192,57,122,.25)'},
+             buyinSexWeth:{c:'#7d3c98',bg:'rgba(125,60,152,.08)',brd:'rgba(125,60,152,.25)'}};
+  const m=map[id]; if(!m) return;
+  el.style.background=m.bg; el.style.color=m.c; el.style.borderColor=m.brd;
+}
+function setBuyinSex(sex) {
+  _buyinSex = _buyinSex===sex ? null : sex;
+  ['buyinSexRam','buyinSexEwe','buyinSexWeth'].forEach(id=>resetBuyinSexBtn(id));
+  if(!_buyinSex) return;
+  const map={ram:'buyinSexRam',ewe:'buyinSexEwe',wether:'buyinSexWeth'};
+  const cols={ram:'#2980b9',ewe:'#c0397a',wether:'#7d3c98'};
+  const el=document.getElementById(map[_buyinSex]); if(!el) return;
+  el.style.background=cols[_buyinSex]; el.style.color='white'; el.style.borderColor=cols[_buyinSex];
+}
+function buyinTagCheck() {
+  const raw=(document.getElementById('buyinTag')?.value||'').trim();
+  const st=document.getElementById('buyinTagStatus'); if(!st) return;
+  if(!raw){ st.textContent=''; return; }
+  const tag=raw.length<=3?_mem.activeYr+raw.padStart(3,'0'):raw;
+  const inData=_mem.data.some(r=>r.tag===tag);
+  const sex=_mem.sex[tag];
+  const status=_mem.status[tag];
+  if(inData||sex) {
+    st.textContent=tag+' — already in system'+(sex?' · '+sex:'')+(status?' · '+status.status:'');
+    st.style.color='#e8a020';
+  } else {
+    st.textContent=tag+' — will be added';
+    st.style.color='var(--ac-d,#4a8a2e)';
+  }
+}
+function saveBuyin() {
+  const raw=(document.getElementById('buyinTag')?.value||'').trim();
+  if(!raw){ toast('Enter a tag number'); return; }
+  const tag=raw.length<=3?_mem.activeYr+raw.padStart(3,'0'):raw;
+  const date=new Date().toISOString().split('T')[0];
+  const mobName=(document.getElementById('buyinMob')?.value||'').trim();
+  const vendor=(document.getElementById('buyinVendor')?.value||'').trim();
+  const price=parseFloat(document.getElementById('buyinPrice')?.value)||0;
+  // Save sex
+  if(_buyinSex){ _mem.sex[tag]=_buyinSex; saveSex(_mem.sex); }
+  // Add to data if not already there
+  if(!_mem.data.some(r=>r.tag===tag)){
+    _mem.data.push({id:'r'+Date.now(),tag,weight:0,date,notes:vendor?'Buy-in from '+vendor:'Buy-in'});
+    saveData(_mem.data);
+  }
+  // Assign to mob if selected
+  if(mobName){
+    const mob=_mem.mobs.find(m=>m.name===mobName);
+    const existing=_mem.mobhist.find(h=>h.tag===tag);
+    if(existing){ existing.currentMob=mobName; existing.currentLoc=mob?.loc||''; }
+    else _mem.mobhist.push({tag,currentMob:mobName,currentLoc:mob?.loc||''});
+    _mem.mobMoves.push({tag,from:null,to:mobName,toLoc:mob?.loc||'',date});
+    saveMobHist(_mem.mobhist); saveMobMoves(_mem.mobMoves);
+  }
+  // Auto-create cost entry if price entered
+  if(price>0){
+    const costNote=vendor?`Buy-in from ${vendor}`:'Sheep purchase';
+    _mem.costs.push({id:'c'+Date.now(),title:tag+' — '+costNote,type:'purchase',amount:price,date,notes:vendor||''});
+    saveCostsData(_mem.costs);
+  }
+  toast('Added '+tag+(price>0?' · $'+price.toFixed(2)+' cost recorded':''));
+  // Show in added list
+  const addedEl=document.getElementById('buyinAdded');
+  if(addedEl){
+    const sexIcon=_buyinSex?((_buyinSex==='ram'?'♂':_buyinSex==='ewe'?'♀':'✂')):'';
+    addedEl.innerHTML='<div style="padding:8px 12px;background:var(--card);border:1.5px solid var(--bor);border-radius:9px;font-family:\'Courier Prime\',monospace;font-size:13px;font-weight:700;color:var(--txt);">'+tag+(sexIcon?' '+sexIcon:'')+(mobName?' · '+mobName:'')+(price>0?' · $'+price.toFixed(2):'')+'</div>'+addedEl.innerHTML;
+  }
+  // Reset form
+  const tagEl=document.getElementById('buyinTag'); if(tagEl){ tagEl.value=''; tagEl.focus(); }
+  document.getElementById('buyinTagStatus').textContent='';
+  _buyinSex=null; ['buyinSexRam','buyinSexEwe','buyinSexWeth'].forEach(id=>resetBuyinSexBtn(id));
+  document.getElementById('buyinVendor').value='';
+  document.getElementById('buyinPrice').value='';
+  refreshCount(); renderFlock();
+}
+
+// ═══════════════════════════════════
+// LAMB MARKING
+// ═══════════════════════════════════
+let _lm = {
+  joiningId: null, mob: '', paddock: '', paddockId: '',
+  startNum: 1, currentNum: 1,
+  counts: {ram:0, ewe:0, wether:0},
+  tagged: [], // [{tag, sex, date}]
+  date: ''
+};
+
+function initLambMark() {
+  _lm = { joiningId:null, mob:'', paddock:'', paddockId:'', startNum:1, currentNum:1,
+          counts:{ram:0,ewe:0,wether:0}, tagged:[], date:new Date().toISOString().split('T')[0] };
+  // Show setup, hide others
+  document.getElementById('lmSetup').style.display='block';
+  document.getElementById('lmMarking').style.display='none';
+  document.getElementById('lmSummary').style.display='none';
+  // Year chips
+  renderChips('lm');
+  // Populate joining select
+  const jSel=document.getElementById('lmJoiningId');
+  if(jSel){
+    const joinings=loadJoining().slice().sort((a,b)=>b.startDate.localeCompare(a.startDate));
+    jSel.innerHTML='<option value="">— No joining event —</option>'+
+      joinings.map(j=>`<option value="${j.id}">${j.mob} — Ram in ${fmtD(j.startDate)}</option>`).join('');
+  }
+  document.getElementById('lmJoiningDetail').textContent='';
+  // Populate mob select
+  lmPopulateMob();
+  // Clear start num
+  const snEl=document.getElementById('lmStartNum'); if(snEl) snEl.value='';
+  document.getElementById('lmPreviewTag').textContent='—';
+}
+
+function lmPopulateMob(selectedName) {
+  const sel=document.getElementById('lmMob'); if(!sel) return;
+  sel.innerHTML='<option value="">— Select mob —</option>'+
+    (_mem.mobs||[]).map(m=>`<option value="${m.name}" ${m.name===selectedName?'selected':''}>${m.name}</option>`).join('');
+  if(selectedName) lmMobChanged();
+}
+
+function lmJoiningChanged() {
+  const id=parseInt(document.getElementById('lmJoiningId')?.value)||null;
+  _lm.joiningId=id;
+  const detailEl=document.getElementById('lmJoiningDetail');
+  if(!id){ if(detailEl) detailEl.textContent=''; return; }
+  const j=loadJoining().find(x=>x.id===id); if(!j) return;
+  // Auto-fill mob
+  lmPopulateMob(j.mob);
+  if(detailEl){
+    const eweStr=j.eweCount?j.eweCount+' ewes · ':'';
+    const lambStr=j.lambDate?'Est. lambing '+fmtD(j.lambDate):'';
+    detailEl.textContent=eweStr+lambStr;
+  }
+}
+
+function lmMobChanged() {
+  _lm.mob=document.getElementById('lmMob')?.value||'';
+}
+
+function lmUpdatePreview() {
+  const num=parseInt(document.getElementById('lmStartNum')?.value)||0;
+  const el=document.getElementById('lmPreviewTag');
+  if(!num||num<1||num>999){ if(el) el.textContent='—'; return; }
+  _lm.startNum=num;
+  if(el) el.textContent=_mem.activeYr+String(num).padStart(3,'0');
+}
+
+function lmStartSession() {
+  const mobName=document.getElementById('lmMob')?.value||'';
+  if(!mobName){ toast('Select a mob'); return; }
+  const startRaw=document.getElementById('lmStartNum')?.value;
+  if(!startRaw||parseInt(startRaw)<1){ toast('Enter a starting tag number'); return; }
+  _lm.mob=mobName;
+  // Resolve paddock silently from mob — recorded on every sheep movement entry
+  const mob=(_mem.mobs||[]).find(m=>m.name===mobName);
+  _lm.paddock=mob?.loc||'';
+  _lm.paddockId=mob?.paddockId||'';
+  _lm.startNum=parseInt(startRaw);
+  _lm.currentNum=_lm.startNum;
+  _lm.counts={ram:0,ewe:0,wether:0};
+  _lm.tagged=[];
+  // Show marking screen
+  document.getElementById('lmSetup').style.display='none';
+  document.getElementById('lmMarking').style.display='block';
+  document.getElementById('lmSummary').style.display='none';
+  lmUpdateMarkingDisplay();
+}
+
+function lmUpdateMarkingDisplay() {
+  // Current tag
+  const tag=_mem.activeYr+String(_lm.currentNum).padStart(3,'0');
+  document.getElementById('lmCurrentTag').textContent=tag;
+  // Counts
+  document.getElementById('lmCountRam').textContent=_lm.counts.ram;
+  document.getElementById('lmCountEwe').textContent=_lm.counts.ewe;
+  document.getElementById('lmCountWeth').textContent=_lm.counts.wether;
+  // End button total
+  const total=_lm.counts.ram+_lm.counts.ewe+_lm.counts.wether;
+  document.getElementById('lmEndBtn').textContent='End session — '+total+' marked';
+  // Recent strip
+  const strip=document.getElementById('lmRecentStrip');
+  if(strip){
+    const sexIcon={ram:'♂',ewe:'♀',wether:'✂'};
+    const sexCol={ram:'#7ab8f5',ewe:'#f5a0c8',wether:'#c8a0f5'};
+    strip.innerHTML=_lm.tagged.slice(-6).reverse().map(t=>
+      `<span style="padding:4px 9px;background:#1a3a0f;border-radius:6px;font-family:'Courier Prime',monospace;font-size:11px;font-weight:700;color:#d4e8c4;">
+        ${t.tag} <span style="color:${sexCol[t.sex]}">${sexIcon[t.sex]}</span></span>`
+    ).join('');
+  }
+}
+
+function lmAddLamb(sex) {
+  const tag=_mem.activeYr+String(_lm.currentNum).padStart(3,'0');
+  const date=_lm.date;
+  const mob=(_mem.mobs||[]).find(m=>m.name===_lm.mob);
+  // Save sex
+  _mem.sex[tag]=sex; saveSex(_mem.sex);
+  // Add to data
+  if(!_mem.data.some(r=>r.tag===tag)){
+    _mem.data.push({id:'r'+Date.now(),tag,weight:0,date,notes:'Lamb marking'});
+    saveData(_mem.data);
+  }
+  // Assign to mob
+  if(mob){
+    const existing=_mem.mobhist.find(h=>h.tag===tag);
+    if(existing){ existing.currentMob=_lm.mob; existing.currentLoc=mob.loc||''; }
+    else _mem.mobhist.push({tag,currentMob:_lm.mob,currentLoc:mob.loc||''});
+    _mem.mobMoves.push({tag,from:null,to:_lm.mob,toLoc:mob.loc||'',date});
+    saveMobHist(_mem.mobhist); saveMobMoves(_mem.mobMoves);
+  }
+  // Update counts
+  if(sex==='ram') _lm.counts.ram++;
+  else if(sex==='ewe') _lm.counts.ewe++;
+  else _lm.counts.wether++;
+  _lm.tagged.push({tag,sex,date});
+  // Vibrate feedback
+  if(navigator.vibrate) navigator.vibrate(30);
+  // Advance
+  _lm.currentNum++;
+  if(_lm.currentNum>999) _lm.currentNum=999;
+  refreshCount();
+  lmUpdateMarkingDisplay();
+}
+
+function lmEndSession() {
+  const total=_lm.counts.ram+_lm.counts.ewe+_lm.counts.wether;
+  if(!total){ toast('No lambs marked yet'); return; }
+  // Save a session summary note to the joining record
+  if(_lm.joiningId){
+    const list=loadJoining();
+    const j=list.find(x=>x.id===_lm.joiningId);
+    if(j){
+      if(!j.markingSessions) j.markingSessions=[];
+      j.markingSessions.push({
+        date:_lm.date, total,
+        rams:_lm.counts.ram, ewes:_lm.counts.ewe, wethers:_lm.counts.wether,
+        firstTag:_lm.tagged[0]?.tag, lastTag:_lm.tagged.at(-1)?.tag
+      });
+      saveJoiningData(list);
+    }
+  }
+  // Show summary
+  document.getElementById('lmMarking').style.display='none';
+  document.getElementById('lmSummary').style.display='block';
+  document.getElementById('lmSumRam').textContent=_lm.counts.ram;
+  document.getElementById('lmSumEwe').textContent=_lm.counts.ewe;
+  document.getElementById('lmSumWeth').textContent=_lm.counts.wether;
+  document.getElementById('lmSumMeta').textContent=_lm.mob+' · '+fmtD(_lm.date);
+  // Build detail rows
+  const firstTag=_lm.tagged[0]?.tag||'—';
+  const lastTag=_lm.tagged.at(-1)?.tag||'—';
+  let lambPct='';
+  if(_lm.joiningId){
+    const j=loadJoining().find(x=>x.id===_lm.joiningId);
+    if(j?.eweCount>0){
+      // Total marked across all sessions for this joining
+      const allSessions=j.markingSessions||[];
+      const totalMarked=allSessions.reduce((a,s)=>a+s.total,0);
+      const pct=Math.round((totalMarked/j.eweCount)*100);
+      lambPct=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bor);font-size:12px;">
+        <span style="color:var(--mut);font-weight:600;">Ewes in joining</span><span style="font-weight:700;">${j.eweCount}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bor);font-size:12px;">
+        <span style="color:var(--mut);font-weight:600;">Total marked (all sessions)</span><span style="font-weight:700;">${totalMarked}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px;">
+        <span style="color:var(--mut);font-weight:700;">Lambing % so far</span>
+        <span style="font-weight:900;font-size:20px;color:var(--ac-d,#4a8a2e);">${pct}%</span></div>`;
+    }
+  }
+  document.getElementById('lmSumDetails').innerHTML=`
+    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bor);font-size:12px;">
+      <span style="color:var(--mut);font-weight:600;">Tags</span>
+      <span style="font-weight:700;font-family:'Courier Prime',monospace;font-size:11px;">${firstTag} → ${lastTag}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bor);font-size:12px;">
+      <span style="color:var(--mut);font-weight:600;">Mob</span><span style="font-weight:700;">${_lm.mob}</span></div>
+    +(_lm.paddock?'<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bor);font-size:12px;"><span style="color:var(--mut);font-weight:600;">Paddock</span><span style="font-weight:700;">'+_lm.paddock+'</span></div>':'')
+
+    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:${lambPct?'1px':'0'} solid var(--bor);font-size:12px;">
+      <span style="color:var(--mut);font-weight:600;">Joining record</span>
+      <span style="font-weight:700;color:${_lm.joiningId?'var(--c-purple)':'var(--mut)'};">${_lm.joiningId?'Linked ✓':'Not linked'}</span></div>
+    ${lambPct}`;
+  renderMobList(); renderFlock(); renderHome();
+}
+
+function lmAnotherSession() {
+  // Keep mob, paddock and joining but reset counts and tag position
+  const prevMob=_lm.mob, prevJoiningId=_lm.joiningId;
+  initLambMark();
+  // Restore previous selections after init
+  setTimeout(()=>{
+    const jSel=document.getElementById('lmJoiningId');
+    if(jSel&&prevJoiningId){ jSel.value=prevJoiningId; lmJoiningChanged(); }
+    const mSel=document.getElementById('lmMob');
+    if(mSel&&prevMob){ mSel.value=prevMob; }
+    _lm.mob=prevMob; _lm.joiningId=prevJoiningId;
+  },50);
+}
+
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
