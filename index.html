@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0c1508">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Sheep Tracker v10</title>
+<title>Sheep Tracker v11</title>
 <style>
 @font-face{
   font-family:'Nunito';
@@ -908,51 +908,41 @@ textarea{resize:none;height:68px;font-size:13px;}
   <div style="background:var(--card);border-radius:20px 20px 0 0;padding:22px 18px 34px;max-width:480px;width:100%;max-height:88dvh;overflow-y:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-size:20px;font-weight:900;color:var(--txt);">✨ Sheep Tracker v10</div>
-        <div style="font-size:11px;color:var(--mut);font-weight:600;margin-top:3px;">April 2026 — here's everything that's new</div>
+        <div style="font-size:20px;font-weight:900;color:var(--txt);">✨ Sheep Tracker v11</div>
+        <div style="font-size:11px;color:var(--mut);font-weight:600;margin-top:3px;">July 2026 — here's everything that's new</div>
       </div>
       <button onclick="closeWhatsNew()" style="background:rgba(0,0,0,.08);border:none;border-radius:20px;padding:7px 15px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;color:var(--txt);">Skip</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;">
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🏡 Farm setup &amp; onboarding</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">First launch walks you through property name, paddocks, mobs and tag prefixes. Re-run anytime from Settings.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🐣 Full breeding tab</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Marking % per joining event, three separate lamb-sex tiles (ram/ewe/wether), and a year-on-year comparison table once you've got two seasons recorded.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🌿 Paddocks &amp; mob assignment</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Create paddocks with pasture type, water source and hectares. Assign mobs to one or more paddocks. Paddock history tracked per mob.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">📄 PDF breeding summary</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Export a print-ready breeding summary — rams table, lambing dates with early/late badge, marking %, sex tiles, year-on-year comparison and your notes. Tap Export PDF in Stats → Breeding.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🐑 Add sheep to mobs — fixed</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Tap <strong>Add sheep</strong> on any mob card to assign tags directly. Also works from the Flock sheep card. Assignments now persist correctly after a weigh session.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🐏 Multiple rams, own dates</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Joining events now support several rams, each with its own in and out date, instead of one shared date for all of them.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🐣 Breeding &amp; joining log</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Record joining events — mob, ram tags, dates. App auto-calculates expected lambing (147 days). Dashboard shows countdown and alerts when lambing is within 3 weeks.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🗺️ Paddock overview map</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Colour-coded tile view of every paddock — sheep count, average weight, sex breakdown and which mob's there. Settings → Paddocks → Overview.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">📱 Bigger buttons for field use</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">All entry buttons, sex selectors, year chips, sold/dead buttons and mob actions enlarged for gloved-hand use in the paddock.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">💾 Fixed a data-loss bug</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Found and fixed the cause of records sometimes not sticking after a QR sync — the app now always keeps a backup copy of every save, even if the device's storage isn't ready yet.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">📲 QR scan now live</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">The QR scanner was fully built but hidden. Now wired up — tap Scan QR in Settings → Share &amp; Sync. Requires iOS 17+ or Chrome.</div>
-      </div>
-
-      <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🖥️ iPad &amp; large screen layout</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Full sidebar navigation on iPad and desktop. Bottom tab bar on phone stays the same — + button now correctly centred.</div>
-      </div>
-
-      <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🏠 Smarter dashboard</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Alerts for flags, withholding, weight loss, overdue weighs and upcoming lambing. Mob tiles show last weighed date and due status.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🖥️ Sidebar and bottom bar fixed</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">The bottom tab bar now stays properly pinned to the bottom of the screen on phone, and the sidebar on iPad/desktop now sits correctly down the left instead of collapsing under the page content.</div>
       </div>
 
     </div>
@@ -965,6 +955,15 @@ textarea{resize:none;height:68px;font-size:13px;}
 <div class="modal-ov" id="releaseLogModal">
   <div class="modal-box">
     <h3 style="margin-bottom:14px;">📋 Release log</h3>
+    <div class="rl-version">v11 — July 2026</div>
+    <div class="rl-item"><div class="rl-dot"></div>Full breeding tab — marking % per joining event, three separate lamb-sex tiles, year-on-year comparison table</div>
+    <div class="rl-item"><div class="rl-dot"></div>PDF breeding summary export — rams table, lambing early/late badge, marking %, sex tiles, year comparison, notes</div>
+    <div class="rl-item"><div class="rl-dot"></div>Multiple rams per joining event, each with its own in/out date, replacing the old single ram-tags field</div>
+    <div class="rl-item"><div class="rl-dot"></div>Paddock overview map — colour-coded tiles with sheep count, avg weight, sex breakdown, tap to expand</div>
+    <div class="rl-item"><div class="rl-dot"></div>Fixed a data-loss bug where saves could silently fail to persist if device storage wasn't ready — root cause of the "QR sync doesn't stick" reports</div>
+    <div class="rl-item"><div class="rl-dot"></div>Fixed bottom nav bar not staying pinned to the bottom of the screen on phone</div>
+    <div class="rl-item"><div class="rl-dot"></div>Fixed sidebar on iPad/desktop collapsing under page content instead of sitting on the left</div>
+    <div class="rl-item"><div class="rl-dot"></div>What's New popup now shows once per version, updated to describe v11</div>
     <div class="rl-version">v10 — April 2026</div>
     <div class="rl-item"><div class="rl-dot"></div>Onboarding wizard — property, paddocks, mobs, tag prefixes setup</div>
     <div class="rl-item"><div class="rl-dot"></div>Paddock management — structured paddocks with pasture type, water source, hectares</div>
@@ -1181,21 +1180,25 @@ textarea{resize:none;height:68px;font-size:13px;}
     <div class="sub-pnl" id="st-year"><div id="yearContent"></div></div>
     <div class="sub-pnl" id="st-breeding">
       <!-- BREEDING MVP — joining log -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:6px;">
         <div style="font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;">Joining Events</div>
-        <button onclick="openAddJoining()" style="padding:5px 13px;background:var(--c-purple);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:11px;font-weight:800;cursor:pointer;">+ Add Joining</button>
+        <div style="display:flex;gap:6px;">
+          <button onclick="exportBreedingPDF()" style="padding:5px 12px;background:none;border:1.5px solid rgba(104,32,160,.3);border-radius:8px;font-family:inherit;font-size:11px;font-weight:800;color:var(--c-purple);cursor:pointer;">📄 Export PDF</button>
+          <button onclick="openAddJoining()" style="padding:5px 13px;background:var(--c-purple);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:11px;font-weight:800;cursor:pointer;">+ Add Joining</button>
+        </div>
       </div>
       <div id="joiningList"></div>
       <!-- ADD JOINING FORM -->
       <div id="joiningForm" style="display:none;background:var(--card);border:1.5px solid rgba(104,32,160,.3);border-radius:var(--r);padding:14px;margin-bottom:12px;">
         <div style="font-size:12px;font-weight:900;color:var(--c-purple);margin-bottom:12px;">Record Joining Event</div>
         <div class="fg"><span class="lbl">Mob / Ewe group</span><select id="jEweMob" onchange="joiningMobChanged()" style="font-size:14px;"></select></div>
-        <div class="fg"><span class="lbl">Ram tag(s) — comma separated</span><input type="text" id="jRamTags" placeholder="e.g. 25004, 25005" autocomplete="off" style="font-family:'Courier Prime',monospace;font-weight:700;font-size:15px;"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;">
-          <div><span class="lbl">Ram in (joining start)</span><input type="date" id="jStartDate" oninput="joiningStartChanged()"></div>
-          <div><span class="lbl">Ram out (joining end)</span><input type="date" id="jEndDate"><div style="font-size:9px;color:var(--mut);margin-top:4px;font-weight:600;">Auto: 6 weeks — edit if different</div></div>
+        <div class="fg">
+          <span class="lbl">Rams <span style="font-size:9px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">— each with its own in/out date</span></span>
+          <div id="jRamsList"></div>
+          <button type="button" onclick="jRamAdd()" style="width:100%;padding:8px;background:none;border:1.5px dashed rgba(104,32,160,.3);border-radius:8px;font-family:inherit;font-size:11px;font-weight:700;color:var(--c-purple);cursor:pointer;">+ Add ram</button>
         </div>
-        <div class="fg"><span class="lbl">Est. lambing start</span><input type="date" id="jLambDate"><div style="font-size:9px;color:var(--mut);margin-top:4px;font-weight:600;">Auto: ram in + 147 days (21 weeks gestation) — edit if different</div></div>
+        <div class="fg"><span class="lbl">Joining start <span style="font-size:9px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">— auto: earliest ram in-date, edit to override</span></span><input type="date" id="jStartDate" oninput="joiningStartChanged()"></div>
+        <div class="fg"><span class="lbl">Est. lambing start</span><input type="date" id="jLambDate"><div style="font-size:9px;color:var(--mut);margin-top:4px;font-weight:600;">Auto: joining start + 147 days (21 weeks gestation) — edit if different</div></div>
         <div class="fg"><span class="lbl">Actual lambing start <span style="font-size:9px;color:var(--mut);font-weight:600;text-transform:none;letter-spacing:0;">— fill in once lambing begins</span></span><input type="date" id="jActualLambDate" placeholder=""></div>
         <div class="fg">
           <span class="lbl">Ewe count at joining</span>
@@ -1213,7 +1216,11 @@ textarea{resize:none;height:68px;font-size:13px;}
         <div style="font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Upcoming Lambing</div>
         <div id="lambingSummary"></div>
       </div>
-      <div style="margin-top:8px;font-size:10px;color:var(--mut);font-weight:600;text-align:center;line-height:1.5;">More breeding features coming — marking rates, conception tracking, lamb records.</div>
+      <!-- YEAR ON YEAR -->
+      <div id="yearCompareWrap" style="display:none;margin-top:14px;">
+        <div style="font-size:10px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Year on Year</div>
+        <div id="yearCompareTable"></div>
+      </div>
     </div>
     <div class="sub-pnl" id="st-costs">
       <div class="cost-sum" id="stats-csum"></div>
@@ -1226,7 +1233,7 @@ textarea{resize:none;height:68px;font-size:13px;}
 <div class="pnl" id="pnl-set">
   <div class="farm-hero">
     <div class="fh-name" id="settingsFarmName">Durran Durra</div>
-    <div class="fh-sub" id="settingsFarmSub">Charleyong NSW · Sheep Tracker v10</div>
+    <div class="fh-sub" id="settingsFarmSub">Charleyong NSW · Sheep Tracker v11</div>
   </div>
   <div style="padding:11px 13px;background:var(--t-set-d);">
     <div class="sh-wrap" onclick="calcStorageHealth()">
@@ -1316,7 +1323,7 @@ textarea{resize:none;height:68px;font-size:13px;}
       <div class="set-item" onclick="showAbout()">
         <div class="set-accent" style="background:var(--c-teal);"></div>
         <div class="si-ico">ℹ️</div>
-        <div><div class="si-t">About</div><div class="si-s">Sheep Tracker v10 · Durran Durra</div></div>
+        <div><div class="si-t">About</div><div class="si-s">Sheep Tracker v11 · Durran Durra</div></div>
         <div class="si-arr">›</div>
       </div>
     </div>
@@ -1796,13 +1803,14 @@ textarea{resize:none;height:68px;font-size:13px;}
     <div class="fab-row" onclick="openEntry('notes')"><div class="fr-ico">📝</div><div><div class="fr-main">Notes</div><div class="fr-sub">Tag history &amp; notes</div></div><div class="fr-arr">›</div></div>
   </div>
 </div>
+</main>
 
 <!-- BOTTOM NAV / SIDEBAR -->
 <div class="nav-wrap">
   <!-- Sidebar brand header (hidden on mobile via CSS) -->
   <div class="sidebar-brand">
     <div class="sb-name" id="sbFarmName">Durran Durra</div>
-    <div class="sb-sub">Sheep Tracker v10</div>
+    <div class="sb-sub">Sheep Tracker v11</div>
   </div>
 
   <div class="nav-inner">
@@ -1881,8 +1889,15 @@ textarea{resize:none;height:68px;font-size:13px;}
       <div style="font-size:10px;color:var(--mut);font-weight:600;">Add your paddock below, then tap ← Back to assign it</div>
     </div>
   </div>
+  <div style="display:flex;gap:6px;padding:11px 13px 0;">
+    <button id="paddockViewBtnManage" class="stab on" onclick="switchPaddockView('manage')" style="flex:1;">📋 Manage</button>
+    <button id="paddockViewBtnOverview" class="stab" onclick="switchPaddockView('overview')" style="flex:1;">🗺️ Overview</button>
+  </div>
   <div style="padding:13px;" id="paddockList">
     <!-- rendered by renderPaddockList() -->
+  </div>
+  <div style="padding:0 13px 13px;display:none;" id="paddockOverview">
+    <!-- rendered by renderPaddockOverview() -->
   </div>
 </div>
 
@@ -2034,7 +2049,7 @@ function obAddPaddock(){
   const name = document.getElementById('obPaddName').value.trim();
   if(!name){ toast('⚠️ Enter a name'); return; }
   const p = {
-    id:'p'+Date.now(),
+    id:genId(), updatedAt:nowStamp(),
     name,
     hectares: parseFloat(document.getElementById('obPaddHa').value)||0,
     pastureType: getSelectVal('obPaddPasture','obPaddPastureOther'),
@@ -2140,7 +2155,7 @@ function obFinish(){
   updateFarmDisplay();
   updateSettingsDisplay();
   renderPaddockList();
-  toast('🐑 Welcome to Sheep Tracker v10!');
+  toast('🐑 Welcome to Sheep Tracker v11!');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2149,6 +2164,7 @@ function obFinish(){
 function openPaddockManager(){
   window._paddockReturnMob = null;
   renderPaddockList();
+  switchPaddockView('manage');
   document.getElementById('paddockScreen').style.display='block';
   const banner=document.getElementById('paddockReturnBanner');
   if(banner) banner.style.display='none';
@@ -2158,6 +2174,7 @@ function openPaddockManagerFrom(mobName){
   window._paddockReturnMob = mobName;
   goTab('settings');
   renderPaddockList();
+  switchPaddockView('manage');
   document.getElementById('paddockScreen').style.display='block';
   // Show a banner so they know why they're here
   const banner = document.getElementById('paddockReturnBanner');
@@ -2209,6 +2226,98 @@ function renderPaddockList(){
   }).join('');
 }
 
+// ═══════════════════════════════════════════════════════
+// PADDOCK OVERVIEW MAP — colour-coded tile dashboard
+// ═══════════════════════════════════════════════════════
+const PASTURE_COLORS = {
+  'Improved pasture': '#4a9a28',
+  'Native pasture':   '#8aa060',
+  'Crop stubble':     '#d4920a',
+  'Sown crop':        '#2a5814',
+  'Other':            '#6a7a60'
+};
+function pastureColor(type){ return PASTURE_COLORS[type] || '#b8bcb4'; }
+
+function switchPaddockView(mode){
+  const manageBtn = document.getElementById('paddockViewBtnManage');
+  const overviewBtn = document.getElementById('paddockViewBtnOverview');
+  const listEl = document.getElementById('paddockList');
+  const ovEl = document.getElementById('paddockOverview');
+  if(!manageBtn||!overviewBtn||!listEl||!ovEl) return;
+  manageBtn.classList.toggle('on', mode==='manage');
+  overviewBtn.classList.toggle('on', mode==='overview');
+  listEl.style.display = mode==='manage' ? 'block' : 'none';
+  ovEl.style.display = mode==='overview' ? 'block' : 'none';
+  if(mode==='overview') renderPaddockOverview();
+}
+
+// Paddock assignment is mob-level (a mob can span several paddocks, per
+// mob.paddocks[]) — there's no per-sheep paddock tracking, so a mob split
+// across paddocks shows its full count/avg weight on each of its paddocks
+// rather than a proportional split. Same simplification renderPaddockList /
+// renderMobList already make; not a regression introduced here.
+function renderPaddockOverview(){
+  const el = document.getElementById('paddockOverview'); if(!el) return;
+  const paddocks = _mem.paddocks||[];
+  if(!paddocks.length){
+    el.innerHTML = `<div class="empty"><div class="ei">🗺️</div><p>No paddocks yet.<br>Switch to Manage to add some.</p></div>`;
+    return;
+  }
+  const stMap = _mem.status;
+  el.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">${paddocks.map(p=>{
+    const mobsHere = (_mem.mobs||[]).filter(m=>(m.paddocks||[]).includes(p.id));
+    const tags = mobsHere.flatMap(m=>
+      _mem.mobhist.filter(h=>h.currentMob===m.name).map(h=>h.tag)
+    ).filter(t=>{ const s=stMap[t]?.status; return !s||!['sold','dead'].includes(s); });
+    const ws = tags.map(t=>{
+      const e = _mem.data.filter(r=>r.tag===t&&r.weight>0).sort((a,b)=>b.date.localeCompare(a.date));
+      return e[0]?.weight||0;
+    }).filter(Boolean);
+    const avg = ws.length ? (ws.reduce((a,b)=>a+b,0)/ws.length).toFixed(1) : '—';
+    const rams = tags.filter(t=>_mem.sex[t]==='ram').length;
+    const ewes = tags.filter(t=>_mem.sex[t]==='ewe').length;
+    const weths = tags.filter(t=>_mem.sex[t]==='wether').length;
+    const color = pastureColor(p.pastureType);
+    const id = 'po-'+p.id;
+    return `<div class="card" style="padding:0;overflow:hidden;border-top:4px solid ${color};cursor:pointer;" onclick="togglePaddockTile('${id}')">
+      <div style="padding:11px 13px 9px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+          <div>
+            <div style="font-size:13px;font-weight:900;color:var(--txt);">🌿 ${p.name}</div>
+            <div style="font-size:9px;color:var(--mut);font-weight:700;margin-top:2px;">${p.pastureType||'Pasture type not set'}${p.hectares?' · '+p.hectares+' ha':''}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:20px;font-weight:900;color:var(--txt);">${tags.length}</div>
+            <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;">Sheep</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:var(--bg);border-radius:8px;padding:6px;text-align:center;">
+            <div style="font-size:12px;font-weight:900;color:var(--txt);">${avg}${avg!=='—'?' kg':''}</div>
+            <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;">Avg wt</div>
+          </div>
+          <div style="background:var(--bg);border-radius:8px;padding:6px;text-align:center;">
+            <div style="font-size:12px;font-weight:900;color:var(--txt);">${ewes}E ${rams}R ${weths}W</div>
+            <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;">Sex</div>
+          </div>
+        </div>
+      </div>
+      <div id="${id}" style="max-height:0;overflow:hidden;transition:max-height .2s ease;">
+        <div style="padding:0 13px 11px;border-top:1px solid var(--bor);padding-top:9px;">
+          ${mobsHere.length ? mobsHere.map(m=>`<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;padding:3px 0;"><span style="color:var(--txt);">🐑 ${m.name}</span><span style="color:var(--mut);">${_mem.mobhist.filter(h=>h.currentMob===m.name).length} sheep</span></div>`).join('')
+            : `<div style="font-size:11px;color:var(--mut);font-weight:600;">No mob assigned to this paddock</div>`}
+          ${p.waterSource?`<div style="font-size:10px;color:var(--mut);font-weight:600;margin-top:6px;">💧 ${p.waterSource}</div>`:''}
+          ${p.notes?`<div style="font-size:10px;color:var(--mut);font-weight:600;margin-top:4px;">${p.notes}</div>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+function togglePaddockTile(id){
+  const el = document.getElementById(id); if(!el) return;
+  el.style.maxHeight = el.style.maxHeight && el.style.maxHeight!=='0px' ? '0' : '400px';
+}
+
 function openAddPaddockModal(){
   document.getElementById('paddockModalTitle').textContent='Add Paddock';
   document.getElementById('editPaddockId').value='';
@@ -2249,7 +2358,8 @@ function savePaddockModal(){
   if(!_mem.paddocks) _mem.paddocks=[];
   const editId = document.getElementById('editPaddockId').value;
   const paddock = {
-    id: editId || 'p'+Date.now(),
+    id: editId || genId(),
+    updatedAt: nowStamp(),
     name,
     hectares: parseFloat(document.getElementById('pmHa').value)||0,
     pastureType: getSelectVal('pmPasture','pmPastureOther'),
@@ -2299,7 +2409,7 @@ function updateFarmDisplay(){
   const hEl  = document.getElementById('hFarmName'); if(hEl) hEl.textContent=name;
   // Settings hero
   const sName= document.getElementById('settingsFarmName'); if(sName) sName.textContent=name;
-  const sSub = document.getElementById('settingsFarmSub');  if(sSub)  sSub.textContent=(loc?loc+' · ':'')+'Sheep Tracker v10';
+  const sSub = document.getElementById('settingsFarmSub');  if(sSub)  sSub.textContent=(loc?loc+' · ':'')+'Sheep Tracker v11';
   // Sidebar brand (wide screens)
   const sbName= document.getElementById('sbFarmName'); if(sbName) sbName.textContent=name;
   // Sidebar footer (wide screens)
@@ -2348,6 +2458,15 @@ let _mem = {
   joining:[], paddocks:[]
 };
 
+// ── v12 sync-ready groundwork ──────────────────────────────────
+// Record IDs used to be 'r'+Date.now() — fine for one device, but two people
+// (Brad + Kat) writing independently can produce colliding IDs, and a future
+// delta sync needs a stable global ID plus a modification timestamp to diff
+// against. genId()/nowStamp() are quietly used everywhere records are
+// created or edited from here on; no UI surface for this yet (that's v12).
+function genId(){ return (crypto.randomUUID ? crypto.randomUUID() : 'id-'+Date.now()+'-'+Math.random().toString(36).slice(2,10)); }
+function nowStamp(){ return new Date().toISOString(); }
+
 let _db = null;
 function openDB(){
   return new Promise((res,rej)=>{
@@ -2377,7 +2496,22 @@ function idbSet(store, key, val){
     req.onerror   = e => rej(e.target.error);
   });
 }
-function idbWrite(key, val){ if(!_db) return; idbSet(STORE_HOT, key, val).catch(()=>{}); }
+// ── localStorage fallback ──────────────────────────────────────
+// IndexedDB can fail to open (private browsing, storage pressure, iOS PWA
+// quirks) or a single write can fail — in either case idbWrite used to be a
+// silent no-op with nothing else backing it up, so a "successful" merge
+// (sync, manual entry, anything) could vanish on next launch with no error
+// shown anywhere. Every hot-store write now also lands in localStorage
+// synchronously, so there's always a durable copy even if IDB never comes up.
+const LS_PREFIX = 'st11_';
+function lsWrite(key, val){ try{ localStorage.setItem(LS_PREFIX+key, JSON.stringify(val)); }catch(e){ console.warn('localStorage write failed', key, e); } }
+function lsRead(key){ try{ const v=localStorage.getItem(LS_PREFIX+key); return v==null?undefined:JSON.parse(v); }catch(e){ return undefined; } }
+
+function idbWrite(key, val){
+  lsWrite(key, val);
+  if(!_db) return;
+  idbSet(STORE_HOT, key, val).catch(e=>console.warn('IndexedDB write failed — localStorage copy is current', key, e));
+}
 function idbWriteArc(key, val){ if(!_db) return; idbSet(STORE_ARC, key, val).catch(()=>{}); }
 
 async function migrateFromLocalStorage(){
@@ -2419,8 +2553,11 @@ async function loadAllIntoMemory(){
                  'drenchEvents','mobMoves','flags','prefixes','activeYr','lastUpdated','lastSync',
                  'farmName','farmLoc','joining','paddocks'];
   for(const key of keys){
-    const val = await idbGet(STORE_HOT, key).catch(()=>null);
-    if(val !== null && val !== undefined) _mem[key] = val;
+    const idbVal = _db ? await idbGet(STORE_HOT, key).catch(()=>null) : null;
+    if(idbVal !== null && idbVal !== undefined){ _mem[key] = idbVal; continue; }
+    // IDB unavailable or empty for this key — fall back to the localStorage mirror
+    const lsVal = lsRead(key);
+    if(lsVal !== undefined) _mem[key] = lsVal;
   }
   if(!Array.isArray(_mem.prefixes)||!_mem.prefixes.length){
     const y = new Date().getFullYear();
@@ -2544,21 +2681,19 @@ window.addEventListener('load', async () => {
   // 1. Open IDB
   try { _db = await openDB(); } catch(e) { console.error('IDB open failed',e); }
 
-  // 2. Migrate from localStorage if first time
+  // 2. Migrate from localStorage if first time (legacy flat-key format, IDB only)
   if(_db) await migrateFromLocalStorage();
 
-  // 3. Load all data into memory
-  if(_db) await loadAllIntoMemory();
+  // 3. Load all data into memory — reads IDB where available, falls back to
+  // the localStorage mirror per-key otherwise. Runs even if IDB never opened,
+  // so a device with no working IndexedDB still sees its own data.
+  await loadAllIntoMemory();
 
-  // 4. Archive sweep
+  // 4. Archive sweep (IDB-only optimization — nothing lost if skipped, data
+  // just stays in the hot store instead of being pruned into cold storage)
   if(_db) await runArchiveSweep();
 
-  // 5. Load paddocks into memory (v10)
-  const savedPaddocks = await idbGet(STORE_HOT,'paddocks').catch(()=>null);
-  if(savedPaddocks) _mem.paddocks = savedPaddocks;
-  else _mem.paddocks = [];
-
-  // 6. v10 onboarding check
+  // 5. v10 onboarding check
   const obDone = await idbGet(STORE_HOT,'__obDone').catch(()=>null);
   if(!obDone){
     const hasData = (_mem.data||[]).length>0 || (_mem.mobs||[]).length>0;
@@ -2592,13 +2727,17 @@ window.addEventListener('load', async () => {
   populateCostFySelect();
   updateLastUpdated();
 
-  // 8. What's New popup — show once per version
-  idbGet(STORE_HOT,'__wnSeen').then(seen=>{
-    if(seen!=='v10'){
+  // 8. What's New popup — show once per version. Read falls back to the
+  // localStorage mirror (see idbWrite) so this still works correctly on a
+  // device where IndexedDB never came up, same as every other read now.
+  (async () => {
+    const idbSeen = _db ? await idbGet(STORE_HOT,'__wnSeen').catch(()=>null) : null;
+    const seen = (idbSeen!==null && idbSeen!==undefined) ? idbSeen : lsRead('__wnSeen');
+    if(seen!=='v11'){
       const wn=document.getElementById('whatsNewModal');
       if(wn) setTimeout(()=>{ wn.style.display='flex'; },800);
     }
-  }).catch(()=>{});
+  })();
 
   // Auto-advance after tag entry
   const wSeq = document.getElementById('wSeq');
@@ -2615,7 +2754,7 @@ window.addEventListener('load', async () => {
 function closeWhatsNew(){
   const m=document.getElementById('whatsNewModal');
   if(m) m.style.display='none';
-  idbWrite('__wnSeen','v10');
+  idbWrite('__wnSeen','v11');
 }
 function showWhatsNew(){
   const m=document.getElementById('whatsNewModal');
@@ -2626,7 +2765,7 @@ function showAbout(){
     <div style="text-align:center;padding:8px 0 16px;">
       <div style="font-size:32px;margin-bottom:8px;">🐑</div>
       <div style="font-size:18px;font-weight:900;color:var(--txt);">Sheep Tracker</div>
-      <div style="font-size:13px;font-weight:700;color:var(--mut);margin-top:4px;">Version 10 · April 2026</div>
+      <div style="font-size:13px;font-weight:700;color:var(--mut);margin-top:4px;">Version 11 · July 2026</div>
       <div style="font-size:11px;color:var(--mut);margin-top:10px;line-height:1.6;">Built for Durran Durra, Charleyong NSW.<br>Offline-first · iPhone-primary · no cloud.</div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px;">
@@ -2840,7 +2979,7 @@ function saveWeigh() {
   const date = weighMode==='rapid'?new Date().toISOString().split('T')[0]:document.getElementById('wDt').value;
   const notes = weighMode==='rapid'?(document.getElementById('wRapidNote')?.value.trim()||''):document.getElementById('wNotes').value.trim();
   if(curSex){ _mem.sex[tag]=curSex; saveSex(_mem.sex); }
-  _mem.data.push({id:'r'+Date.now(),tag,weight:wt,date,notes}); saveData(_mem.data);
+  _mem.data.push({id:genId(),updatedAt:nowStamp(),tag,weight:wt,date,notes}); saveData(_mem.data);
   // update mob session
   if(activeMob && !activeMob.done.includes(tag)) { activeMob.done.push(tag); updMobProg(); }
   sessW.push({tag,wt}); sessTotal+=wt;
@@ -3047,7 +3186,7 @@ function saveStatus() {
   if(!activeStatusChoice){toast('⚠️ Select Sold or Dead');return;}
   const tag=_mem.activeYr+raw.padStart(3,'0');
   _mem.status[tag]={status:activeStatusChoice,date,cause}; saveStatusData(_mem.status);
-  if(!_mem.data.some(r=>r.tag===tag)){ _mem.data.push({id:'r'+Date.now(),tag,weight:0,date,notes:''}); saveData(_mem.data); }
+  if(!_mem.data.some(r=>r.tag===tag)){ _mem.data.push({id:genId(),updatedAt:nowStamp(),tag,weight:0,date,notes:''}); saveData(_mem.data); }
   toast(`✓ ${tag} marked as ${activeStatusChoice}`);
   document.getElementById('sSeq').value=''; document.getElementById('sTagVal').textContent='—'; document.getElementById('sSummary').style.display='none';
   activeStatusChoice=null; refreshCount(); updateSRecent();
@@ -3075,7 +3214,7 @@ function saveDrench() {
   const exp=parseInt(document.getElementById('dExportWH').value)||0;
   if(!name){toast('⚠️ Select a mob');return;}
   if(!prod){toast('⚠️ Enter product name');return;}
-  _mem.drench.push({id:'d'+Date.now(),name,date,product:prod,amount:amt,localWH:loc,exportWH:exp});
+  _mem.drench.push({id:genId(),updatedAt:nowStamp(),name,date,product:prod,amount:amt,localWH:loc,exportWH:exp});
   saveDrenchData(_mem.drench);
   const mobTags=_mem.mobhist.filter(h=>h.currentMob===name).map(h=>h.tag);
   mobTags.forEach(tag=>_mem.drenchEvents.push({tag,date,product:prod,amount:amt,mob:name}));
@@ -3097,7 +3236,7 @@ function saveCost() {
   const notes=document.getElementById('cNotes').value.trim();
   if(!title){toast('⚠️ Enter a title');return;}
   if(!amt||amt<=0){toast('⚠️ Enter a valid amount');return;}
-  _mem.costs.push({id:'c'+Date.now(),title,type:activeCostType,amount:amt,date,notes});
+  _mem.costs.push({id:genId(),updatedAt:nowStamp(),title,type:activeCostType,amount:amt,date,notes});
   saveCostsData(_mem.costs);
   toast('✓ Cost entry saved');
   document.getElementById('cTitle').value=''; document.getElementById('cAmount').value=''; document.getElementById('cNotes').value='';
@@ -3169,7 +3308,7 @@ function saveNote() {
   if(!raw){toast('⚠️ Enter a tag number');return;}
   if(!text){toast('⚠️ Type a note first');return;}
   const tag=_mem.activeYr+raw.padStart(3,'0');
-  _mem.notes.push({id:'n'+Date.now(),tag,text,date:new Date().toISOString().split('T')[0]});
+  _mem.notes.push({id:genId(),updatedAt:nowStamp(),tag,text,date:new Date().toISOString().split('T')[0]});
   saveNotesData(_mem.notes);
   toast('✓ Note saved'); document.getElementById('noteText').value='';
   loadNotesProfile(tag);
@@ -3318,11 +3457,11 @@ function addNewSheep() {
 function doAddNewSheep(tag, date) {
   if(nsSex){ _mem.sex[tag]=nsSex; saveSex(_mem.sex); }
   if(!_mem.data.some(r=>r.tag===tag)){
-    _mem.data.push({id:'r'+Date.now(),tag,weight:0,date,notes:''});
+    _mem.data.push({id:genId(),updatedAt:nowStamp(),tag,weight:0,date,notes:''});
     _mem.mobMoves.push({tag,from:null,to:null,toLoc:null,date,addedOnly:true});
     saveData(_mem.data); saveMobMoves(_mem.mobMoves);
   }
-  if(nsSireTags.length){ _mem.notes.push({id:'n'+Date.now(),tag,text:'🐏 Sire: '+nsSireTags.join(', '),date}); saveNotesData(_mem.notes); }
+  if(nsSireTags.length){ _mem.notes.push({id:genId(),updatedAt:nowStamp(),tag,text:'🐏 Sire: '+nsSireTags.join(', '),date}); saveNotesData(_mem.notes); }
   if(navigator.vibrate) navigator.vibrate(40);
   toast('✓ '+tag+' added'+(nsSireTags.length?' · sire recorded':''));
   nsAdded.unshift(tag);
@@ -4111,7 +4250,7 @@ function atsAddOne(mobName) {
   if(existing){ existing.currentMob=mobName; existing.currentLoc=mob.loc||''; }
   else _mem.mobhist.push({tag,currentMob:mobName,currentLoc:mob.loc||''});
   if(!_mem.data.some(r=>r.tag===tag)){
-    _mem.data.push({tag,weight:0,date,notes:'Added to mob',id:'d'+Date.now()});
+    _mem.data.push({tag,weight:0,date,notes:'Added to mob',id:genId(),updatedAt:nowStamp()});
     saveData(_mem.data);
   }
   _mem.mobMoves.push({tag,from:null,to:mobName,toLoc:mob.loc||'',date});
@@ -4170,7 +4309,7 @@ function doAddSheepToMob(mobName) {
     }
     // If tag not in data at all, add a zero-weight entry so it appears in flock
     if(!_mem.data.some(r=>r.tag===tag)){
-      _mem.data.push({tag, weight:0, date, notes:'Added to mob', id:'d'+Date.now()+'_'+Math.random().toString(36).slice(2,8)});
+      _mem.data.push({tag, weight:0, date, notes:'Added to mob', id:genId(), updatedAt:nowStamp()});
       saveData(_mem.data);
     }
     added++;
@@ -4201,7 +4340,7 @@ function doCreateMob() {
   const date=new Date().toISOString().split('T')[0];
   const paddock = (_mem.paddocks||[]).find(p=>p.id===paddockId);
   const locVal = paddock ? paddock.name : 'Not set';
-  _mem.mobs.push({id:'m'+Date.now(),name,loc:locVal,paddockId:paddockId||null,weighEvery:we,locationLog:[{loc:locVal,date}],movedDate:date});
+  _mem.mobs.push({id:genId(),updatedAt:nowStamp(),name,loc:locVal,paddockId:paddockId||null,weighEvery:we,locationLog:[{loc:locVal,date}],movedDate:date});
   saveMobsData(_mem.mobs);
   closeModal({target:document.getElementById('modalOv')}); toast(`✓ ${name} created`); renderMobList(); renderHome();
 }
@@ -4248,9 +4387,197 @@ function renderCostLog() {
 // ═══════════════════════════════════════════════════════
 // BREEDING / JOINING MVP
 // ═══════════════════════════════════════════════════════
+// Joining records saved before v11 store `rams` as a plain comma-separated
+// string; v11+ stores an array of {tag,inDate,outDate}. Handle both so old
+// data keeps displaying correctly instead of breaking.
+function ramsList(j) {
+  if(Array.isArray(j.rams)) return j.rams;
+  if(typeof j.rams==='string' && j.rams.trim()) return j.rams.split(',').map(t=>({tag:t.trim(),inDate:j.startDate||'',outDate:j.endDate||''}));
+  return [];
+}
+function ramsDisplayShort(j) {
+  return ramsList(j).map(r=>r.tag).filter(Boolean).join(', ');
+}
+// Aggregate every marking session recorded against a joining event.
+// Marking % is locked as lambs marked ÷ ewes joined (not vs. births) — do not change.
+function markingStats(j) {
+  const sessions = j.markingSessions||[];
+  const ram = sessions.reduce((a,s)=>a+(s.rams||0),0);
+  const ewe = sessions.reduce((a,s)=>a+(s.ewes||0),0);
+  const wether = sessions.reduce((a,s)=>a+(s.wethers||0),0);
+  const total = ram+ewe+wether;
+  const pct = j.eweCount>0 ? Math.round((total/j.eweCount)*100) : null;
+  return {total, ram, ewe, wether, pct, sessionCount:sessions.length};
+}
+
+// Group joining events by the year of their startDate and roll up
+// ewes/marked/marking% per year, newest first. Shared by the breeding tab
+// and the PDF export so the two never disagree.
+function yearComparisonData() {
+  const byYear = {};
+  loadJoining().forEach(j=>{
+    if(!j.startDate) return;
+    const yr = j.startDate.slice(0,4);
+    if(!byYear[yr]) byYear[yr] = {year:yr, ewes:0, marked:0, joinings:0};
+    const ms = markingStats(j);
+    byYear[yr].ewes += (j.eweCount||0);
+    byYear[yr].marked += ms.total;
+    byYear[yr].joinings += 1;
+  });
+  return Object.values(byYear)
+    .map(y=>({...y, pct: y.ewes>0 ? Math.round((y.marked/y.ewes)*100) : null}))
+    .sort((a,b)=>b.year.localeCompare(a.year));
+}
+
+function renderYearComparison() {
+  const wrap = document.getElementById('yearCompareWrap');
+  const el = document.getElementById('yearCompareTable');
+  if(!wrap||!el) return;
+  const years = yearComparisonData();
+  if(years.length < 2) { wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  el.innerHTML = `<div style="background:var(--card);border-radius:var(--r);border:1px solid var(--bor);overflow:hidden;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;background:var(--bg);padding:8px 10px;font-size:8px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.4px;">
+      <div>Year</div><div style="text-align:center;">Ewes</div><div style="text-align:center;">Marked</div><div style="text-align:center;">%</div>
+    </div>
+    ${years.map(y=>`<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:8px 10px;border-top:1px solid var(--bor);font-size:11px;font-weight:700;color:var(--txt);align-items:center;">
+      <div>${y.year}</div>
+      <div style="text-align:center;">${y.ewes||'—'}</div>
+      <div style="text-align:center;">${y.marked||'—'}</div>
+      <div style="text-align:center;font-weight:900;color:${y.pct!==null?'var(--am-d)':'var(--mut)'};">${y.pct!==null?y.pct+'%':'—'}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
 function renderBreeding() {
   populateJoiningMobSelect();
   renderJoiningList();
+  renderYearComparison();
+}
+
+// ═══════════════════════════════════════════════════════
+// BREEDING PDF EXPORT
+// Opens a formatted A4-landscape print view in a new tab. Locked layout —
+// do not revisit without checking sheep-tracker-handoff.md first:
+//   - rams table, multiple rams with individual in/out dates
+//   - lambing dates with early/late badge
+//   - marking % = lambs marked ÷ ewes joined (NOT vs births)
+//   - three separate lamb-sex tiles, never combined
+//   - year-on-year comparison table
+//   - free-text notes
+// Uses system fonts rather than re-embedding the app's base64 Nunito/Courier
+// Prime data (which would roughly double this function's size) — the brand
+// colours carry the "matches app styling" ask, the exact typeface doesn't.
+// ═══════════════════════════════════════════════════════
+function exportBreedingPDF() {
+  const joinings = loadJoining().slice().sort((a,b)=>b.startDate.localeCompare(a.startDate));
+  if(!joinings.length) { toast('No joining events to export yet'); return; }
+  const years = yearComparisonData();
+  const farmName = _mem.farmName || 'Sheep Tracker';
+  const farmLoc  = _mem.farmLoc  || '';
+  const genDate  = fmtD(new Date().toISOString().split('T')[0]);
+
+  const earlyLateBadge = j => {
+    if(!j.actualLambDate || !j.lambDate) return '';
+    const estD=new Date(j.lambDate), actD=new Date(j.actualLambDate);
+    const diff=Math.round((actD-estD)/864e5);
+    if(diff===0) return `<span class="badge badge-ac">On estimate</span>`;
+    if(diff<0)   return `<span class="badge badge-purple">${Math.abs(diff)}d early</span>`;
+    return `<span class="badge badge-am">${diff}d late</span>`;
+  };
+
+  const joiningSections = joinings.map(j=>{
+    const rams = ramsList(j);
+    const ms = markingStats(j);
+    return `
+    <section class="joining">
+      <div class="joining-hdr">
+        <h2>${j.mob||'—'}</h2>
+        <div class="joining-hdr-right">
+          ${j.lambDate?`<span class="meta">Est. lambing ${fmtD(j.lambDate)}</span>`:''}
+          ${j.actualLambDate?`<span class="meta">Actual ${fmtD(j.actualLambDate)}</span> ${earlyLateBadge(j)}`:''}
+        </div>
+      </div>
+      ${rams.length ? `
+      <table class="rams-table">
+        <thead><tr><th>Ram tag</th><th>In</th><th>Out</th></tr></thead>
+        <tbody>${rams.map(r=>`<tr><td class="mono">${r.tag}</td><td>${r.inDate?fmtD(r.inDate):'—'}</td><td>${r.outDate?fmtD(r.outDate):'—'}</td></tr>`).join('')}</tbody>
+      </table>` : `<p class="muted">No rams recorded</p>`}
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-v">${j.eweCount||'—'}</div><div class="stat-l">Ewes joined</div></div>
+        <div class="stat-box"><div class="stat-v">${ms.total||'—'}</div><div class="stat-l">Lambs marked</div></div>
+        <div class="stat-box highlight"><div class="stat-v">${ms.pct!==null?ms.pct+'%':'—'}</div><div class="stat-l">Marking %</div></div>
+      </div>
+      <div class="sex-tiles">
+        <div class="sex-tile" style="border-color:#7ab8f5;"><div class="sex-v" style="color:#4a86c8;">${ms.ram}</div><div class="sex-l">Ram lambs</div></div>
+        <div class="sex-tile" style="border-color:#f5a0c8;"><div class="sex-v" style="color:#c85a94;">${ms.ewe}</div><div class="sex-l">Ewe lambs</div></div>
+        <div class="sex-tile" style="border-color:#c8a0f5;"><div class="sex-v" style="color:#8a4ac8;">${ms.wether}</div><div class="sex-l">Wethers</div></div>
+      </div>
+      ${j.notes?`<p class="notes">${j.notes}</p>`:''}
+    </section>`;
+  }).join('');
+
+  const yearTable = years.length ? `
+    <section class="joining">
+      <h2>Year on year</h2>
+      <table class="rams-table">
+        <thead><tr><th>Year</th><th>Ewes joined</th><th>Lambs marked</th><th>Marking %</th></tr></thead>
+        <tbody>${years.map(y=>`<tr><td>${y.year}</td><td>${y.ewes||'—'}</td><td>${y.marked||'—'}</td><td class="pct">${y.pct!==null?y.pct+'%':'—'}</td></tr>`).join('')}</tbody>
+      </table>
+    </section>` : '';
+
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Breeding Summary — ${farmName}</title>
+  <style>
+    @page { size: A4 landscape; margin: 14mm; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; color:#0e1a08; margin:0; }
+    .mono { font-family: 'Courier New', Courier, monospace; font-weight:700; }
+    header { background:#0c1508; color:#fff; padding:16px 20px; border-radius:10px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; }
+    header h1 { margin:0; font-size:20px; }
+    header .sub { font-size:11px; color:rgba(255,255,255,.6); margin-top:3px; }
+    header .gen { font-size:10px; color:#d4920a; text-align:right; }
+    .grid { column-count:2; column-gap:20px; }
+    section.joining { break-inside:avoid; border:1px solid #dcdcda; border-radius:8px; padding:12px 14px; margin-bottom:14px; display:inline-block; width:100%; }
+    section.joining h2 { font-size:14px; margin:0 0 8px; color:#2a5814; }
+    .joining-hdr { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:8px; }
+    .joining-hdr-right { font-size:10px; color:#6a7a60; display:flex; gap:8px; align-items:center; }
+    .meta { font-weight:700; }
+    .badge { font-size:9px; font-weight:800; padding:2px 8px; border-radius:20px; }
+    .badge-ac { background:#eaf3de; color:#2a5814; }
+    .badge-am { background:#faeeda; color:#a06808; }
+    .badge-purple { background:#efe6fa; color:#6820a0; }
+    table.rams-table { width:100%; border-collapse:collapse; font-size:11px; margin-bottom:10px; }
+    table.rams-table th { text-align:left; font-size:9px; text-transform:uppercase; letter-spacing:.4px; color:#6a7a60; border-bottom:1.5px solid #dcdcda; padding:4px 6px; }
+    table.rams-table td { padding:4px 6px; border-bottom:1px solid #eee; }
+    table.rams-table td.pct { font-weight:900; color:#a06808; }
+    .muted { font-size:11px; color:#6a7a60; margin:0 0 10px; }
+    .stat-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:10px; }
+    .stat-box { background:#f0f0ee; border-radius:6px; padding:8px; text-align:center; }
+    .stat-box.highlight { background:#faeeda; }
+    .stat-v { font-size:16px; font-weight:900; }
+    .stat-l { font-size:8px; font-weight:800; text-transform:uppercase; color:#6a7a60; margin-top:2px; }
+    .sex-tiles { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:8px; }
+    .sex-tile { border:1.5px solid; border-radius:6px; padding:6px; text-align:center; }
+    .sex-v { font-size:15px; font-weight:900; }
+    .sex-l { font-size:8px; font-weight:800; text-transform:uppercase; color:#6a7a60; margin-top:2px; }
+    .notes { font-size:10px; color:#6a7a60; border-top:1px solid #dcdcda; padding-top:7px; margin:0; }
+  </style></head>
+  <body>
+    <header>
+      <div><h1>🐣 Breeding Summary</h1><div class="sub">${farmName}${farmLoc?' · '+farmLoc:''}</div></div>
+      <div class="gen">Generated ${genDate}</div>
+    </header>
+    <div class="grid">${joiningSections}${yearTable}</div>
+    <script>
+      window.onload = function(){ setTimeout(function(){ window.print(); }, 300); };
+    <\/script>
+  </body></html>`;
+
+  const win = window.open('', '_blank');
+  if(!win) { toast('⚠️ Pop-up blocked — allow pop-ups to export the PDF'); return; }
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
 }
 
 function populateJoiningMobSelect() {
@@ -4261,21 +4588,67 @@ function populateJoiningMobSelect() {
     + mobs.map(m=>`<option value="${m.name}">${m.name}</option>`).join('');
 }
 
+// ── Multi-ram rows ──────────────────────────────────────────────
+// Each joining event can have several rams, each with its own in/out date
+// (a ram might go in late, or be swapped mid-joining). The joining-level
+// "start" date driving the +147-day lambing estimate is auto-synced to the
+// earliest ram in-date, but stays editable in case a farmer wants to
+// override it directly.
+let _jRams = [];
+
+function jRamAdd() {
+  const today = new Date().toISOString().split('T')[0];
+  const out = new Date(); out.setDate(out.getDate()+42);
+  _jRams.push({tag:'', inDate:today, outDate:out.toISOString().split('T')[0]});
+  renderJRams();
+  jRamsSyncTopDates();
+}
+function jRamRemove(i) {
+  _jRams.splice(i,1);
+  renderJRams();
+  jRamsSyncTopDates();
+}
+function jRamField(i, field, val) {
+  if(!_jRams[i]) return;
+  _jRams[i][field] = val;
+  if(field==='inDate' && val) {
+    const d = new Date(val); d.setDate(d.getDate()+42);
+    _jRams[i].outDate = d.toISOString().split('T')[0];
+    renderJRams();
+  }
+  jRamsSyncTopDates();
+}
+function renderJRams() {
+  const el = document.getElementById('jRamsList'); if(!el) return;
+  el.innerHTML = _jRams.map((r,i)=>`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;align-items:end;margin-bottom:8px;">
+      <div><span class="lbl" style="font-size:9px;">Ram tag</span><input type="text" value="${r.tag}" oninput="jRamField(${i},'tag',this.value)" placeholder="e.g. 25004" autocomplete="off" style="font-family:'Courier Prime',monospace;font-weight:700;font-size:13px;"></div>
+      <div><span class="lbl" style="font-size:9px;">In</span><input type="date" value="${r.inDate}" oninput="jRamField(${i},'inDate',this.value)" style="font-size:12px;"></div>
+      <div><span class="lbl" style="font-size:9px;">Out</span><input type="date" value="${r.outDate}" oninput="jRamField(${i},'outDate',this.value)" style="font-size:12px;"></div>
+      <button type="button" onclick="jRamRemove(${i})" style="padding:9px 11px;background:none;border:1.5px solid var(--bor);border-radius:8px;color:var(--mut);font-weight:800;cursor:pointer;">✕</button>
+    </div>`).join('') || `<div style="font-size:11px;color:var(--mut);padding:4px 0 8px;">No rams added yet — tap + Add ram below</div>`;
+}
+function jRamsSyncTopDates() {
+  const ins = _jRams.map(r=>r.inDate).filter(Boolean).sort();
+  if(!ins.length) return;
+  document.getElementById('jStartDate').value = ins[0];
+  const lambD = new Date(ins[0]); lambD.setDate(lambD.getDate()+147);
+  document.getElementById('jLambDate').value = lambD.toISOString().split('T')[0];
+}
+
 function openAddJoining() {
   const form = document.getElementById('joiningForm');
   if(!form) return;
   form.style.display = 'block';
   populateJoiningMobSelect();
   const today = new Date().toISOString().split('T')[0];
+  _jRams = [];
+  jRamAdd(); // start with one ram row, pre-filled with today's date
   document.getElementById('jStartDate').value = today;
-  // Default ram out: 6 weeks
-  const endDate = new Date(); endDate.setDate(endDate.getDate()+42);
-  document.getElementById('jEndDate').value = endDate.toISOString().split('T')[0];
   // Default lambing: ram in + 147 days
   const lambDate = new Date(); lambDate.setDate(lambDate.getDate()+147);
   document.getElementById('jLambDate').value = lambDate.toISOString().split('T')[0];
   document.getElementById('jActualLambDate').value = '';
-  document.getElementById('jRamTags').value = '';
   document.getElementById('jEweCount').value = '';
   document.getElementById('jEweCountHint').textContent = '';
   document.getElementById('jNotes').value = '';
@@ -4284,12 +4657,8 @@ function openAddJoining() {
 function joiningStartChanged() {
   const val = document.getElementById('jStartDate').value;
   if(!val) return;
-  const d = new Date(val);
-  // Ram out: +6 weeks
-  const endD = new Date(d); endD.setDate(endD.getDate()+42);
-  document.getElementById('jEndDate').value = endD.toISOString().split('T')[0];
   // Est lambing: +147 days
-  const lambD = new Date(d); lambD.setDate(lambD.getDate()+147);
+  const lambD = new Date(val); lambD.setDate(lambD.getDate()+147);
   document.getElementById('jLambDate').value = lambD.toISOString().split('T')[0];
 }
 function joiningMobChanged() {
@@ -4313,20 +4682,20 @@ function cancelJoining() {
 
 function saveJoining() {
   const mob   = document.getElementById('jEweMob')?.value?.trim();
-  const rams  = document.getElementById('jRamTags')?.value?.trim();
+  const rams  = _jRams.filter(r=>r.tag && r.tag.trim()).map(r=>({tag:r.tag.trim(), inDate:r.inDate||'', outDate:r.outDate||''}));
   const start = document.getElementById('jStartDate')?.value;
-  const end   = document.getElementById('jEndDate')?.value;
   const lamb  = document.getElementById('jLambDate')?.value;
   const actualLamb = document.getElementById('jActualLambDate')?.value || '';
   const count = parseInt(document.getElementById('jEweCount')?.value)||0;
   const notes = document.getElementById('jNotes')?.value?.trim();
   if(!mob)   { toast('Select a mob / ewe group'); return; }
   if(!start) { toast('Enter joining start date'); return; }
+  const end = rams.map(r=>r.outDate).filter(Boolean).sort().at(-1) || '';
   const rec = {
-    id: Date.now(),
+    id: genId(), updatedAt: nowStamp(),
     mob, rams,
     startDate: start,
-    endDate: end||'',
+    endDate: end,
     lambDate: lamb||'',
     actualLambDate: actualLamb,
     eweCount: count,
@@ -4354,7 +4723,7 @@ function openRecordActualLambing(id) {
     <div class="fg"><span class="lbl">Actual lambing start date</span><input type="date" id="actualLambInp" value="${j.actualLambDate||new Date().toISOString().split('T')[0]}"></div>
     ${j.lambDate?`<div style="font-size:11px;color:var(--mut);margin-bottom:12px;font-weight:600;">Est. lambing was ${fmtD(j.lambDate)}</div>`:''}
     <div class="modal-btns">
-      <button onclick="saveActualLambing(${id})" style="background:var(--c-purple);color:white;flex:2;">Save</button>
+      <button onclick="saveActualLambing('${id}')" style="background:var(--c-purple);color:white;flex:2;">Save</button>
       <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);">Cancel</button>
     </div>`);
 }
@@ -4414,11 +4783,11 @@ function renderJoiningList() {
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px;">
           <div>
             <div style="font-size:13px;font-weight:900;color:var(--txt);">🐑 ${j.mob||'—'}</div>
-            ${j.rams?`<div style="font-size:9px;color:var(--mut);font-weight:700;margin-top:2px;">🐏 Rams: <span style="font-family:'Courier Prime',monospace;font-size:10px;color:var(--am-d);">${j.rams}</span></div>`:''}
+            ${ramsDisplayShort(j)?`<div style="font-size:9px;color:var(--mut);font-weight:700;margin-top:2px;">🐏 Rams: <span style="font-family:'Courier Prime',monospace;font-size:10px;color:var(--am-d);">${ramsDisplayShort(j)}</span></div>`:''}
           </div>
           <div style="display:flex;align-items:center;gap:6px;">
             ${lambStatus?`<span style="font-size:8px;font-weight:800;padding:3px 9px;border-radius:20px;${lambBadgeStyle}">${lambStatus}</span>`:''}
-            <button onclick="deleteJoining(${j.id})" style="background:none;border:none;color:var(--mut);font-size:14px;cursor:pointer;padding:2px 6px;">✕</button>
+            <button onclick="deleteJoining('${j.id}')" style="background:none;border:none;color:var(--mut);font-size:14px;cursor:pointer;padding:2px 6px;">✕</button>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:7px;">
@@ -4444,7 +4813,28 @@ function renderJoiningList() {
           </div>
           ${earlyLateStr}
         </div>`:`
-        <button onclick="openRecordActualLambing(${j.id})" style="width:100%;padding:8px;background:none;border:1.5px dashed rgba(104,32,160,.3);border-radius:8px;font-family:inherit;font-size:11px;font-weight:700;color:var(--c-purple);cursor:pointer;margin-bottom:7px;">+ Record actual lambing start date</button>`}
+        <button onclick="openRecordActualLambing('${j.id}')" style="width:100%;padding:8px;background:none;border:1.5px dashed rgba(104,32,160,.3);border-radius:8px;font-family:inherit;font-size:11px;font-weight:700;color:var(--c-purple);cursor:pointer;margin-bottom:7px;">+ Record actual lambing start date</button>`}
+        ${(()=>{ const ms=markingStats(j); if(!ms.total) return ''; return `
+        <div style="border-top:1px solid var(--bor);padding-top:8px;margin-bottom:7px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
+            <div style="font-size:9px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.4px;">Marking — ${ms.total} lamb${ms.total!==1?'s':''}${ms.sessionCount>1?` (${ms.sessionCount} sessions)`:''}</div>
+            ${ms.pct!==null?`<div style="font-size:11px;font-weight:900;padding:2px 9px;border-radius:20px;background:var(--am-l);color:var(--am-d);">${ms.pct}% marked</div>`:''}
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+            <div style="background:var(--bg);border-radius:8px;padding:6px;text-align:center;">
+              <div style="font-size:14px;font-weight:900;color:#7ab8f5;">${ms.ram}</div>
+              <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;">Ram lambs</div>
+            </div>
+            <div style="background:var(--bg);border-radius:8px;padding:6px;text-align:center;">
+              <div style="font-size:14px;font-weight:900;color:#f5a0c8;">${ms.ewe}</div>
+              <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;">Ewe lambs</div>
+            </div>
+            <div style="background:var(--bg);border-radius:8px;padding:6px;text-align:center;">
+              <div style="font-size:14px;font-weight:900;color:#c8a0f5;">${ms.wether}</div>
+              <div style="font-size:7px;font-weight:800;color:var(--mut);text-transform:uppercase;">Wethers</div>
+            </div>
+          </div>
+        </div>`; })()}
         ${j.notes?`<div style="font-size:10px;color:var(--mut);padding-top:7px;border-top:1px solid var(--bor);">📝 ${j.notes}</div>`:''}
       </div>
     </div>`;
@@ -5509,7 +5899,7 @@ async function exportBackup(){
     mobhist:loadMobHist(),mobmoves:[...loadMobMoves(),...arcMM],
     drenchevents:[...loadDrenchEvts(),...arcDE],flags:loadFlags(),
     paddocks:_mem.paddocks||[],joining:loadJoining(),farmName:_mem.farmName||'',farmLoc:_mem.farmLoc||''},null,2);
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v10-'+new Date().toISOString().split('T')[0]+'.json'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v11-'+new Date().toISOString().split('T')[0]+'.json'});
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   toast('💾 Backup saved!');
 }
@@ -5811,7 +6201,7 @@ function saveBuyin() {
   if(_buyinSex){ _mem.sex[tag]=_buyinSex; saveSex(_mem.sex); }
   // Add to data if not already there
   if(!_mem.data.some(r=>r.tag===tag)){
-    _mem.data.push({id:'r'+Date.now(),tag,weight:0,date,notes:vendor?'Buy-in from '+vendor:'Buy-in'});
+    _mem.data.push({id:genId(),updatedAt:nowStamp(),tag,weight:0,date,notes:vendor?'Buy-in from '+vendor:'Buy-in'});
     saveData(_mem.data);
   }
   // Assign to mob if selected
@@ -5826,7 +6216,7 @@ function saveBuyin() {
   // Auto-create cost entry if price entered
   if(price>0){
     const costNote=vendor?`Buy-in from ${vendor}`:'Sheep purchase';
-    _mem.costs.push({id:'c'+Date.now(),title:tag+' — '+costNote,type:'purchase',amount:price,date,notes:vendor||''});
+    _mem.costs.push({id:genId(),updatedAt:nowStamp(),title:tag+' — '+costNote,type:'purchase',amount:price,date,notes:vendor||''});
     saveCostsData(_mem.costs);
   }
   toast('Added '+tag+(price>0?' · $'+price.toFixed(2)+' cost recorded':''));
@@ -5888,7 +6278,7 @@ function lmPopulateMob(selectedName) {
 }
 
 function lmJoiningChanged() {
-  const id=parseInt(document.getElementById('lmJoiningId')?.value)||null;
+  const id=document.getElementById('lmJoiningId')?.value||null;
   _lm.joiningId=id;
   const detailEl=document.getElementById('lmJoiningDetail');
   if(!id){ if(detailEl) detailEl.textContent=''; return; }
@@ -5966,7 +6356,7 @@ function lmAddLamb(sex) {
   _mem.sex[tag]=sex; saveSex(_mem.sex);
   // Add to data
   if(!_mem.data.some(r=>r.tag===tag)){
-    _mem.data.push({id:'r'+Date.now(),tag,weight:0,date,notes:'Lamb marking'});
+    _mem.data.push({id:genId(),updatedAt:nowStamp(),tag,weight:0,date,notes:'Lamb marking'});
     saveData(_mem.data);
   }
   // Assign to mob
@@ -6041,7 +6431,7 @@ function lmEndSession() {
       <span style="font-weight:700;font-family:'Courier Prime',monospace;font-size:11px;">${firstTag} → ${lastTag}</span></div>
     <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bor);font-size:12px;">
       <span style="color:var(--mut);font-weight:600;">Mob</span><span style="font-weight:700;">${_lm.mob}</span></div>
-    +(_lm.paddock?'<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bor);font-size:12px;"><span style="color:var(--mut);font-weight:600;">Paddock</span><span style="font-weight:700;">'+_lm.paddock+'</span></div>':'')
+    ${_lm.paddock?`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bor);font-size:12px;"><span style="color:var(--mut);font-weight:600;">Paddock</span><span style="font-weight:700;">${_lm.paddock}</span></div>`:''}
 
     <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:${lambPct?'1px':'0'} solid var(--bor);font-size:12px;">
       <span style="color:var(--mut);font-weight:600;">Joining record</span>
