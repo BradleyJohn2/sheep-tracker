@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0c1508">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Sheep Tracker v11</title>
+<title>Sheep Tracker v12</title>
 <style>
 @font-face{
   font-family:'Nunito';
@@ -908,41 +908,36 @@ textarea{resize:none;height:68px;font-size:13px;}
   <div style="background:var(--card);border-radius:20px 20px 0 0;padding:22px 18px 34px;max-width:480px;width:100%;max-height:88dvh;overflow-y:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-size:20px;font-weight:900;color:var(--txt);">✨ Sheep Tracker v11</div>
-        <div style="font-size:11px;color:var(--mut);font-weight:600;margin-top:3px;">July 2026 — here's everything that's new</div>
+        <div style="font-size:20px;font-weight:900;color:var(--txt);">✨ Sheep Tracker v12</div>
+        <div style="font-size:11px;color:var(--mut);font-weight:600;margin-top:3px;">October 2026 — here's everything that's new</div>
       </div>
       <button onclick="closeWhatsNew()" style="background:rgba(0,0,0,.08);border:none;border-radius:20px;padding:7px 15px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;color:var(--txt);">Skip</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;">
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🐣 Full breeding tab</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Marking % per joining event, three separate lamb-sex tiles (ram/ewe/wether), and a year-on-year comparison table once you've got two seasons recorded.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">☁️ Cloud sync</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Sign in once from Settings → Cloud sync and your records stay in step with the other phone. The newest edit wins, and deletions carry across too.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">📄 PDF breeding summary</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Export a print-ready breeding summary — rams table, lambing dates with early/late badge, marking %, sex tiles, year-on-year comparison and your notes. Tap Export PDF in Stats → Breeding.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">📴 Works with no signal</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Everything still saves on your phone first. Changes made in the paddock wait safely and go across when signal comes back.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🐏 Multiple rams, own dates</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Joining events now support several rams, each with its own in and out date, instead of one shared date for all of them.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🛡️ Built to be safe</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">The first time you connect, you see exactly what will happen before anything is uploaded. If a phone ever loses its data, sync pauses and offers to restore it instead of wiping the cloud copy.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🗺️ Paddock overview map</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Colour-coded tile view of every paddock — sheep count, average weight, sex breakdown and which mob's there. Settings → Paddocks → Overview.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">📲 QR sharing is gone</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Cloud sync replaces the QR code. Backup, Restore and spreadsheet export are still in Settings.</div>
       </div>
 
       <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">💾 Fixed a data-loss bug</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">Found and fixed the cause of records sometimes not sticking after a QR sync — the app now always keeps a backup copy of every save, even if the device's storage isn't ready yet.</div>
-      </div>
-
-      <div style="background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--bor);">
-        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🖥️ Sidebar and bottom bar fixed</div>
-        <div style="font-size:12px;color:var(--mut);line-height:1.5;">The bottom tab bar now stays properly pinned to the bottom of the screen on phone, and the sidebar on iPad/desktop now sits correctly down the left instead of collapsing under the page content.</div>
+        <div style="font-size:13px;font-weight:900;color:var(--ac-d);margin-bottom:5px;">🔧 Clear all data fixed</div>
+        <div style="font-size:12px;color:var(--mut);line-height:1.5;">It now really clears everything on that phone, including paddocks, joinings and the backup copy. With cloud sync on, it only clears that phone.</div>
       </div>
 
     </div>
@@ -955,6 +950,14 @@ textarea{resize:none;height:68px;font-size:13px;}
 <div class="modal-ov" id="releaseLogModal">
   <div class="modal-box">
     <h3 style="margin-bottom:14px;">📋 Release log</h3>
+    <div class="rl-version">v12 — October 2026</div>
+    <div class="rl-item"><div class="rl-dot"></div>Cloud sync (Firebase, free plan) — sign in from Settings, automatic background sync, newest edit wins, deletions carry across</div>
+    <div class="rl-item"><div class="rl-dot"></div>Works offline — changes save on the phone first and upload when signal returns</div>
+    <div class="rl-item"><div class="rl-dot"></div>First connection shows a summary and asks before merging anything</div>
+    <div class="rl-item"><div class="rl-dot"></div>Safety net — sync pauses and offers to restore if a phone looks like it lost its data</div>
+    <div class="rl-item"><div class="rl-dot"></div>QR code sharing, QR scanner and the AirDrop sync screen removed (Backup, Restore and CSV export stay)</div>
+    <div class="rl-item"><div class="rl-dot"></div>Fixed Clear all data leaving the backup copy, paddocks and joinings behind</div>
+    <div class="rl-item"><div class="rl-dot"></div>What's New popup updated for v12 and shows once</div>
     <div class="rl-version">v11 — July 2026</div>
     <div class="rl-item"><div class="rl-dot"></div>Full breeding tab — marking % per joining event, three separate lamb-sex tiles, year-on-year comparison table</div>
     <div class="rl-item"><div class="rl-dot"></div>PDF breeding summary export — rams table, lambing early/late badge, marking %, sex tiles, year comparison, notes</div>
@@ -1233,7 +1236,7 @@ textarea{resize:none;height:68px;font-size:13px;}
 <div class="pnl" id="pnl-set">
   <div class="farm-hero">
     <div class="fh-name" id="settingsFarmName">Durran Durra</div>
-    <div class="fh-sub" id="settingsFarmSub">Charleyong NSW · Sheep Tracker v11</div>
+    <div class="fh-sub" id="settingsFarmSub">Charleyong NSW · Sheep Tracker v12</div>
   </div>
   <div style="padding:11px 13px;background:var(--t-set-d);">
     <div class="sh-wrap" onclick="calcStorageHealth()">
@@ -1284,8 +1287,8 @@ textarea{resize:none;height:68px;font-size:13px;}
       <div class="set-sec">Sync &amp; Data</div>
       <div class="set-item" onclick="openSync()">
         <div class="set-accent" style="background:var(--am);"></div>
-        <div class="si-ico">📲</div>
-        <div><div class="si-t">Share &amp; Sync</div><div class="si-s">QR code · AirDrop fallback · smart merge</div></div>
+        <div class="si-ico">☁️</div>
+        <div><div class="si-t">Cloud sync</div><div class="si-s" id="cloudSetSub">Sign in to share with the other phone</div></div>
         <div class="si-arr">›</div>
       </div>
       <div class="set-item" onclick="exportBackup()">
@@ -1323,7 +1326,7 @@ textarea{resize:none;height:68px;font-size:13px;}
       <div class="set-item" onclick="showAbout()">
         <div class="set-accent" style="background:var(--c-teal);"></div>
         <div class="si-ico">ℹ️</div>
-        <div><div class="si-t">About</div><div class="si-s">Sheep Tracker v11 · Durran Durra</div></div>
+        <div><div class="si-t">About</div><div class="si-s">Sheep Tracker v12 · Durran Durra</div></div>
         <div class="si-arr">›</div>
       </div>
     </div>
@@ -1810,7 +1813,7 @@ textarea{resize:none;height:68px;font-size:13px;}
   <!-- Sidebar brand header (hidden on mobile via CSS) -->
   <div class="sidebar-brand">
     <div class="sb-name" id="sbFarmName">Durran Durra</div>
-    <div class="sb-sub">Sheep Tracker v11</div>
+    <div class="sb-sub">Sheep Tracker v12</div>
   </div>
 
   <div class="nav-inner">
@@ -1852,7 +1855,7 @@ textarea{resize:none;height:68px;font-size:13px;}
   </div>
 </div>
 <style>
-.sync-ov{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:500;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.sync-ov{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--hbg);z-index:500;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .sync-ov.open{display:flex;flex-direction:column;}
 .sync-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 15px 10px;flex-shrink:0;}
 .sync-title{font-size:15px;font-weight:900;color:#fff;}
@@ -1868,7 +1871,7 @@ textarea{resize:none;height:68px;font-size:13px;}
 <div class="sync-ov" id="syncOv">
   <div class="sync-hdr">
     <button onclick="closeSync()" style="background:none;border:none;color:rgba(255,255,255,.5);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;padding:0;display:flex;align-items:center;gap:5px;">← Back</button>
-    <div class="sync-title">📲 Share &amp; Sync</div>
+    <div class="sync-title">☁️ Cloud sync</div>
     <div style="width:60px;"></div>
   </div>
   <div class="sync-body" id="syncContent"></div>
@@ -2155,7 +2158,7 @@ function obFinish(){
   updateFarmDisplay();
   updateSettingsDisplay();
   renderPaddockList();
-  toast('🐑 Welcome to Sheep Tracker v11!');
+  toast('🐑 Welcome to Sheep Tracker v12!');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2409,7 +2412,7 @@ function updateFarmDisplay(){
   const hEl  = document.getElementById('hFarmName'); if(hEl) hEl.textContent=name;
   // Settings hero
   const sName= document.getElementById('settingsFarmName'); if(sName) sName.textContent=name;
-  const sSub = document.getElementById('settingsFarmSub');  if(sSub)  sSub.textContent=(loc?loc+' · ':'')+'Sheep Tracker v11';
+  const sSub = document.getElementById('settingsFarmSub');  if(sSub)  sSub.textContent=(loc?loc+' · ':'')+'Sheep Tracker v12';
   // Sidebar brand (wide screens)
   const sbName= document.getElementById('sbFarmName'); if(sbName) sbName.textContent=name;
   // Sidebar footer (wide screens)
@@ -2509,6 +2512,7 @@ function lsRead(key){ try{ const v=localStorage.getItem(LS_PREFIX+key); return v
 
 function idbWrite(key, val){
   lsWrite(key, val);
+  if(typeof cloudMarkDirty==='function') cloudMarkDirty(key);
   if(!_db) return;
   idbSet(STORE_HOT, key, val).catch(e=>console.warn('IndexedDB write failed — localStorage copy is current', key, e));
 }
@@ -2691,7 +2695,9 @@ window.addEventListener('load', async () => {
 
   // 4. Archive sweep (IDB-only optimization — nothing lost if skipped, data
   // just stays in the hot store instead of being pruned into cold storage)
-  if(_db) await runArchiveSweep();
+  // Skipped while signed in to cloud sync: moving old weights out of the hot store
+  // would look like deletions. The cloud keeps full history and the volume is tiny.
+  if(_db && !cloudSignedIn()) await runArchiveSweep();
 
   // 5. v10 onboarding check
   const obDone = await idbGet(STORE_HOT,'__obDone').catch(()=>null);
@@ -2726,6 +2732,7 @@ window.addEventListener('load', async () => {
   populateDrenchMobSelect();
   populateCostFySelect();
   updateLastUpdated();
+  cloudInit();
 
   // 8. What's New popup — show once per version. Read falls back to the
   // localStorage mirror (see idbWrite) so this still works correctly on a
@@ -2733,7 +2740,7 @@ window.addEventListener('load', async () => {
   (async () => {
     const idbSeen = _db ? await idbGet(STORE_HOT,'__wnSeen').catch(()=>null) : null;
     const seen = (idbSeen!==null && idbSeen!==undefined) ? idbSeen : lsRead('__wnSeen');
-    if(seen!=='v11'){
+    if(seen!=='v12'){
       const wn=document.getElementById('whatsNewModal');
       if(wn) setTimeout(()=>{ wn.style.display='flex'; },800);
     }
@@ -2754,7 +2761,7 @@ window.addEventListener('load', async () => {
 function closeWhatsNew(){
   const m=document.getElementById('whatsNewModal');
   if(m) m.style.display='none';
-  idbWrite('__wnSeen','v11');
+  idbWrite('__wnSeen','v12');
 }
 function showWhatsNew(){
   const m=document.getElementById('whatsNewModal');
@@ -2765,7 +2772,7 @@ function showAbout(){
     <div style="text-align:center;padding:8px 0 16px;">
       <div style="font-size:32px;margin-bottom:8px;">🐑</div>
       <div style="font-size:18px;font-weight:900;color:var(--txt);">Sheep Tracker</div>
-      <div style="font-size:13px;font-weight:700;color:var(--mut);margin-top:4px;">Version 11 · July 2026</div>
+      <div style="font-size:13px;font-weight:700;color:var(--mut);margin-top:4px;">Version 12 · October 2026</div>
       <div style="font-size:11px;color:var(--mut);margin-top:10px;line-height:1.6;">Built for Durran Durra, Charleyong NSW.<br>Offline-first · iPhone-primary · no cloud.</div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px;">
@@ -5140,21 +5147,8 @@ function renderHome() {
 
   // ── ZONE 3 — sync status ──────────────────────────────────────
   const syncZone = document.getElementById('dashSyncZone');
-  // In sandbox: simulate a last sync time stored in D
-  const lastSync = _mem.lastSync || null;
-  let syncT, syncS, syncIco;
-  if(!lastSync) {
-    syncIco = '📲';
-    syncT = 'Never synced';
-    syncS = 'Tap to share your data via QR code';
-  } else {
-    const ds = daysSince(lastSync.date);
-    syncIco = ds === 0 ? '✅' : ds <= 3 ? '📲' : '⚠️';
-    syncT = ds === 0 ? 'Synced today' : ds === 1 ? 'Synced yesterday' : `Synced ${ds} days ago`;
-    syncS = lastSync.records
-      ? `${lastSync.records} records shared · tap to sync again`
-      : 'Tap to sync again';
-  }
+  const cInfo = cloudInfo();
+  const syncIco = cInfo.ico, syncT = cInfo.t, syncS = cInfo.s;
   syncZone.innerHTML = `<div class="sync-strip" onclick="openSync()">
     <div class="ss-ico">${syncIco}</div>
     <div class="ss-body">
@@ -5259,605 +5253,437 @@ function clearWtLossFilter() {
 
 // ═══════════════════════════════════
 // HELPERS
-// ═══════════════════════════════════
-// QR SYNC SYSTEM
-// ═══════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// CLOUD SYNC (v12) — Firebase Firestore over plain fetch
+// Local storage stays the master copy; the cloud is a sync layer that must
+// never be required. Design: docs/cloud-sync-design.md
+// ═══════════════════════════════════════════════════════
+const CLOUD = {
+  apiKey:'AIzaSyDBct5kDcCHUz-DV0peoxldhgz_JE8MNXg',
+  project:'sheep-tracker-f7318',
+  authUrl:'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword',
+  tokenUrl:'https://securetoken.googleapis.com/v1/token',
+  fsBase:'https://firestore.googleapis.com/v1/projects/sheep-tracker-f7318/databases/(default)/documents',
+  farmPath:'farm/main'
+};
+const CLOUD_COLS = {
+  data:{t:'arr'}, notes:{t:'arr'}, drench:{t:'arr'}, costs:{t:'arr'}, mobs:{t:'arr'}, joining:{t:'arr'}, paddocks:{t:'arr'},
+  drenchEvents:{t:'arr', key:r=>[r.tag,r.date,r.product].join('|')},
+  mobMoves:{t:'arr', key:r=>[r.tag,r.date,r.to||''].join('|')},
+  mobhist:{t:'arr', key:r=>r.tag},
+  sex:{t:'map'}, status:{t:'map'}, flags:{t:'map'}, settings:{t:'set'}
+};
+const CLOUD_SETTING_KEYS = ['prefixes','farmName','farmLoc'];
+const CLOUD_KEY_COL = {data:'data',notes:'notes',drench:'drench',costs:'costs',mobs:'mobs',joining:'joining',paddocks:'paddocks',
+  drenchEvents:'drenchEvents',mobMoves:'mobMoves',mobhist:'mobhist',sex:'sex',status:'status',flags:'flags',
+  prefixes:'settings',farmName:'settings',farmLoc:'settings'};
 
-// ── QR SCAN: uses native BarcodeDetector API (iOS 17+, Android) — no library needed ──
-function canScan() {
-  return 'BarcodeDetector' in window && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+function cloudLoad(key, fallback){ try{ const v=JSON.parse(localStorage.getItem(key)||'null'); return v==null?fallback:v; }catch(e){ return fallback; } }
+let cloudMeta  = cloudLoad('st11_cloudMeta', null) || {deviceId:genId(), auth:null, cursor:0, firstSyncDone:false, lastOk:0, lastCount:0, email:''};
+let cloudBase  = cloudLoad('st11_cloudBase', {});
+let cloudDirty = cloudLoad('st11_cloudDirty', {pending:false, cols:{}});
+const cloudState = {status:'idle', msg:'', busy:false, again:false, applying:false, timer:null, seq:0, lastTry:0, preview:null, blocked:null};
+function cloudSaveMeta(){ try{ localStorage.setItem('st11_cloudMeta', JSON.stringify(cloudMeta)); }catch(e){ console.warn('cloud meta save failed', e); } }
+function cloudSaveBase(){ try{ localStorage.setItem('st11_cloudBase', JSON.stringify(cloudBase)); }catch(e){ console.warn('cloud base save failed', e); } }
+function cloudSaveDirty(){ try{ localStorage.setItem('st11_cloudDirty', JSON.stringify(cloudDirty)); }catch(e){} }
+function cloudSignedIn(){ return !!(cloudMeta.auth && cloudMeta.auth.refreshToken); }
+
+// Called from idbWrite for every local save.
+function cloudMarkDirty(key){
+  try{
+    if(cloudState.applying) return;
+    const col = CLOUD_KEY_COL[key]; if(!col) return;
+    cloudDirty.cols[col] = Date.now(); cloudDirty.pending = true; cloudState.seq++;
+    cloudSaveDirty(); cloudPaint();
+    if(cloudSignedIn() && cloudMeta.firstSyncDone) cloudSchedule(4000);
+  }catch(e){}
 }
+function cloudSchedule(ms){ clearTimeout(cloudState.timer); cloudState.timer=setTimeout(()=>cloudSync(), ms); }
 
-// ── QR GENERATE: pure canvas renderer, no library needed ──
-// Encodes data as a QR code using a minimal Reed-Solomon + matrix implementation
-// For our use case we use a data URI approach via SVG squares — reliable and offline
-function loadQRGen(cb) { cb(); } // no-op, generator is inline
-
-// ── DELTA CALCULATION ──────────────────────────────────────────
-// "other" side has all records with IDs in knownIds set.
-// We send only records whose ID they don't have.
-
-function describeDelta(payload) {
-  const lines = [];
-  if(payload.data?.length)         lines.push(`${payload.data.length} weight record${payload.data.length!==1?'s':''}`);
-  if(payload.notes?.length)        lines.push(`${payload.notes.length} note${payload.notes.length!==1?'s':''}`);
-  if(payload.drench?.length)       lines.push(`${payload.drench.length} drench record${payload.drench.length!==1?'s':''}`);
-  if(payload.costs?.length)        lines.push(`${payload.costs.length} cost entr${payload.costs.length!==1?'ies':'y'}`);
-  if(payload.mobs?.length)         lines.push(`${payload.mobs.length} mob${payload.mobs.length!==1?'s':''}`);
-  const sexCount = Object.keys(payload.sex||{}).length;
-  if(sexCount)                     lines.push(`${sexCount} sex assignment${sexCount!==1?'s':''}`);
-  const flagCount = Object.keys(payload.flags||{}).length;
-  if(flagCount)                    lines.push(`${flagCount} flag${flagCount!==1?'s':''}`);
-  return lines.length ? lines.join(' · ') : 'No new data';
+// ── helpers ──────────────────────────────────────────────
+function cloudCanon(v){
+  if(Array.isArray(v)) return '['+v.map(cloudCanon).join(',')+']';
+  if(v && typeof v==='object') return '{'+Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>JSON.stringify(k)+':'+cloudCanon(v[k])).join(',')+'}';
+  return JSON.stringify(v);
 }
-
-// ── CHUNK + ENCODE ─────────────────────────────────────────────
-const QR_MAX_BYTES = 150; // fits within QR version 10 (216 byte capacity minus prefix overhead)
-
-function chunkPayload(payload) {
-  const json = JSON.stringify(payload);
-  const b64  = btoa(unescape(encodeURIComponent(json)));
-  const chunks = [];
-  for(let i=0; i<b64.length; i+=QR_MAX_BYTES) chunks.push(b64.slice(i,i+QR_MAX_BYTES));
-  return chunks; // array of base64 strings
+function cloudHash(str){
+  let h1=0xdeadbeef, h2=0x41c6ce57;
+  for(let i=0,ch;i<str.length;i++){ ch=str.charCodeAt(i); h1=Math.imul(h1^ch,2654435761); h2=Math.imul(h2^ch,1597334677); }
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  return (4294967296*(2097151&h2)+(h1>>>0)).toString(36);
 }
+function cloudDocId(col, key){ return col+'~'+String(key).replace(/[^A-Za-z0-9_.\-]/g, c=>'~'+c.charCodeAt(0).toString(16)+'~'); }
+function cloudKeyOf(col, r){ const cfg=CLOUD_COLS[col]; return cfg.key ? cfg.key(r) : r.id; }
+function cloudColOf(docId){ return docId.split('~')[0]; }
 
-function wrapChunk(chunk, idx, total) {
-  // prefix: "ST9:2/3:" then data — app recognises "ST9:" prefix
-  return `ST9:${idx+1}/${total}:${chunk}`;
+async function cloudFetch(url, opts){
+  const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(), 25000);
+  try{ return await fetch(url, {...opts, signal:ctl.signal}); } finally{ clearTimeout(t); }
 }
-
-// ── DECODE + MERGE ─────────────────────────────────────────────
-function decodeChunks(wrappedChunks) {
-  // Sort by index
-  wrappedChunks.sort((a,b)=>{
-    const ai=parseInt(a.split(':')[1].split('/')[0]);
-    const bi=parseInt(b.split(':')[1].split('/')[0]);
-    return ai-bi;
-  });
-  const b64 = wrappedChunks.map(c=>c.split(':').slice(2).join(':')).join('');
-  try {
-    const json = decodeURIComponent(escape(atob(b64)));
-    return JSON.parse(json);
-  } catch(e) { return null; }
-}
-
-
-function summariseMerge(counts) {
-  const lines=[];
-  if(counts.data)   lines.push(`${counts.data} weight record${counts.data!==1?'s':''}`);
-  if(counts.notes)  lines.push(`${counts.notes} note${counts.notes!==1?'s':''}`);
-  if(counts.drench) lines.push(`${counts.drench} drench record${counts.drench!==1?'s':''}`);
-  if(counts.costs)  lines.push(`${counts.costs} cost entr${counts.costs!==1?'ies':'y'}`);
-  if(counts.mobs)   lines.push(`${counts.mobs} mob${counts.mobs!==1?'s':''}`);
-  if(counts.status) lines.push(`${counts.status} status update${counts.status!==1?'s':''}`);
-  return lines.length ? lines : ['Nothing new — already up to date'];
-}
-
-// ── SYNC SCREEN STATE ──────────────────────────────────────────
-let syncMode = 'home'; // home | send | scan
-let qrChunks = [];
-let qrCurrentChunk = 0;
-let scanChunksReceived = [];
-let scanExpectedTotal = 0;
-let scanStream = null;
-let scanAnimFrame = null;
-
-function openSync() {
-  syncMode='home';
-  document.getElementById('syncOv').classList.add('open');
-  renderSyncHome();
-}
-function closeSync() {
-  stopCamera();
-  document.getElementById('syncOv').classList.remove('open');
-}
-
-function renderSyncHome() {
-  syncMode='home';
-  document.getElementById('syncContent').innerHTML=`
-    <div style="text-align:center;padding:8px 0 16px;">
-      <div style="font-size:36px;margin-bottom:8px;">📲</div>
-      <div style="font-size:16px;font-weight:900;color:#fff;margin-bottom:5px;">Share &amp; Sync</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.35);font-weight:600;line-height:1.5;">Share your records with another phone.<br>Only new records are shared — nothing gets overwritten.</div>
-    </div>
-    <button class="sync-big-btn sync-send" onclick="startSend()">
-      <div style="font-size:28px;margin-bottom:6px;">📤</div>
-      <div class="sbb-t">Show my QR code</div>
-      <div class="sbb-s">Generate a QR — the other person scans it to receive your changes</div>
-    </button>
-    <button class="sync-big-btn" onclick="doAirdrop()" style="border-color:rgba(100,180,255,.3);">
-      <div style="font-size:28px;margin-bottom:6px;">📡</div>
-      <div class="sbb-t">Share via AirDrop / iMessage</div>
-      <div class="sbb-s">Send full backup — they import it to merge</div>
-    </button>
-    <button class="sync-big-btn sync-scan" onclick="startScan()">
-      <div style="font-size:28px;margin-bottom:6px;">📷</div>
-      <div class="sbb-t">Scan QR code</div>
-      <div class="sbb-s">Point camera at a QR — merges new records automatically. Requires iOS 17+ or Chrome.</div>
-    </button>`;
-}
-
-// ── SEND (SHOW QR) ─────────────────────────────────────────────
-function startSend() {
-  syncMode='send';
-  document.getElementById('syncContent').innerHTML=`
-    <button class="sync-back" onclick="renderSyncHome()">← Back</button>
-    <div style="text-align:center;padding:6px 0 12px;">
-      <div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:4px;">Show this QR to the other person</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600;" id="qrSubtitle">Preparing…</div>
-    </div>
-    <div id="qrDisplayArea" style="display:flex;flex-direction:column;align-items:center;gap:12px;"></div>
-    <div id="qrNavRow" style="display:none;margin-top:14px;"></div>
-    <div id="qrAirdropRow" style="display:none;margin-top:10px;"></div>`;
-  generateQRDisplay();
-}
-
-function generateQRDisplay() {
-  const payload = buildDelta();
-  const chunks  = chunkPayload(payload);
-  qrChunks = chunks.map((c,i)=>wrapChunk(c,i,chunks.length));
-  qrCurrentChunk = 0;
-  const subtitle = document.getElementById('qrSubtitle');
-  const area     = document.getElementById('qrDisplayArea');
-  const navRow   = document.getElementById('qrNavRow');
-  const airRow   = document.getElementById('qrAirdropRow');
-  const desc = describeDelta(payload);
-
-  if(chunks.length > 5) {
-    subtitle.textContent = 'Too much data for QR — use AirDrop';
-    area.innerHTML=`<div style="background:#2a0808;border:1.5px solid rgba(180,50,30,.3);border-radius:12px;padding:20px;text-align:center;width:100%;">
-      <div style="font-size:32px;margin-bottom:9px;">⚠️</div>
-      <div style="font-size:13px;font-weight:800;color:#ff8060;margin-bottom:7px;">Too much data for QR</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.4);font-weight:600;line-height:1.5;">${desc}</div>
-    </div>`;
-    airRow.style.display='block';
-    airRow.innerHTML=`<button class="sync-big-btn sync-send" onclick="doAirdrop()" style="padding:14px;">
-      <div style="font-size:22px;margin-bottom:4px;">📡</div>
-      <div class="sbb-t">Share via AirDrop</div>
-      <div class="sbb-s">Opens share sheet — choose AirDrop or iMessage</div>
-    </button>`;
-    return;
+async function cloudApi(url, body, token, form){
+  let res;
+  try{
+    res = await cloudFetch(url, {method:'POST',
+      headers:Object.assign({'Content-Type':form?'application/x-www-form-urlencoded':'application/json'}, token?{Authorization:'Bearer '+token}:{}),
+      body: form ? body : JSON.stringify(body)});
+  }catch(e){ throw {code:'network', msg:'No connection'}; }
+  let data=null; try{ data=await res.json(); }catch(e){}
+  if(!res.ok){
+    const m = data && data.error && (data.error.message || data.error);
+    throw {code:'http', status:res.status, msg:String(m||('HTTP '+res.status))};
   }
-
-  subtitle.textContent = `${desc} · ${chunks.length} QR code${chunks.length!==1?'s':''}`;
-  showQRChunk(qrCurrentChunk);
-  if(chunks.length>1) {
-    navRow.style.display='block';
-    navRow.innerHTML=`
-      <div style="text-align:center;margin-bottom:9px;">
-        <div style="font-size:11px;color:rgba(255,255,255,.5);font-weight:700;" id="qrChunkLbl">QR 1 of ${chunks.length}</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.25);font-weight:600;margin-top:3px;">Let them scan each QR in order</div>
-      </div>
-      <div style="display:flex;gap:8px;">
-        <button onclick="prevQRChunk()" id="qrPrevBtn" style="flex:1;padding:11px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.1);border-radius:9px;color:rgba(255,255,255,.4);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;">← Prev</button>
-        <button onclick="nextQRChunk()" id="qrNextBtn" style="flex:1;padding:11px;background:var(--am);border:none;border-radius:9px;color:var(--hbg);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;">Next →</button>
-      </div>`;
-  }
+  return data;
+}
+async function cloudToken(){
+  const a=cloudMeta.auth; if(!a || !a.refreshToken) throw {code:'signedout'};
+  if(a.idToken && Date.now() < a.expiresAt-60000) return a.idToken;
+  let d;
+  try{ d = await cloudApi(CLOUD.tokenUrl+'?key='+CLOUD.apiKey, 'grant_type=refresh_token&refresh_token='+encodeURIComponent(a.refreshToken), null, true); }
+  catch(e){ if(e.code==='http' && e.status>=400 && e.status<500) throw {code:'signedout'}; throw e; }
+  a.idToken=d.id_token; a.refreshToken=d.refresh_token||a.refreshToken; a.expiresAt=Date.now()+Number(d.expires_in||3600)*1000;
+  cloudSaveMeta(); return a.idToken;
 }
 
-function showQRChunk(idx) {
-  const area = document.getElementById('qrDisplayArea');
-  area.innerHTML='<canvas id="qrCanvas" style="border-radius:12px;display:block;margin:0 auto;"></canvas>';
-  try {
-    drawQR(document.getElementById('qrCanvas'), qrChunks[idx], 280);
-  } catch(e) {
-    area.innerHTML='<div style="color:#ff8060;font-size:12px;padding:10px;text-align:center;">QR generation failed: '+e.message+'</div>';
-  }
-  const lbl=document.getElementById('qrChunkLbl');
-  if(lbl) lbl.textContent=`QR ${idx+1} of ${qrChunks.length}`;
-  const prev=document.getElementById('qrPrevBtn'), next=document.getElementById('qrNextBtn');
-  if(prev) prev.style.opacity=idx===0?'0.3':'1';
-  if(next) { next.textContent=idx===qrChunks.length-1?'✓ Done':'Next →'; next.onclick=idx===qrChunks.length-1?renderSyncHome:nextQRChunk; }
-}
-
-// ── INLINE QR ENCODER (no library needed) ──────────────────────
-// Implements QR code version 1–10, byte mode, with Reed-Solomon ECC
-// Sufficient for our ST9: payloads (up to ~900 bytes per chunk)
-function drawQR(canvas, text, px) {
-  const qr = generateQRMatrix(text);
-  if(!qr) throw new Error('QR encode failed');
-  const n = qr.length;
-  const cell = Math.floor(px / n);
-  const size = cell * n;
-  canvas.width = size; canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,size,size);
-  ctx.fillStyle = '#0c1508';
-  for(let r=0;r<n;r++) for(let c=0;c<n;c++) if(qr[r][c]) ctx.fillRect(c*cell,r*cell,cell,cell);
-}
-
-function generateQRMatrix(data) {
-  // Encode as bytes
-  const bytes = [];
-  for(let i=0;i<data.length;i++) bytes.push(data.charCodeAt(i)&0xff);
-  const len = bytes.length;
-
-  // Pick version (1-10) based on data length (M error correction)
-  const caps = [0,16,28,44,64,86,108,124,154,182,216];
-  let ver = 1;
-  while(ver<=10 && caps[ver]<len) ver++;
-  if(ver>10) return null;
-
-  const ecInfo = [
-    null,
-    {ec:10,bl:1,bc:19,ecl:7},   // 1
-    {ec:16,bl:1,bc:34,ecl:10},  // 2
-    {ec:26,bl:1,bc:55,ecl:15},  // 3
-    {ec:18,bl:2,bc:25,ecl:20},  // 4
-    {ec:24,bl:2,bc:33,ecl:26},  // 5
-    {ec:16,bl:4,bc:27,ecl:18},  // 6
-    {ec:18,bl:4,bc:31,ecl:20},  // 7
-    {ec:22,bl:2,bc:38,ecl:24},  // 8
-    {ec:22,bl:3,bc:36,ecl:30},  // 9
-    {ec:26,bl:4,bc:43,ecl:18},  // 10
-  ];
-  const info = ecInfo[ver];
-
-  // Build data codewords
-  const bits = [];
-  const pushBits = (val,n) => { for(let i=n-1;i>=0;i--) bits.push((val>>i)&1); };
-  pushBits(4,4); // byte mode
-  pushBits(len, ver<10?8:16);
-  bytes.forEach(b=>pushBits(b,8));
-  // Terminator
-  for(let i=0;i<4&&bits.length<info.bc*info.bl*8;i++) bits.push(0);
-  // Pad to byte boundary
-  while(bits.length%8) bits.push(0);
-  // Pad bytes
-  const padBytes=[0xEC,0x11];
-  let pi=0;
-  while(bits.length<info.bc*info.bl*8){padBytes.forEach(p=>{ if(bits.length<info.bc*info.bl*8) pushBits(p,8); }); }
-
-  // Convert bits to codewords
-  const cw=[];
-  for(let i=0;i<bits.length;i+=8){
-    let v=0;for(let j=0;j<8;j++) v=(v<<1)|bits[i+j];
-    cw.push(v);
-  }
-
-  // Reed-Solomon
-  const rs = rsEncode(cw, info.ec*info.bl);
-  const allCW = [...cw,...rs];
-
-  // Build matrix
-  const size = ver*4+17;
-  const M = Array.from({length:size},()=>new Array(size).fill(null));
-
-  const set=(r,c,v)=>{ if(r>=0&&r<size&&c>=0&&c<size) M[r][c]=v; };
-  const isSet=(r,c)=>M[r][c]!==null;
-
-  // Finder patterns
-  const finder=(r,c)=>{
-    for(let i=-1;i<=7;i++) for(let j=-1;j<=7;j++){
-      if(i<0||i>6||j<0||j>6) set(r+i,c+j,false);
-      else if(i===0||i===6||j===0||j===6) set(r+i,c+j,true);
-      else if(i>=2&&i<=4&&j>=2&&j<=4) set(r+i,c+j,true);
-      else set(r+i,c+j,false);
-    }
-  };
-  finder(0,0); finder(0,size-7); finder(size-7,0);
-
-  // Timing
-  for(let i=8;i<size-8;i++){ set(6,i,i%2===0); set(i,6,i%2===0); }
-
-  // Dark module
-  set(4*ver+9,8,true);
-
-  // Alignment patterns (version >= 2)
-  const alignPos = [[],[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,28,46],[6,32,50]];
-  if(ver>=2 && alignPos[ver]){
-    const pos=alignPos[ver];
-    for(const r of pos) for(const c of pos){
-      if(isSet(r,c)) continue;
-      for(let i=-2;i<=2;i++) for(let j=-2;j<=2;j++){
-        if(i===-2||i===2||j===-2||j===2) set(r+i,c+j,true);
-        else if(i===0&&j===0) set(r+i,c+j,true);
-        else set(r+i,c+j,false);
-      }
+// ── snapshot of local data as flat docs ──────────────────
+function cloudSnapshot(){
+  const snap={};
+  const put=(col,key,payload)=>{ const id=cloudDocId(col,key); snap[id]={col, payload, h:cloudHash(cloudCanon(payload))}; };
+  for(const col of Object.keys(CLOUD_COLS)){
+    const cfg=CLOUD_COLS[col];
+    if(cfg.t==='arr'){
+      (_mem[col]||[]).forEach(r=>{ if(!r) return; if(!cfg.key && !r.id) r.id=genId(); put(col, cloudKeyOf(col,r), r); });
+    } else if(cfg.t==='map'){
+      Object.entries(_mem[col]||{}).forEach(([k,v])=>put(col,k,{k,v}));
+    } else {
+      CLOUD_SETTING_KEYS.forEach(k=>{ const v=_mem[k]; if(v===undefined||v===''||v===null) return; if(Array.isArray(v)&&!v.length) return; put('settings',k,{k,v}); });
     }
   }
-
-  // Format info (mask 0, M level)
-  const fmtBits = getFormatBits(2,0); // EC level M=2, mask 0
-  const fmtPos=[[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],[7,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8]];
-  const fmtPos2=[[size-1,8],[size-2,8],[size-3,8],[size-4,8],[size-5,8],[size-6,8],[size-7,8],[8,size-8],[8,size-7],[8,size-6],[8,size-5],[8,size-4],[8,size-3],[8,size-2],[8,size-1]];
-  for(let i=0;i<15;i++){ set(fmtPos[i][0],fmtPos[i][1],(fmtBits>>i)&1); set(fmtPos2[i][0],fmtPos2[i][1],(fmtBits>>i)&1); }
-
-  // Place data bits with mask 0: (row+col)%2===0
-  let bitIdx=0;
-  const dataBits=[];
-  allCW.forEach(b=>{for(let i=7;i>=0;i--) dataBits.push((b>>i)&1);});
-
-  let up=true;
-  for(let col=size-1;col>=1;col-=2){
-    if(col===6) col=5;
-    for(let row=up?size-1:0; up?row>=0:row<size; row+=up?-1:1){
-      for(let dc=0;dc<2;dc++){
-        const c=col-dc, r=row;
-        if(!isSet(r,c)){
-          const bit=bitIdx<dataBits.length?dataBits[bitIdx++]:0;
-          const masked=(r+c)%2===0?bit^1:bit; // mask 0
-          set(r,c,masked===1);
-        }
-      }
-    }
-    up=!up;
+  return snap;
+}
+function cloudLocalMs(col, payload, first, inBase){
+  if(first && !inBase){ const t=payload && payload.updatedAt ? Date.parse(payload.updatedAt) : NaN; return isNaN(t)?1:t; }
+  return cloudDirty.cols[col] || Date.now();
+}
+function cloudDiff(snap, first){
+  const changes={};
+  for(const id of Object.keys(snap)){
+    const s=snap[id], b=cloudBase[id];
+    if(!b || b.split('|')[0]!==s.h) changes[id]={col:s.col, payload:s.payload, h:s.h, ms:cloudLocalMs(s.col,s.payload,first,!!b)};
   }
-
-  // Fill remaining nulls
-  for(let r=0;r<size;r++) for(let c=0;c<size;c++) if(M[r][c]===null) M[r][c]=false;
-
-  return M;
+  for(const id of Object.keys(cloudBase)){
+    if(!(id in snap)){ const col=cloudColOf(id); changes[id]={col, payload:null, ms:cloudDirty.cols[col]||Date.now()}; }
+  }
+  return changes;
 }
 
-function getFormatBits(ecLevel, mask) {
-  const data=(ecLevel<<3)|mask;
-  let rem=data;
-  for(let i=0;i<10;i++) rem=(rem<<1)^((rem>>9)?0x537:0);
-  return ((data<<10)|rem)^0x5412;
+// ── pull ─────────────────────────────────────────────────
+function cloudParseDoc(doc){
+  const f=doc.fields||{}; const id=decodeURIComponent(doc.name.split('/').pop());
+  const deleted=!!(f.deleted && f.deleted.booleanValue);
+  let payload=null;
+  if(!deleted){ try{ payload=JSON.parse(f.p.stringValue); }catch(e){ return null; } }
+  return {docId:id, col:f.col?f.col.stringValue:cloudColOf(id), payload, deleted,
+    updatedMs:Number(f.updatedMs?f.updatedMs.integerValue:0), pushedMs:Number(f.pushedMs?f.pushedMs.integerValue:0)};
+}
+async function cloudPull(token, since){
+  let out=[], cur=since;
+  for(let page=0; page<200; page++){
+    const res = await cloudApi(CLOUD.fsBase+'/'+CLOUD.farmPath+':runQuery', {structuredQuery:{
+      from:[{collectionId:'docs'}],
+      where:{fieldFilter:{field:{fieldPath:'pushedMs'}, op:'GREATER_THAN', value:{integerValue:String(cur)}}},
+      orderBy:[{field:{fieldPath:'pushedMs'}, direction:'ASCENDING'}], limit:500}}, token);
+    const docs=(res||[]).filter(x=>x.document).map(x=>cloudParseDoc(x.document)).filter(Boolean);
+    out=out.concat(docs);
+    if(docs.length<500) break;
+    cur=docs[docs.length-1].pushedMs;
+  }
+  return out;
 }
 
-function rsEncode(data, ecCount) {
-  const poly = rsGeneratorPoly(ecCount);
-  const msg = [...data,...new Array(ecCount).fill(0)];
-  for(let i=0;i<data.length;i++){
-    const coef=msg[i];
-    if(coef!==0){
-      const log=GF_LOG[coef];
-      for(let j=0;j<poly.length;j++) msg[i+j]^=GF_EXP[(log+poly[j])%255];
+// ── merge ────────────────────────────────────────────────
+function cloudMerge(changes, remote){
+  const ops=[], newBase={};
+  for(const r of remote){
+    const rh = r.deleted ? 'del' : cloudHash(cloudCanon(r.payload));
+    const b = cloudBase[r.docId], ch = changes[r.docId];
+    if(b){ const p=b.split('|'); if(p[0]===rh && Number(p[1])===r.updatedMs && !ch) continue; }
+    if(ch){
+      if(!r.deleted && ch.payload && ch.h===rh){ delete changes[r.docId]; newBase[r.docId]=rh+'|'+r.updatedMs; continue; }
+      if(r.updatedMs >= ch.ms){ delete changes[r.docId]; ops.push(r); }
+    } else {
+      if(!b && r.deleted) continue;
+      ops.push(r);
     }
   }
-  return msg.slice(data.length);
-}
-function rsGeneratorPoly(ecCount){
-  let poly=[1];
-  for(let i=0;i<ecCount;i++){
-    const newPoly=new Array(poly.length+1).fill(0);
-    for(let j=0;j<poly.length;j++){
-      newPoly[j]^=poly[j];
-      newPoly[j+1]^=gfMul(poly[j],GF_EXP[i]);
+  // Same-named mob created independently on two phones: both phones keep the smaller id.
+  for(const op of ops.slice()){
+    if(op.col!=='mobs' || op.deleted) continue;
+    const dup=(_mem.mobs||[]).find(m=>m.name===op.payload.name && cloudDocId('mobs',m.id)!==op.docId);
+    if(!dup) continue;
+    const dupDoc=cloudDocId('mobs',dup.id);
+    if(String(op.payload.id) < String(dup.id)){
+      changes[dupDoc]={col:'mobs', payload:null, ms:Date.now()};
+      ops.push({docId:dupDoc, col:'mobs', payload:null, deleted:true, updatedMs:Date.now()});
+    } else {
+      op.skip=true;
+      changes[op.docId]={col:'mobs', payload:null, ms:Date.now()};
     }
-    poly=newPoly;
   }
-  return poly.slice(1).map(v=>GF_LOG[v]);
+  return {ops:ops.filter(o=>!o.skip), newBase};
 }
-function gfMul(a,b){ return (a===0||b===0)?0:GF_EXP[(GF_LOG[a]+GF_LOG[b])%255]; }
-const GF_EXP=new Array(512), GF_LOG=new Array(256);
-(()=>{ let x=1; for(let i=0;i<255;i++){ GF_EXP[i]=x; GF_LOG[x]=i; x<<=1; if(x&256) x^=285; } for(let i=255;i<512;i++) GF_EXP[i]=GF_EXP[i-255]; GF_LOG[0]=0; })();
-
-function prevQRChunk() { if(qrCurrentChunk>0){qrCurrentChunk--;showQRChunk(qrCurrentChunk);} }
-function nextQRChunk() { if(qrCurrentChunk<qrChunks.length-1){qrCurrentChunk++;showQRChunk(qrCurrentChunk);} }
-
-function doAirdropBtn(row) {
-  row.style.display='block';
-  row.innerHTML=`<button class="sync-big-btn sync-send" onclick="doAirdrop()" style="padding:14px;">
-    <div style="font-size:22px;margin-bottom:4px;">📡</div>
-    <div class="sbb-t">Share via AirDrop</div>
-    <div class="sbb-s">Opens share sheet — choose AirDrop or iMessage</div>
-  </button>`;
-}
-
-// ── SCAN (RECEIVE QR) ──────────────────────────────────────────
-function startScan() {
-  syncMode='scan';
-  scanChunksReceived=[];
-  scanExpectedTotal=0;
-  document.getElementById('syncContent').innerHTML=`
-    <button class="sync-back" onclick="stopAndBack()">← Back</button>
-    <div style="text-align:center;margin-bottom:10px;">
-      <div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:3px;">Scan QR code</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600;" id="scanStatus">Point camera at QR code</div>
-    </div>
-    <div style="position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:1;margin-bottom:12px;">
-      <video id="scanVideo" style="width:100%;height:100%;object-fit:cover;" playsinline autoplay muted></video>
-      <canvas id="scanCanvas" style="display:none;"></canvas>
-      <!-- viewfinder overlay -->
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-        <div style="width:200px;height:200px;border:3px solid var(--am);border-radius:16px;box-shadow:0 0 0 9999px rgba(0,0,0,.5);"></div>
-      </div>
-    </div>
-    <div id="scanProgress" style="display:none;background:rgba(255,255,255,.06);border-radius:10px;padding:10px 13px;margin-bottom:10px;">
-      <div style="font-size:9px;font-weight:800;color:var(--gp);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;">Progress</div>
-      <div id="scanProgressDots" style="display:flex;gap:7px;flex-wrap:wrap;"></div>
-    </div>
-    <div id="scanResult" style="display:none;"></div>`;
-
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    document.getElementById('scanStatus').textContent='⚠️ Camera not available — must be on HTTPS.';
-    return;
-  }
-  startCamera2();
-}
-
-function startCamera2() {
-  const statusEl = document.getElementById('scanStatus');
-  navigator.mediaDevices.getUserMedia({
-    video:{ facingMode:'environment', width:{ideal:1280}, height:{ideal:720} }
-  }).then(stream=>{
-    scanStream=stream;
-    const video=document.getElementById('scanVideo');
-    if(!video)return;
-    video.srcObject=stream;
-    video.play();
-
-    if(!('BarcodeDetector' in window)){
-      if(statusEl) statusEl.innerHTML='⚠️ QR scanning requires iOS 17+ or Android Chrome.<br><span style="font-size:9px;opacity:.6;">Use AirDrop to sync instead.</span>';
-      return;
+function cloudApplyCol(col, ops){
+  const cfg=CLOUD_COLS[col]; let n=0;
+  if(cfg.t==='arr'){
+    const arr=(_mem[col]||[]).slice(); const idx={};
+    arr.forEach((r,i)=>{ if(r) idx[cloudDocId(col,cloudKeyOf(col,r))]=i; });
+    const drop=new Set();
+    for(const op of ops){
+      const i=idx[op.docId];
+      if(op.deleted){ if(i!==undefined){ drop.add(i); n++; } }
+      else if(i!==undefined){ arr[i]=op.payload; drop.delete(i); n++; }
+      else { idx[op.docId]=arr.length; arr.push(op.payload); n++; }
     }
-
-    const detector = new BarcodeDetector({formats:['qr_code']});
-    const canvas = document.getElementById('scanCanvas');
-
-    // Use canvas → ImageBitmap → detect() — the reliable iOS pattern
-    // (detect() on raw video element is unreliable in Safari PWA)
-    const doDetect = async () => {
-      if(!scanStream || !video || video.readyState < 2) {
-        scanAnimFrame = setTimeout(doDetect, 300);
-        return;
-      }
-      try {
-        // Draw current frame to canvas
-        canvas.width  = video.videoWidth  || 640;
-        canvas.height = video.videoHeight || 480;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        // Create ImageBitmap from canvas and detect
-        const bitmap = await createImageBitmap(canvas);
-        const codes  = await detector.detect(bitmap);
-        bitmap.close();
-
-        if(codes.length > 0){
-          const raw = codes[0].rawValue;
-          if(raw && raw.startsWith('ST9:')){
-            if(navigator.vibrate) navigator.vibrate(40);
-            clearTimeout(scanAnimFrame);
-            scanAnimFrame = null;
-            processScannedChunk(raw);
-            return;
-          } else if(raw){
-            if(statusEl) statusEl.textContent = 'Not a Sheep Tracker QR — keep scanning';
-          }
-        }
-      } catch(e){
-        // silent — blurry frames throw errors, just keep trying
-      }
-      scanAnimFrame = setTimeout(doDetect, 250);
-    };
-
-    // Start detecting once video is playing
-    video.addEventListener('playing', ()=>{
-      if(statusEl) statusEl.textContent = 'Scanning… hold steady ';
-      scanAnimFrame = setTimeout(doDetect, 500);
-    }, {once:true});
-
-    // Fallback if playing event doesn't fire
-    setTimeout(()=>{
-      if(scanAnimFrame === null && scanStream){
-        if(statusEl) statusEl.textContent = 'Scanning…';
-        scanAnimFrame = setTimeout(doDetect, 500);
-      }
-    }, 3000);
-
-  }).catch(err=>{
-    const s=document.getElementById('scanStatus');
-    if(s) s.textContent = err.name==='NotAllowedError'
-      ? '⚠️ Camera permission denied — allow in Settings → Privacy → Camera'
-      : '⚠️ Camera error: '+err.message;
-  });
-}
-
-function processScannedChunk(raw) {
-  // format: ST9:1/3:BASE64DATA
-  const parts=raw.split(':');
-  if(parts.length<3||parts[0]!=='ST9') return;
-  const frac=parts[1].split('/');
-  const idx=parseInt(frac[0])-1, total=parseInt(frac[1]);
-  scanExpectedTotal=total;
-  // avoid duplicates
-  if(scanChunksReceived.some(c=>c.idx===idx)) return;
-  // got a new chunk — stop scanner briefly, haptic
-  if(navigator.vibrate) navigator.vibrate(40);
-  scanChunksReceived.push({idx,data:raw});
-  updateScanProgress();
-  if(scanChunksReceived.length===total) {
-    stopCamera();
-    showMergePreview();
+    const out=arr.filter((r,i)=>!drop.has(i));
+    _mem[col]=out; idbWrite(col,out);
+  } else if(cfg.t==='map'){
+    const obj=Object.assign({}, _mem[col]||{}); const rev={};
+    Object.keys(obj).forEach(k=>{ rev[cloudDocId(col,k)]=k; });
+    for(const op of ops){
+      if(op.deleted){ const k=rev[op.docId]; if(k!==undefined){ delete obj[k]; n++; } }
+      else { obj[op.payload.k]=op.payload.v; n++; }
+    }
+    _mem[col]=obj; idbWrite(col,obj);
   } else {
-    const status=document.getElementById('scanStatus');
-    if(status) status.textContent=`Got ${scanChunksReceived.length} of ${total} — scan next QR`;
-    // keep scanning (interval continues automatically)
+    for(const op of ops){
+      if(op.deleted || !op.payload) continue;
+      const k=op.payload.k; if(!CLOUD_SETTING_KEYS.includes(k)) continue;
+      _mem[k]=op.payload.v; idbWrite(k,op.payload.v); n++;
+    }
+    if(Array.isArray(_mem.prefixes) && _mem.prefixes.length && !_mem.prefixes.includes(_mem.activeYr)){ _mem.activeYr=_mem.prefixes[0]; idbWrite('activeYr',_mem.activeYr); }
   }
+  return n;
+}
+function cloudApplyOps(ops){
+  const byCol={}; ops.forEach(o=>{ (byCol[o.col]=byCol[o.col]||[]).push(o); });
+  let n=0; cloudState.applying=true;
+  try{ for(const col of Object.keys(byCol)){ if(CLOUD_COLS[col]) n+=cloudApplyCol(col, byCol[col]); } }
+  finally{ cloudState.applying=false; }
+  return n;
+}
+function cloudRefreshUI(){
+  try{
+    refreshCount(); renderChips(); updateFarmDisplay(); updateSettingsDisplay();
+    renderHome(); renderFlock(); renderMobList(); renderDrenchLog(); renderCostLog(); renderStats(); renderBreeding();
+  }catch(e){ console.warn('cloud UI refresh', e); }
 }
 
-function updateScanProgress() {
-  const prog=document.getElementById('scanProgress');
-  const dots=document.getElementById('scanProgressDots');
-  if(!prog||!dots)return;
-  if(scanExpectedTotal>1){
-    prog.style.display='block';
-    dots.innerHTML=Array.from({length:scanExpectedTotal},(_,i)=>{
-      const done=scanChunksReceived.some(c=>c.idx===i);
-      return `<div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;background:${done?'var(--am)':'rgba(255,255,255,.1)'};color:${done?'var(--hbg)':'rgba(255,255,255,.3)'};">${done?'✓':i+1}</div>`;
-    }).join('');
+// ── push ─────────────────────────────────────────────────
+function cloudWriteOf(docId, ch, stamp){
+  const f={col:{stringValue:ch.col}, p:{stringValue: ch.payload===null ? '' : JSON.stringify(ch.payload)},
+    updatedMs:{integerValue:String(ch.ms)}, pushedMs:{integerValue:String(stamp)},
+    deleted:{booleanValue: ch.payload===null}, deviceId:{stringValue:cloudMeta.deviceId}};
+  return {update:{name:'projects/'+CLOUD.project+'/databases/(default)/documents/'+CLOUD.farmPath+'/docs/'+docId, fields:f}};
+}
+async function cloudPush(token, changes){
+  const ids=Object.keys(changes); let pushed=0;
+  for(let i=0;i<ids.length;i+=300){
+    const slice=ids.slice(i,i+300); const stamp=Date.now();
+    const writes=slice.map((id,j)=>cloudWriteOf(id, changes[id], stamp+j));
+    await cloudApi(CLOUD.fsBase+':commit', {writes}, token);
+    slice.forEach(id=>{ const ch=changes[id]; if(ch.payload===null) delete cloudBase[id]; else cloudBase[id]=ch.h+'|'+ch.ms; });
+    pushed+=slice.length;
   }
+  return pushed;
 }
 
-function showMergePreview() {
-  const payload=decodeChunks(scanChunksReceived.map(c=>c.data));
-  if(!payload){
-    document.getElementById('scanResult').style.display='block';
-    document.getElementById('scanResult').innerHTML='<div style="background:#2a0808;border-radius:10px;padding:14px;text-align:center;"><div style="color:#ff8060;font-size:13px;font-weight:800;">⚠️ Could not read QR data</div><div style="color:rgba(255,255,255,.4);font-size:11px;margin-top:5px;">Try scanning again from the start</div></div>';
-    return;
+// ── the sync pass ────────────────────────────────────────
+async function cloudSync(opts){
+  opts=opts||{};
+  if(!cloudSignedIn()) return;
+  if(!cloudMeta.firstSyncDone && !opts.first) return;
+  if(cloudState.busy){ cloudState.again=true; return; }
+  if(cloudState.blocked && !opts.allowDeletes && !opts.restore) return;
+  if(navigator.onLine===false){ cloudSetStatus('offline'); return; }
+  cloudState.busy=true; cloudState.lastTry=Date.now(); cloudSetStatus('syncing');
+  const seqAtStart=cloudState.seq; let applied=0, pushed=0, baseDirty=false;
+  try{
+    if(opts.restore){ cloudBase={}; cloudMeta.cursor=0; baseDirty=true; }
+    const token=await cloudToken();
+    const first=!!opts.first || !!opts.restore;
+    const since=first ? 0 : Math.max(0, cloudMeta.cursor-120000);
+    const remote=await cloudPull(token, since);
+    // From here to the end of apply there is no await, so no local edit can slip in between.
+    const snap=cloudSnapshot();
+    const changes=cloudDiff(snap, first);
+    const dels=Object.values(changes).filter(c=>c.payload===null).length;
+    const baseN=Object.keys(cloudBase).length;
+    if(!opts.allowDeletes && !opts.restore && dels>=20 && dels>=baseN*0.5){
+      cloudState.blocked={count:dels}; throw {code:'massdelete'};
+    }
+    cloudState.blocked=null;
+    const m=cloudMerge(changes, remote);
+    applied=cloudApplyOps(m.ops);
+    m.ops.forEach(o=>{ if(o.deleted) delete cloudBase[o.docId]; else cloudBase[o.docId]=cloudHash(cloudCanon(o.payload))+'|'+o.updatedMs; });
+    Object.keys(m.newBase).forEach(id=>{ cloudBase[id]=m.newBase[id]; });
+    baseDirty=true;
+    if(remote.length) cloudMeta.cursor=Math.max(cloudMeta.cursor, ...remote.map(r=>r.pushedMs));
+    pushed=await cloudPush(token, changes);
+    if(first) cloudMeta.firstSyncDone=true;
+    cloudMeta.lastOk=Date.now(); cloudMeta.lastCount=applied+pushed;
+    if(cloudState.seq===seqAtStart){ cloudDirty.pending=false; cloudDirty.cols={}; cloudSaveDirty(); }
+    cloudSetStatus('idle');
+    if(applied>0) cloudRefreshUI();
+  }catch(e){
+    if(e && e.code==='massdelete') cloudSetStatus('massdelete');
+    else if(e && e.code==='signedout'){ cloudSetStatus('signedout','Please sign in again'); }
+    else if(e && e.code==='network') cloudSetStatus('offline');
+    else if(e && e.code==='http' && e.status===403) cloudSetStatus('denied');
+    else cloudSetStatus('error', (e&&(e.msg||e.message))||'Something went wrong');
+    if(applied>0) cloudRefreshUI();
+  }finally{
+    if(baseDirty) cloudSaveBase();
+    cloudSaveMeta();
+    cloudState.busy=false;
+    if(cloudState.again){ cloudState.again=false; cloudSchedule(1500); }
+    cloudPaint();
   }
-  // Count what's new
-  const newData=(payload.data||[]).filter(r=>!_mem.data.some(x=>x.id===r.id));
-  const newNotes=(payload.notes||[]).filter(n=>!_mem.notes.some(x=>x.id===n.id));
-  const newDrench=(payload.drench||[]).filter(d=>!_mem.drench.some(x=>x.id===d.id));
-  const newCosts=(payload.costs||[]).filter(c=>!_mem.costs.some(x=>x.id===c.id));
-  const newMobs=(payload.mobs||[]).filter(m=>!_mem.mobs.some(x=>x.id===m.id||x.name===m.name));
-  const totalNew=newData.length+newNotes.length+newDrench.length+newCosts.length+newMobs.length;
-  const previewLines=[];
-  if(newData.length)   previewLines.push({ico:'⚖️',t:`${newData.length} weight record${newData.length!==1?'s':''}`});
-  if(newNotes.length)  previewLines.push({ico:'📝',t:`${newNotes.length} note${newNotes.length!==1?'s':''}`});
-  if(newDrench.length) previewLines.push({ico:'💉',t:`${newDrench.length} drench record${newDrench.length!==1?'s':''}`});
-  if(newCosts.length)  previewLines.push({ico:'💰',t:`${newCosts.length} cost entr${newCosts.length!==1?'ies':'y'}`});
-  if(newMobs.length)   previewLines.push({ico:'👥',t:`${newMobs.length} new mob${newMobs.length!==1?'s':''}`});
-  const res=document.getElementById('scanResult');
-  res.style.display='block';
-  if(totalNew===0){
-    res.innerHTML=`<div style="background:rgba(255,255,255,.06);border-radius:12px;padding:18px;text-align:center;">
-      <div style="font-size:28px;margin-bottom:8px;">✅</div>
-      <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:5px;">Already up to date</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.35);font-weight:600;">No new records to import</div>
-      <button onclick="renderSyncHome()" style="margin-top:14px;width:100%;padding:11px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);border-radius:9px;color:rgba(255,255,255,.5);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;">Done</button>
-    </div>`;
-    return;
+}
+function cloudSetStatus(s, msg){ cloudState.status=s; cloudState.msg=msg||''; cloudPaint(); }
+
+// ── sign in / out ────────────────────────────────────────
+async function cloudDoSignIn(){
+  const email=(document.getElementById('cloudEmail')||{}).value, pw=(document.getElementById('cloudPw')||{}).value;
+  const err=document.getElementById('cloudErr'); const btn=document.getElementById('cloudSignInBtn');
+  const fail=t=>{ if(err){ err.textContent=t; err.style.display='block'; } if(btn){ btn.disabled=false; btn.textContent='Sign in'; } };
+  if(!email || !pw){ fail('Enter your email and password'); return; }
+  if(btn){ btn.disabled=true; btn.textContent='Signing in…'; }
+  try{
+    const d=await cloudApi(CLOUD.authUrl+'?key='+CLOUD.apiKey, {email:email.trim().toLowerCase(), password:pw, returnSecureToken:true});
+    if(cloudMeta.email && cloudMeta.email!==d.email){ cloudBase={}; cloudSaveBase(); cloudMeta.cursor=0; cloudMeta.firstSyncDone=false; }
+    cloudMeta.auth={email:d.email, uid:d.localId, idToken:d.idToken, refreshToken:d.refreshToken, expiresAt:Date.now()+Number(d.expiresIn||3600)*1000};
+    cloudMeta.email=d.email; cloudSaveMeta();
+    cloudSetStatus('idle');
+    if(cloudMeta.firstSyncDone){ renderCloudScreen(); cloudSync(); } else { cloudPreviewFirst(); }
+  }catch(e){
+    if(e.code==='network') fail('Couldn\'t reach the cloud. Check your signal and try again.');
+    else if(/INVALID_LOGIN|INVALID_PASSWORD|EMAIL_NOT_FOUND|INVALID_EMAIL/.test(e.msg||'')) fail('That email or password isn\'t right.');
+    else if(/TOO_MANY/.test(e.msg||'')) fail('Too many tries. Wait a few minutes and try again.');
+    else if(/USER_DISABLED/.test(e.msg||'')) fail('This account has been switched off.');
+    else fail('Couldn\'t sign in ('+(e.msg||'unknown error')+').');
   }
-  res.innerHTML=`<div style="background:rgba(255,255,255,.06);border-radius:12px;padding:16px;">
-    <div style="font-size:12px;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;">Ready to import</div>
-    ${previewLines.map(l=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);">
-      <div style="font-size:18px;">${l.ico}</div>
-      <div style="font-size:13px;font-weight:800;color:#fff;">${l.t}</div>
-    </div>`).join('')}
-    <div style="display:flex;gap:8px;margin-top:13px;">
-      <button onclick="confirmMerge()" style="flex:2;padding:13px;background:var(--ac);border:none;border-radius:10px;color:white;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;">✓ Import ${totalNew} new record${totalNew!==1?'s':''}</button>
-      <button onclick="renderSyncHome()" style="flex:1;padding:13px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.5);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;">Cancel</button>
-    </div>
-  </div>`;
-  // store for confirmMerge
-  window._pendingMergePayload=payload;
+}
+function cloudDoSignOut(){
+  clearTimeout(cloudState.timer);
+  cloudMeta.auth=null; cloudSaveMeta(); cloudState.preview=null; cloudState.blocked=null;
+  cloudSetStatus('idle'); renderCloudScreen(); toast('Signed out. Your records stay on this phone.');
+}
+// First connection on a phone: show what will happen before anything is uploaded.
+async function cloudPreviewFirst(){
+  cloudState.preview={loading:true}; renderCloudScreen();
+  try{
+    const token=await cloudToken();
+    const remote=await cloudPull(token, 0);
+    const remoteCount=remote.filter(r=>!r.deleted).length;
+    const localCount=Object.keys(cloudSnapshot()).length;
+    cloudState.preview={remoteCount, localCount};
+  }catch(e){
+    cloudState.preview={error:true, denied:(e&&e.code==='http'&&e.status===403)};
+  }
+  renderCloudScreen();
+}
+async function cloudConfirmFirst(){
+  cloudState.preview=null; renderCloudScreen();
+  await cloudSync({first:true});
+  renderCloudScreen();
+}
+function cloudRestoreFromCloud(){ cloudState.blocked=null; cloudSync({restore:true}).then(renderCloudScreen); renderCloudScreen(); }
+function cloudAllowDeletes(){ cloudState.blocked=null; cloudSync({allowDeletes:true}).then(renderCloudScreen); renderCloudScreen(); }
+// "Clear all data" on one phone must not delete anything for the other phone.
+function cloudResetAfterClear(){ cloudBase={}; cloudSaveBase(); cloudMeta.cursor=0; cloudDirty={pending:false,cols:{}}; cloudSaveDirty(); cloudSaveMeta(); cloudState.blocked=null; cloudPaint(); }
+
+// ── status text + painting ───────────────────────────────
+function cloudAgo(ms){
+  if(!ms) return 'never';
+  const s=Math.round((Date.now()-ms)/1000);
+  if(s<60) return 'just now'; if(s<3600) return Math.round(s/60)+' min ago';
+  if(s<86400) return Math.round(s/3600)+' h ago'; const d=Math.round(s/86400); return d+' day'+(d!==1?'s':'')+' ago';
+}
+function cloudInfo(){
+  if(!cloudSignedIn()) return {ico:'☁️', t:'Cloud sync is off', s:'Tap to sign in and share with the other phone', k:'off'};
+  if(!cloudMeta.firstSyncDone) return {ico:'☁️', t:'Finish setting up cloud sync', s:'Tap to review and start', k:'setup'};
+  const st=cloudState.status;
+  if(st==='syncing') return {ico:'🔄', t:'Syncing…', s:'Signed in as '+cloudMeta.email, k:'syncing'};
+  if(st==='massdelete') return {ico:'⚠️', t:'Sync paused', s:'Lots of records are missing on this phone. Tap to check.', k:'warn'};
+  if(st==='signedout') return {ico:'⚠️', t:'Signed out', s:'Tap to sign in again', k:'warn'};
+  if(st==='denied') return {ico:'⚠️', t:'This account can\'t use the farm data', s:'Check you\'re signed in with the right email', k:'warn'};
+  if(st==='offline') return {ico:'📴', t:'Saved on this phone', s:(cloudDirty.pending?'Changes waiting. ':'')+'It will sync when there\'s signal.', k:'offline'};
+  if(st==='error') return {ico:'⚠️', t:'Couldn\'t sync', s:(cloudState.msg||'Will try again soon')+(cloudDirty.pending?' · changes waiting':''), k:'warn'};
+  return {ico:cloudDirty.pending?'📤':'✅', t:cloudDirty.pending?'Changes waiting to sync':'Synced '+cloudAgo(cloudMeta.lastOk), s:'Signed in as '+cloudMeta.email, k:cloudDirty.pending?'pending':'ok'};
+}
+function cloudPaint(){
+  try{
+    const i=cloudInfo();
+    const z=document.getElementById('dashSyncZone');
+    if(z){ const a=z.querySelector('.ss-ico'), b=z.querySelector('.ss-t'), c=z.querySelector('.ss-s'); if(a)a.textContent=i.ico; if(b)b.textContent=i.t; if(c)c.textContent=i.s; }
+    const sub=document.getElementById('cloudSetSub'); if(sub) sub.textContent=i.t+(cloudSignedIn()?'':'');
+    if(document.getElementById('syncOv') && document.getElementById('syncOv').classList.contains('open')) renderCloudScreen();
+  }catch(e){}
 }
 
-function confirmMerge() {
-  if(!window._pendingMergePayload)return;
-  const counts=applyMerge(window._pendingMergePayload);
-  const totalImported=Object.values(counts).reduce((a,b)=>a+b,0);
-  // record last sync
-  _mem.lastSync={date:new Date().toISOString().split('T')[0],records:totalImported};
-  window._pendingMergePayload=null;
-  const lines=summariseMerge(counts);
-  const res=document.getElementById('scanResult');
-  if(res) res.innerHTML=`<div style="background:rgba(74,154,40,.12);border:1.5px solid rgba(74,154,40,.3);border-radius:12px;padding:18px;text-align:center;">
-    <div style="font-size:32px;margin-bottom:9px;">✅</div>
-    <div style="font-size:15px;font-weight:900;color:#7dd44a;margin-bottom:8px;">Merged!</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.5);font-weight:600;line-height:1.7;">${lines.join('<br>')}</div>
-    <button onclick="closeSync();renderFlock();renderHome();" style="margin-top:14px;width:100%;padding:12px;background:var(--ac);border:none;border-radius:9px;color:white;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;">Done — view flock</button>
-  </div>`;
-  refreshCount(); renderHome(); renderFlock(); renderDrenchLog(); renderCostLog(); renderStats();
-  toast(`✅ Merged — ${lines[0]||'up to date'}`);
+// ── the Cloud sync screen (reuses the dark full-screen overlay) ──
+function openSync(){ document.getElementById('syncOv').classList.add('open'); renderCloudScreen(); if(cloudSignedIn() && cloudMeta.firstSyncDone) cloudSync(); else if(cloudSignedIn() && !cloudState.preview) cloudPreviewFirst(); }
+function closeSync(){ document.getElementById('syncOv').classList.remove('open'); }
+function cloudBtn(label, fn, kind){
+  const bg = kind==='primary' ? 'var(--ac)' : 'rgba(255,255,255,.08)';
+  const col = kind==='primary' ? '#fff' : 'rgba(255,255,255,.75)';
+  return '<button onclick="'+fn+'" style="width:100%;padding:16px;margin-bottom:10px;background:'+bg+';color:'+col+';border:'+(kind==='primary'?'none':'1.5px solid rgba(255,255,255,.12)')+';border-radius:12px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">'+label+'</button>';
+}
+function cloudCard(inner){ return '<div style="background:rgba(255,255,255,.06);border-radius:14px;padding:16px;margin-bottom:12px;">'+inner+'</div>'; }
+function renderCloudScreen(){
+  const el=document.getElementById('syncContent'); if(!el) return;
+  const T=(a,b)=>'<div style="font-size:'+a+'px;font-weight:800;color:#fff;margin-bottom:6px;">'+b+'</div>';
+  const S=t=>'<div style="font-size:12px;color:rgba(255,255,255,.55);font-weight:600;line-height:1.5;">'+t+'</div>';
+  let h='';
+  if(!cloudSignedIn()){
+    h += '<div style="text-align:center;padding:6px 0 14px;"><div style="font-size:36px;margin-bottom:8px;">☁️</div>'+T(16,'Cloud sync')
+      + S('Sign in to keep this phone in step with the other phone. Your records stay on this phone first, so the app still works with no signal.')+'</div>';
+    h += '<div style="margin-bottom:10px;"><input id="cloudEmail" type="email" inputmode="email" autocomplete="username" autocapitalize="none" placeholder="Email" value="'+(cloudMeta.email||'')+'" style="width:100%;padding:15px;border-radius:12px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#fff;font-family:inherit;font-size:16px;"></div>'
+      + '<div style="margin-bottom:12px;"><input id="cloudPw" type="password" autocomplete="current-password" placeholder="Password" onkeydown="if(event.key===\'Enter\')cloudDoSignIn()" style="width:100%;padding:15px;border-radius:12px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#fff;font-family:inherit;font-size:16px;"></div>'
+      + '<div id="cloudErr" style="display:none;color:#ff8060;font-size:12px;font-weight:700;margin-bottom:10px;"></div>'
+      + '<button id="cloudSignInBtn" onclick="cloudDoSignIn()" style="width:100%;padding:16px;background:var(--ac);color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;">Sign in</button>';
+  } else if(!cloudMeta.firstSyncDone){
+    const p=cloudState.preview;
+    if(!p || p.loading){ h += cloudCard(T(15,'Checking the cloud…')+S('Nothing is uploaded yet.')); }
+    else if(p.error){ h += cloudCard(T(15, p.denied?'This account can\'t use the farm data':'Couldn\'t reach the cloud')+S(p.denied?'Sign out and sign in with the right email.':'Check your signal and try again.')) + cloudBtn('Try again','cloudPreviewFirst()','primary') + cloudBtn('Sign out','cloudDoSignOut()'); }
+    else {
+      const msg = p.remoteCount===0
+        ? 'The cloud is empty. This will upload the '+p.localCount+' records on this phone.'
+        : 'The cloud already has '+p.remoteCount+' records and this phone has '+p.localCount+'. They\'ll be merged. The newest edit wins and nothing is deleted.';
+      h += cloudCard(T(15,'Ready to start syncing')+S(msg)) + cloudBtn('Merge and start syncing','cloudConfirmFirst()','primary') + cloudBtn('Not now','closeSync()');
+    }
+  } else {
+    const i=cloudInfo();
+    h += cloudCard('<div style="display:flex;align-items:center;gap:12px;"><div style="font-size:30px;">'+i.ico+'</div><div>'+T(15,i.t)+S(i.s)+'</div></div>');
+    if(cloudState.status==='massdelete' && cloudState.blocked){
+      h += cloudCard(T(14,'This phone is missing '+cloudState.blocked.count+' records')+S('That looks like data was lost on this phone, not deleted on purpose. Restoring brings them back from the cloud. Only choose the other option if you really did delete them.'))
+        + cloudBtn('Restore from the cloud','cloudRestoreFromCloud()','primary') + cloudBtn('I deleted them, sync the deletions','cloudAllowDeletes()');
+    }
+    h += cloudBtn('Sync now','cloudSync().then(renderCloudScreen)','primary');
+    h += S('Last synced: '+cloudAgo(cloudMeta.lastOk)+(cloudMeta.lastCount?' · '+cloudMeta.lastCount+' records moved':''))+'<div style="height:14px;"></div>';
+    h += cloudBtn('Sign out','cloudDoSignOut()');
+  }
+  el.innerHTML=h;
 }
 
-function stopCamera() {
-  if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null;}
-  if(scanAnimFrame!=null){
-    clearTimeout(scanAnimFrame);
-    clearInterval(scanAnimFrame);
-    scanAnimFrame=null;
-  }
+function cloudInit(){
+  window.addEventListener('online', ()=>cloudSync());
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible' && Date.now()-cloudState.lastTry>20000) cloudSync(); });
+  setInterval(()=>{ if(document.visibilityState==='visible') cloudSync(); }, 60000);
+  cloudPaint();
+  setTimeout(()=>cloudSync(), 1500);
 }
-function stopAndBack() { stopCamera(); renderSyncHome(); }
+
 
 // ═══════════════════════════════════════════════════════
 // EXPORT / BACKUP / RESTORE / CLEAR
@@ -5899,7 +5725,7 @@ async function exportBackup(){
     mobhist:loadMobHist(),mobmoves:[...loadMobMoves(),...arcMM],
     drenchevents:[...loadDrenchEvts(),...arcDE],flags:loadFlags(),
     paddocks:_mem.paddocks||[],joining:loadJoining(),farmName:_mem.farmName||'',farmLoc:_mem.farmLoc||''},null,2);
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v11-'+new Date().toISOString().split('T')[0]+'.json'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v12-'+new Date().toISOString().split('T')[0]+'.json'});
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   toast('💾 Backup saved!');
 }
@@ -5946,29 +5772,18 @@ async function clearAll(){
   _mem.costs=[]; _mem.notes=[]; _mem.mobs=[]; _mem.mobhist=[];
   _mem.drenchEvents=[]; _mem.mobMoves=[]; _mem.flags={}; _mem.lastUpdated=''; _mem.lastSync=null;
   _mem.paddocks=[]; _mem.joining=[];
-  if(_db){
-    const keys=['data','sex','status','drench','costs','notes','mobs','mobhist','drenchEvents','mobMoves','flags','lastUpdated','lastSync'];
-    for(const k of keys){ await idbSet(STORE_HOT,k,Array.isArray(_mem[k])?[]:{}); }
-    await idbSet(STORE_ARC,'data',[]); await idbSet(STORE_ARC,'drenchEvents',[]); await idbSet(STORE_ARC,'mobMoves',[]);
-  }
+  // idbWrite writes both IndexedDB and the localStorage mirror. The old version only
+  // emptied IndexedDB, so with no IndexedDB the data came straight back, and
+  // paddocks/joinings were never cleared at all.
+  const keys=['data','sex','status','drench','costs','notes','mobs','mobhist','drenchEvents','mobMoves','flags','joining','paddocks','lastUpdated','lastSync'];
+  for(const k of keys){ idbWrite(k, Array.isArray(_mem[k])?[]:(k==='lastUpdated'?'':(k==='lastSync'?null:{}))); }
+  if(_db){ await idbSet(STORE_ARC,'data',[]).catch(()=>{}); await idbSet(STORE_ARC,'drenchEvents',[]).catch(()=>{}); await idbSet(STORE_ARC,'mobMoves',[]).catch(()=>{}); }
+  // Clearing wipes this phone only. Reset the sync bookkeeping so the empty phone
+  // isn't read as "everything deleted" and the other phone's data is left alone.
+  cloudResetAfterClear();
   renderFlock(); renderMobList(); renderDrenchLog(); renderCostLog(); renderStats();
   populateCostFySelect(); refreshCount(); renderHome();
-  toast('🗑 All data cleared');
-}
-
-async function doAirdrop(){
-  const arcData=_db?(await idbGet(STORE_ARC,'data').catch(()=>[])||[]):[];
-  const data={version:10,exported:new Date().toISOString(),
-    records:[...loadData(),...arcData],sex:loadSex(),status:loadStatus(),
-    drench:loadDrench(),costs:loadCosts(),notes:loadNotes(),mobs:loadMobs(),
-    mobhist:loadMobHist(),mobmoves:loadMobMoves(),drenchevents:loadDrenchEvts(),
-    flags:loadFlags(),joining:loadJoining(),paddocks:_mem.paddocks||[],
-    farmName:_mem.farmName||'',farmLoc:_mem.farmLoc||''};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const file=new File([blob],'sheep-backup-'+new Date().toISOString().split('T')[0]+'.json',{type:'application/json'});
-  if(navigator.canShare&&navigator.canShare({files:[file]})) navigator.share({title:'Sheep Tracker Backup',files:[file]}).catch(()=>{});
-  else if(navigator.share) navigator.share({title:'Sheep Tracker Backup',text:JSON.stringify(data)}).catch(()=>{});
-  else { exportBackup(); toast('💾 Backup downloaded'); }
+  toast(cloudSignedIn() ? '🗑 Cleared on this phone. The cloud copy is kept.' : '🗑 All data cleared');
 }
 
 function shareAppUrl(){
@@ -6046,93 +5861,6 @@ function toast(msg){
 function showModal(html){ document.getElementById('modalBox').innerHTML=html; document.getElementById('modalOv').classList.add('open'); }
 function closeModal(e){ if(!e||e.target===document.getElementById('modalOv')) document.getElementById('modalOv').classList.remove('open'); }
 
-
-// ═══════════════════════════════════════════════════════
-// QR SYNC — DELTA USING REAL _mem DATA
-// ═══════════════════════════════════════════════════════
-function buildDelta(){
-  // Only include non-empty data to keep payload small → fewer QR chunks
-  const out = {v:9};
-  const d=loadData(), sx=loadSex(), st=loadStatus(), fl=loadFlags(),
-        n=loadNotes(), m=loadMobs(), mh=loadMobHist(), mm=loadMobMoves(),
-        dr=loadDrench(), de=loadDrenchEvts(), c=loadCosts();
-  if(d.length)                    out.data=d;
-  if(Object.keys(sx).length)      out.sex=sx;
-  if(Object.keys(st).length)      out.status=st;
-  if(Object.keys(fl).length)      out.flags=fl;
-  if(n.length)                    out.notes=n;
-  if(m.length)                    out.mobs=m;
-  if(mh.length)                   out.mobHist=mh;
-  if(mm.length)                   out.mobMoves=mm;
-  if(dr.length)                   out.drench=dr;
-  if(de.length)                   out.drenchEvents=de;
-  if(c.length)                    out.costs=c;
-  return out;
-}
-
-function applyMerge(incoming){
-  let counts={data:0,notes:0,drench:0,drenchEvents:0,costs:0,mobs:0,mobHist:0,mobMoves:0,sex:0,status:0,flags:0,joining:0,paddocks:0};
-  const existIds=new Set(loadData().map(r=>r.id));
-  (incoming.data||[]).forEach(r=>{ if(!existIds.has(r.id)){_mem.data.push(r);counts.data++;} });
-  if(counts.data) saveData(_mem.data);
-  const existN=new Set(loadNotes().map(n=>n.id));
-  (incoming.notes||[]).forEach(n=>{ if(!existN.has(n.id)){_mem.notes.push(n);counts.notes++;} });
-  if(counts.notes) saveNotesData(_mem.notes);
-  const existJ=new Set(loadJoining().map(j=>j.id));
-  (incoming.joining||[]).forEach(j=>{ if(!existJ.has(j.id)){_mem.joining.push(j);counts.joining=((counts.joining||0)+1);} });
-  if(counts.joining) saveJoiningData(_mem.joining);
-  const existD=new Set(loadDrench().map(d=>d.id));
-  (incoming.drench||[]).forEach(d=>{ if(!existD.has(d.id)){_mem.drench.push(d);counts.drench++;} });
-  if(counts.drench) saveDrenchData(_mem.drench);
-  const existDE=new Set(loadDrenchEvts().map(e=>e.tag+'_'+e.date+'_'+e.product));
-  (incoming.drenchEvents||[]).forEach(e=>{ const k=e.tag+'_'+e.date+'_'+e.product; if(!existDE.has(k)){_mem.drenchEvents.push(e);counts.drenchEvents++;} });
-  if(counts.drenchEvents) saveDrenchEvts(_mem.drenchEvents);
-  const existC=new Set(loadCosts().map(c=>c.id));
-  (incoming.costs||[]).forEach(c=>{ if(!existC.has(c.id)){_mem.costs.push(c);counts.costs++;} });
-  if(counts.costs) saveCostsData(_mem.costs);
-  (incoming.mobs||[]).forEach(im=>{
-    const existing=loadMobs().find(m=>m.id===im.id||m.name===im.name);
-    if(!existing){_mem.mobs.push(im);counts.mobs++;}
-    else{
-      const existLocs=new Set((existing.locationLog||[]).map(l=>l.loc+'_'+l.date));
-      (im.locationLog||[]).forEach(l=>{ if(!existLocs.has(l.loc+'_'+l.date)) existing.locationLog.push(l); });
-      existing.locationLog.sort((a,b)=>a.date.localeCompare(b.date));
-      existing.loc=existing.locationLog.at(-1)?.loc||existing.loc;
-      if(im.weighEvery&&!existing.weighEvery) existing.weighEvery=im.weighEvery;
-    }
-  });
-  if(counts.mobs) saveMobsData(_mem.mobs);
-  const existP=new Set((_mem.paddocks||[]).map(p=>p.id));
-  (incoming.paddocks||[]).forEach(p=>{ if(!existP.has(p.id)){(_mem.paddocks=_mem.paddocks||[]).push(p);counts.paddocks=((counts.paddocks||0)+1);} });
-  if(counts.paddocks) idbWrite('paddocks',_mem.paddocks);
-  (incoming.mobHist||[]).forEach(ih=>{
-    const ex=loadMobHist().find(h=>h.tag===ih.tag);
-    if(!ex){_mem.mobhist.push(ih);counts.mobHist++;}
-    else{ex.currentMob=ih.currentMob;ex.currentLoc=ih.currentLoc;}
-  });
-  if(counts.mobHist) saveMobHist(_mem.mobhist);
-  const existMM=new Set(loadMobMoves().map(m=>m.tag+'_'+m.date+'_'+(m.to||'')));
-  (incoming.mobMoves||[]).forEach(m=>{ const k=m.tag+'_'+m.date+'_'+(m.to||''); if(!existMM.has(k)){_mem.mobMoves.push(m);counts.mobMoves++;} });
-  if(counts.mobMoves) saveMobMoves(_mem.mobMoves);
-  Object.entries(incoming.sex||{}).forEach(([tag,sex])=>{ if(!loadSex()[tag]){_mem.sex[tag]=sex;counts.sex++;} });
-  if(counts.sex) saveSex(_mem.sex);
-  Object.entries(incoming.status||{}).forEach(([tag,st])=>{ const ex=loadStatus()[tag]; if(!ex||(st.date>=(ex?.date||''))){_mem.status[tag]=st;counts.status++;} });
-  if(counts.status) saveStatusData(_mem.status);
-  Object.entries(incoming.flags||{}).forEach(([tag,f])=>{ if(!loadFlags()[tag]){_mem.flags[tag]=f;counts.flags++;} });
-  if(counts.flags) saveFlagsData(_mem.flags);
-  return counts;
-}
-
-function summariseMerge(counts){
-  const lines=[];
-  if(counts.data)   lines.push(`${counts.data} weight record${counts.data!==1?'s':''}`);
-  if(counts.notes)  lines.push(`${counts.notes} note${counts.notes!==1?'s':''}`);
-  if(counts.drench) lines.push(`${counts.drench} drench record${counts.drench!==1?'s':''}`);
-  if(counts.costs)  lines.push(`${counts.costs} cost entr${counts.costs!==1?'ies':'y'}`);
-  if(counts.mobs)   lines.push(`${counts.mobs} mob${counts.mobs!==1?'s':''}`);
-  if(counts.status) lines.push(`${counts.status} status update${counts.status!==1?'s':''}`);
-  return lines.length?lines:['Already up to date'];
-}
 
 // ═══════════════════════════════════════════════════════
 // SERVICE WORKER
