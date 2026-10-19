@@ -1,9 +1,10 @@
-const CACHE_NAME = "sheep-tracker-v12";
+const CACHE_NAME = "sheep-tracker-v13";
 const urlsToCache = [
   "./index.html",
   "./manifest.json",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./icon-180.png"
 ];
 
 self.addEventListener("install", event => {
