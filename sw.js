@@ -1,4 +1,4 @@
-const CACHE_NAME = "sheep-tracker-v14";
+const CACHE_NAME = "sheep-tracker-v14.1";
 const urlsToCache = [
   "./index.html",
   "./manifest.json",
@@ -8,8 +8,9 @@ const urlsToCache = [
 ];
 
 self.addEventListener("install", event => {
+  // cache: 'reload' skips the browser's own HTTP cache, so a new version never installs a stale index.html
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache.map(u => new Request(u, {cache: "reload"}))))
   );
   self.skipWaiting();
 });

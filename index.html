@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0c1508">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Sheep Tracker v14</title>
+<title>Sheep Tracker v14.1</title>
 <script>try{var _p='st11_',_th=JSON.parse(localStorage.getItem(_p+'theme')||'null'),_ts=JSON.parse(localStorage.getItem(_p+'textSize')||'null'),_r=document.documentElement;
 if(_th==='dusk'||(_th==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches))_r.setAttribute('data-theme','dusk');
 if(_ts==='lg')_r.style.fontSize='115%';if(_ts==='xl')_r.style.fontSize='130%';}catch(e){}</script>
@@ -692,6 +692,21 @@ main{background:var(--bg);}
 @media (max-width:767px){
   .jobs .jcol{display:contents;}
 }
+/* v14.1 iPad / computer: Hide menu on main tabs (remembered), menu hidden on job screens, Menu opens it over the top */
+.sb-strip,.sb-fab,.sb-back,.sb-hide-btn{display:none;}
+@media (min-width:768px){
+  body.task .nav-wrap, body.sb-hide .nav-wrap{display:none;}
+  body.sb-peek .nav-wrap{display:flex;position:fixed;left:0;top:0;bottom:0;z-index:9500;box-shadow:6px 0 28px rgba(0,0,0,.35);}
+  body.sb-peek .sb-back{display:block;position:fixed;inset:0;z-index:9400;background:rgba(0,0,0,.4);}
+  .sb-hide-btn{display:flex;align-items:center;gap:10px;min-height:56px;margin-top:10px;padding:0 12px;border-radius:12px;border:2px solid #3d5a26;background:none;color:#c9d2bc;font-family:inherit;font-size:1.0625rem;font-weight:900;cursor:pointer;width:100%;flex-shrink:0;}
+  .sb-hide-btn .c{display:none;} body.sb-peek .sb-hide-btn .h{display:none;} body.sb-peek .sb-hide-btn .c{display:inline;}
+  .sb-menu{min-height:56px;padding:0 18px 0 14px;border-radius:14px;background:#1e2d12;border:none;color:#f3efe2;font-family:inherit;font-size:1.125rem;font-weight:900;align-items:center;gap:8px;cursor:pointer;}
+  body.sb-hide:not(.task) .sb-strip{display:flex;position:sticky;top:0;z-index:50;align-items:center;gap:14px;padding:10px 16px;background:var(--hbg);color:#f3efe2;}
+  body.sb-hide:not(.task) .sb-strip .sb-menu{display:flex;}
+  .sb-strip-t{font-size:1.375rem;font-weight:900;flex:1;}
+  .sb-strip-n{font-size:1rem;font-weight:800;color:#c9d2bc;} .sb-strip-n b{font-size:1.5rem;font-weight:900;color:#f0b43a;margin-right:2px;}
+  body.task:not(.sb-peek) .sb-fab{display:flex;position:fixed;top:12px;right:16px;z-index:60;}
+}
 
 @media (min-width:768px){ .modal-box{max-width:440px;} .ep{padding:14px 18px;} }
 
@@ -887,6 +902,32 @@ main{background:var(--bg);}
 .jc-act button{height:56px;border-radius:12px;border:2px solid var(--bor);background:none;font-size:1rem;font-weight:900;color:var(--txt);cursor:pointer;}
 .jc-act button.del{color:var(--x-red);}
 .jc-act button.one{grid-column:1 / -1;}
+/* v14.1 joining page and short cards */
+.jc-short{display:block;width:100%;text-align:left;font-family:inherit;color:var(--txt);cursor:pointer;padding:0;}
+.jc-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:56px;padding:8px 16px;border-top:1.5px solid var(--divider);font-size:1rem;font-weight:700;color:var(--mut);}
+.jc-foot .need{color:var(--x-amb);font-weight:800;}
+.jp-dh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-top:1.5px solid var(--divider);}
+.jp-dh .h{font-size:1.0625rem;font-weight:900;}
+.jp-dh button{min-height:56px;min-width:96px;padding:0 18px;border-radius:12px;border:2px solid var(--x-pur);background:none;color:var(--x-pur);font-family:inherit;font-size:1.0625rem;font-weight:900;cursor:pointer;}
+.jp-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 16px;border-top:1.5px solid var(--divider);font-size:1rem;font-weight:700;}
+.jp-row > span:first-child{color:var(--mut);flex:none;}
+.jp-row > span:last-child{text-align:right;}
+.jp-row .need{color:var(--x-amb);font-weight:800;}
+.jp-row .tg{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.125rem;}
+/* bars at the top: save warnings and new version */
+.top-bar{position:fixed;left:0;right:0;top:0;z-index:10050;display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 10px) 12px 10px 16px;font-size:1rem;font-weight:700;line-height:1.35;background:var(--t-blue);color:var(--x-blue);box-shadow:0 2px 10px rgba(0,0,0,.2);}
+.top-bar.warn{background:var(--t-amb2);color:var(--x-amb);}
+.top-bar.bad{background:#982018;color:#fff;}
+.top-bar .tb-t{flex:1;min-width:0;}
+.top-bar button{min-height:48px;padding:0 14px;border-radius:10px;border:2px solid currentColor;background:none;color:inherit;font-family:inherit;font-size:1rem;font-weight:900;cursor:pointer;flex:none;}
+.top-bar .tb-x{min-width:48px;padding:0;border:none;font-size:1.5rem;}
+#joiningForm .lbl{text-transform:none;letter-spacing:0;font-size:1rem;}
+#joiningForm button[onclick="jRamAdd()"]{min-height:56px;font-size:1rem !important;}
+.jr-row{border:1.5px solid var(--bor);border-radius:12px;padding:10px;margin-bottom:8px;display:grid;gap:8px;}
+.jr-top{display:flex;align-items:flex-end;gap:8px;}
+.jr-dates{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;}
+.jr-row input{width:100%;min-width:0;min-height:48px;box-sizing:border-box;}
+.jr-x{min-height:48px;padding:0 14px;background:none;border:2px solid var(--bor);border-radius:10px;color:var(--x-red);font-family:inherit;font-size:1rem;font-weight:900;cursor:pointer;flex:none;}
 /* money and drench rows */
 .mn-sum{background:var(--card);border:1.5px solid var(--bor);border-radius:18px;padding:14px 16px;}
 .mn-sum .a{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
@@ -1522,43 +1563,35 @@ label.sr input{display:none;}
   <div style="background:var(--card);border-radius:20px 20px 0 0;padding:22px 18px 34px;max-width:480px;width:100%;max-height:88dvh;overflow-y:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-size:1.375rem;font-weight:900;color:var(--txt);">Sheep Tracker v14</div>
-        <div style="font-size:0.9375rem;color:var(--mut);font-weight:600;margin-top:3px;">October 2026. Here's what's new</div>
+        <div style="font-size:1.375rem;font-weight:900;color:var(--txt);">Sheep Tracker v14.1</div>
+        <div style="font-size:0.9375rem;color:var(--mut);font-weight:600;margin-top:3px;">November 2026. Here's what's new</div>
       </div>
       <button onclick="closeWhatsNew()" style="background:rgba(0,0,0,.08);border:none;border-radius:20px;padding:7px 15px;font-family:inherit;font-size:0.9375rem;font-weight:800;cursor:pointer;color:var(--txt);">Skip</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;">
       <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
-        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Lamb tally</div>
-        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Mark lambs, Tally: count rams, ewes and wethers the first time, no tags. Tag them later and it shows how many are done.</div>
+        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">A page for each joining</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Tap a joining in Breeding to open it on its own page. Everything about it is there, and Edit lets you add the rams, dates, ewe count and notes at any time.</div>
       </div>
       <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
-        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Fewer jobs to choose from</div>
-        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Weigh and sort now does weights, pens, sold, dead and notes. Mob jobs does move and drench. Add sheep covers born and bought. Set your pens in Settings.</div>
+        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Full screen on iPad</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Hide menu, at the bottom of the side menu, gives the screen the full width. Menu brings it back. Job screens like Weigh and Mark lambs hide it by themselves.</div>
       </div>
       <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
-        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Big number keypad</div>
-        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Tags and weights use big on-screen keys on a phone or iPad. A computer keeps typing as normal.</div>
+        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Right date in the morning</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Records made before about 11am were saved under the day before. They now get today's date.</div>
       </div>
       <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
-        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Undo</div>
-        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Deleting a joining, removing a year prefix or clearing all data now has an Undo button.</div>
+        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Safer saving</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">If the phone ever can't save, a bar at the top tells you, so nothing is lost without a word. Signing out and back in no longer removes old weights from the other phone.</div>
       </div>
       <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
-        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Dawn and dusk</div>
-        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Settings, Appearance. Pick Day, Dawn / dusk, or Auto to follow your phone.</div>
-      </div>
-      <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
-        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Bigger text</div>
-        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Settings, Text size makes every word larger.</div>
-      </div>
-      <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
-        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Green flash</div>
-        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">A quick green flash on every save and lamb tap, so you know it went in.</div>
+        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Updates</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">When a new version is ready, a bar at the top says so. Tap Update now.</div>
       </div>
       <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
         <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Fixes</div>
-        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">The Reports buttons land on the right section. Reports has Overview, By year, and Money and drench. Sold and dead sheep are left out of drench records and mob moves. Breeding now has its own tab, with Tally and Tag buttons on every season, and weaning dates and weights.</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Restoring a backup adds its mobs instead of replacing yours. A mob name with a quote mark in it works everywhere. The Jobs screen stays quick as the flock grows.</div>
       </div>
     </div>
     <div style="margin-top:14px;font-size:0.9375rem;color:var(--mut);text-align:center;font-weight:600;">Full release log in Settings → Release log</div>
@@ -1570,6 +1603,16 @@ label.sr input{display:none;}
 <div class="modal-ov" id="releaseLogModal">
   <div class="modal-box">
     <h3 style="margin-bottom:14px;">Release log</h3>
+    <div class="rl-version">v14.1 · November 2026</div>
+    <div class="rl-item"><div class="rl-dot"></div>iPad and computer: Hide menu at the bottom of the side menu gives the screen the full width, and Menu brings it back. Job screens hide the menu by themselves, like the phone</div>
+    <div class="rl-item"><div class="rl-dot"></div>Each joining has its own page: tap it in Breeding. Edit the mob, rams (each with in and out dates), joining start, estimated and actual lambing, ewes joined and notes</div>
+    <div class="rl-item"><div class="rl-dot"></div>Breeding shows short joining cards that say what is still missing, like the rams or the ewe count</div>
+    <div class="rl-item"><div class="rl-dot"></div>Records made before about 11am get today's date (they were saved under the day before)</div>
+    <div class="rl-item"><div class="rl-dot"></div>Signing out and back in no longer moves old weights out of the phone, which used to remove them from the cloud</div>
+    <div class="rl-item"><div class="rl-dot"></div>The app loads the newest saved copy of your records when it opens, and a bar warns you if the phone can't save</div>
+    <div class="rl-item"><div class="rl-dot"></div>Restoring a backup adds its mobs and mob members instead of replacing yours</div>
+    <div class="rl-item"><div class="rl-dot"></div>A quote mark in a mob name no longer breaks its buttons. The Jobs screen is quicker with a big flock</div>
+    <div class="rl-item"><div class="rl-dot"></div>A bar says when a new version is ready, with an Update now button</div>
     <div class="rl-version">v14 · October 2026</div>
     <div class="rl-item"><div class="rl-dot"></div>Setup wizard has a Pens step, and the summary lists your pens</div>
     <div class="rl-item"><div class="rl-dot"></div>iPad and computer side menu: each main tab (Jobs, Flock, Breeding, Reports) opens to its own sub tabs, and only the one you are in stays open. Jobs lists Weigh and sort, Mob jobs, Mark lambs, Add sheep and More</div>
@@ -1716,6 +1759,7 @@ label.sr input{display:none;}
 </header>
 
 <main id="mainScroll">
+<div class="sb-strip"><button class="sb-menu" onclick="sbMenuTap()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>Menu</button><span class="sb-strip-t" id="sbStripT"></span><span class="sb-strip-n"><b id="sbStripN">0</b> sheep</span></div>
 
 <!-- ════════════════ JOBS (home) ════════════════ -->
 <div class="pnl on" id="pnl-home">
@@ -1819,30 +1863,6 @@ label.sr input{display:none;}
     <section class="rp-sec" id="bd-sec">
       
       <div class="rp-two"><button class="rp-btn-out" onclick="openExportPick()">Export PDF</button><button class="rp-btn-pur" onclick="openAddJoining()">+ Add joining</button></div>
-      <!-- ADD JOINING FORM -->
-      <div id="joiningForm" style="display:none;background:var(--card);border:1.5px solid rgba(104,32,160,.3);border-radius:var(--r);padding:14px;margin-bottom:12px;">
-        <div style="font-size:0.9375rem;font-weight:900;color:var(--c-purple);margin-bottom:12px;">Record Joining Event</div>
-        <div class="fg"><span class="lbl">Mob / Ewe group</span><select id="jEweMob" onchange="joiningMobChanged()" style="font-size:0.9375rem;"></select></div>
-        <div class="fg">
-          <span class="lbl">Rams <span style="font-size:0.9375rem;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">— each with its own in/out date</span></span>
-          <div id="jRamsList"></div>
-          <button type="button" onclick="jRamAdd()" style="width:100%;padding:8px;background:none;border:1.5px dashed rgba(104,32,160,.3);border-radius:8px;font-family:inherit;font-size:0.9375rem;font-weight:700;color:var(--c-purple);cursor:pointer;">+ Add ram</button>
-        </div>
-        <div class="fg"><span class="lbl">Joining start <span style="font-size:0.9375rem;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">— auto: earliest ram in-date, edit to override</span></span><input type="date" id="jStartDate" oninput="joiningStartChanged()"></div>
-        <div class="fg"><span class="lbl">Est. lambing start</span><input type="date" id="jLambDate"><div style="font-size:0.9375rem;color:var(--mut);margin-top:4px;font-weight:600;">Auto: joining start + 147 days (21 weeks gestation) — edit if different</div></div>
-        <div class="fg"><span class="lbl">Actual lambing start <span style="font-size:0.9375rem;color:var(--mut);font-weight:600;text-transform:none;letter-spacing:0;">— fill in once lambing begins</span></span><input type="date" id="jActualLambDate" placeholder=""></div>
-        <div class="fg">
-          <span class="lbl">Ewe count at joining</span>
-          <input type="number" id="jEweCount" placeholder="0" min="0" inputmode="numeric" style="font-size:1.25rem;font-weight:900;text-align:center;">
-          <div style="font-size:0.9375rem;color:var(--mut);margin-top:4px;font-weight:600;" id="jEweCountHint"></div>
-        </div>
-        <div class="fg"><span class="lbl">Notes (optional)</span><textarea id="jNotes" placeholder="e.g. good body condition..."></textarea></div>
-        <div style="display:flex;gap:8px;">
-          <button style="flex:2;padding:11px;background:var(--c-purple);color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:0.9375rem;font-weight:800;cursor:pointer;" onclick="saveJoining()">Save Joining</button>
-          <button style="flex:1;padding:11px;background:var(--bg);color:var(--mut);border:1.5px solid var(--bor);border-radius:9px;font-family:inherit;font-size:0.9375rem;font-weight:800;cursor:pointer;" onclick="cancelJoining()">Cancel</button>
-        </div>
-      </div>
-      
       <button class="ghost-btn" onclick="lmOpenFor('','tally')">Tally lambs now, link it to a joining later</button>
       <div id="unlinkedList" style="display:none;gap:10px"></div>
       <div id="joiningList" style="display:grid;gap:10px"></div>
@@ -1857,7 +1877,7 @@ label.sr input{display:none;}
   <div class="set2">
     <div class="set-brand">
       <div class="bn" id="settingsFarmName">Durran Durra</div>
-      <div class="bs" id="settingsFarmSub">Charleyong NSW · Sheep Tracker v14</div>
+      <div class="bs" id="settingsFarmSub">Charleyong NSW · Sheep Tracker v14.1</div>
       <button class="bh" onclick="calcStorageHealth()"><div class="r"><span>Storage health</span><b id="shUsed">Tap to check</b></div><div class="bar"><div id="shBar" style="width:0%"></div></div><div class="r" style="margin-top:4px"><span></span><span id="shPct" style="font-weight:900"></span></div></button>
     </div>
     <div class="sec-lbl">Farm setup</div>
@@ -1865,7 +1885,7 @@ label.sr input{display:none;}
     <div class="sec-lbl">Cloud sync and data</div>
     <div class="list-card"><button class="sr" onclick="openSync()"><div class="sbar" style="background:#2f7d14"></div><div class="sbd"><div class="stt">Cloud sync</div><div class="sss" id="cloudSetSub">Sign in to share with the other phone</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="exportBackup()"><div class="sbar" style="background:#283868"></div><div class="sbd"><div class="stt">Backup</div><div class="sss">Download a full JSON backup</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><label class="sr"><div class="sbar" style="background:#1a58a0"></div><div class="sbd"><div class="stt">Restore from backup</div><div class="sss">Import a JSON backup file</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg><input type="file" accept=".json" onchange="importBackup(event)"></label><button class="sr" onclick="exportAllData()"><div class="sbar" style="background:#0a7860"></div><div class="sbd"><div class="stt">Export to spreadsheet</div><div class="sss">Weights, drench and costs as CSV</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
     <div class="sec-lbl">App</div>
-    <div class="list-card"><div class="pref"><div><div class="stt">Text size</div><div class="sss">Makes every word bigger</div></div><div class="seg3" data-pref="textSize"><button data-v="std" onclick="setPref('textSize','std')">Standard</button><button data-v="lg" onclick="setPref('textSize','lg')">Large</button><button data-v="xl" onclick="setPref('textSize','xl')">Extra large</button></div></div><div class="pref"><div><div class="stt">Appearance</div><div class="sss">Dawn and dusk is easier on the eyes in low light</div></div><div class="seg3" data-pref="theme"><button data-v="day" onclick="setPref('theme','day')">Day</button><button data-v="dusk" onclick="setPref('theme','dusk')">Dawn / dusk</button><button data-v="auto" onclick="setPref('theme','auto')">Auto</button></div></div><div class="pref"><div><div class="stt">Number keypad</div><div class="sss">Big on-screen keys for tags and weights</div></div><div class="seg3" data-pref="kpMode"><button data-v="auto" onclick="setPref('kpMode','auto')">Auto</button><button data-v="on" onclick="setPref('kpMode','on')">On</button><button data-v="off" onclick="setPref('kpMode','off')">Off</button></div></div><button class="sr" onclick="shareAppUrl()"><div class="sbar" style="background:#1a58a0"></div><div class="sbd"><div class="stt">Share app</div><div class="sss">Send the app link to another phone</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="showAbout()"><div class="sbar" style="background:#5d6656"></div><div class="sbd"><div class="stt">About</div><div class="sss">Sheep Tracker v14 · Durran Durra</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
+    <div class="list-card"><div class="pref"><div><div class="stt">Text size</div><div class="sss">Makes every word bigger</div></div><div class="seg3" data-pref="textSize"><button data-v="std" onclick="setPref('textSize','std')">Standard</button><button data-v="lg" onclick="setPref('textSize','lg')">Large</button><button data-v="xl" onclick="setPref('textSize','xl')">Extra large</button></div></div><div class="pref"><div><div class="stt">Appearance</div><div class="sss">Dawn and dusk is easier on the eyes in low light</div></div><div class="seg3" data-pref="theme"><button data-v="day" onclick="setPref('theme','day')">Day</button><button data-v="dusk" onclick="setPref('theme','dusk')">Dawn / dusk</button><button data-v="auto" onclick="setPref('theme','auto')">Auto</button></div></div><div class="pref"><div><div class="stt">Number keypad</div><div class="sss">Big on-screen keys for tags and weights</div></div><div class="seg3" data-pref="kpMode"><button data-v="auto" onclick="setPref('kpMode','auto')">Auto</button><button data-v="on" onclick="setPref('kpMode','on')">On</button><button data-v="off" onclick="setPref('kpMode','off')">Off</button></div></div><button class="sr" onclick="shareAppUrl()"><div class="sbar" style="background:#1a58a0"></div><div class="sbd"><div class="stt">Share app</div><div class="sss">Send the app link to another phone</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="showAbout()"><div class="sbar" style="background:#5d6656"></div><div class="sbd"><div class="stt">About</div><div class="sss">Sheep Tracker v14.1 · Durran Durra</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
     <div class="sec-lbl">Danger zone</div>
     <div class="list-card"><button class="sr" onclick="clearAll()"><div class="sbar" style="background:#982018"></div><div class="sbd"><div class="stt" style="color:var(--x-red)">Clear all data</div><div class="sss">Export a backup first. This cannot be undone</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
   </div>
@@ -2257,6 +2277,36 @@ label.sr input{display:none;}
 <!-- FAB OVERLAY -->
 <!-- ════════════════ MOVE A MOB ════════════════ -->
 <!-- ════════════════ MOB JOBS ════════════════ -->
+<div class="pnl" id="pnl-joining">
+  <button class="back-btn" style="margin:12px 13px 0;" onclick="closeFabEntry()">← Back</button>
+  <div class="rp-wrap"><section class="rp-sec">
+      <div id="jpView" style="display:grid;gap:10px"></div>
+      <div id="joiningForm" style="display:none;background:var(--card);border:1.5px solid rgba(104,32,160,.3);border-radius:var(--r);padding:14px;margin-bottom:12px;">
+        <div id="jFormTitle" style="font-size:1.1875rem;font-weight:900;color:var(--x-pur);margin-bottom:12px;">Add a joining</div>
+        <div class="fg"><span class="lbl">Mob / Ewe group</span><select id="jEweMob" onchange="joiningMobChanged()" style="font-size:0.9375rem;"></select></div>
+        <div class="fg">
+          <span class="lbl">Rams <span style="font-size:0.9375rem;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">— each with its own in/out date</span></span>
+          <div id="jRamsList"></div>
+          <button type="button" onclick="jRamAdd()" style="width:100%;padding:8px;background:none;border:1.5px dashed rgba(104,32,160,.3);border-radius:8px;font-family:inherit;font-size:0.9375rem;font-weight:700;color:var(--c-purple);cursor:pointer;">+ Add ram</button>
+        </div>
+        <div class="fg"><span class="lbl">Joining start <span style="font-size:0.9375rem;font-weight:600;text-transform:none;letter-spacing:0;color:var(--mut);">— auto: earliest ram in-date, edit to override</span></span><input type="date" id="jStartDate" oninput="joiningStartChanged()"></div>
+        <div class="fg"><span class="lbl">Est. lambing start</span><input type="date" id="jLambDate"><div style="font-size:0.9375rem;color:var(--mut);margin-top:4px;font-weight:600;">Auto: joining start + 147 days (21 weeks gestation) — edit if different</div></div>
+        <div class="fg"><span class="lbl">Actual lambing start <span style="font-size:0.9375rem;color:var(--mut);font-weight:600;text-transform:none;letter-spacing:0;">— fill in once lambing begins</span></span><input type="date" id="jActualLambDate" placeholder=""></div>
+        <div class="fg">
+          <span class="lbl">Ewe count at joining</span>
+          <input type="number" id="jEweCount" placeholder="0" min="0" inputmode="numeric" style="font-size:1.25rem;font-weight:900;text-align:center;">
+          <div style="font-size:0.9375rem;color:var(--mut);margin-top:4px;font-weight:600;" id="jEweCountHint"></div>
+        </div>
+        <div class="fg"><span class="lbl">Notes (optional)</span><textarea id="jNotes" placeholder="e.g. good body condition..."></textarea></div>
+        <div style="display:flex;gap:8px;">
+          <button style="flex:2;min-height:56px;padding:11px;background:var(--c-purple);color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:0.9375rem;font-weight:800;cursor:pointer;" onclick="saveJoining()" id="jSaveBtn">Save joining</button>
+          <button style="flex:1;min-height:56px;padding:11px;background:var(--bg);color:var(--mut);border:1.5px solid var(--bor);border-radius:9px;font-family:inherit;font-size:0.9375rem;font-weight:800;cursor:pointer;" onclick="cancelJoining()">Cancel</button>
+        </div>
+      </div>
+      
+  </section></div>
+</div>
+
 <div class="pnl" id="pnl-mobjobs">
   <button class="back-btn" style="margin:12px 13px 0;" onclick="closeFabEntry()">← Back</button>
   <div class="mm">
@@ -2298,6 +2348,8 @@ label.sr input{display:none;}
   </div>
 </div>
 </main>
+<button class="sb-menu sb-fab" onclick="sbMenuTap()" aria-label="Open the menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>Menu</button>
+<div class="sb-back" onclick="sbPeek(false)"></div>
 
 <!-- BOTTOM TAB BAR (phone) / SIDEBAR (iPad and desktop) -->
 <div class="nav-wrap">
@@ -2315,6 +2367,7 @@ label.sr input{display:none;}
     <div class="sb-items" style="--ibg:#0c1508"><div class="sb-grp open" data-tab="home"><button class="sb-item on" data-tab="home" onclick="goTab('home')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="2"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="2"></rect><path d="M17 14v6M14 17h6"></path></svg>Jobs<svg class="chv" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><div class="sb-subs"><button class="sb-item sub" onclick="openEntry('weigh')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M12 4v16M6 20h12M4 9l3-5 3 5a3 3 0 0 1-6 0zM14 9l3-5 3 5a3 3 0 0 1-6 0zM6 4h12"></path></svg>Weigh and sort</button><button class="sb-item sub" onclick="openEntry('mobjobs')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M4 12h15M14 6l6 6-6 6"></path></svg>Mob jobs</button><button class="sb-item sub" onclick="openEntry('lambmark')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M3 4h8l10 10-7 7L4 11z"></path><circle cx="8" cy="8" r="1.6" fill="currentColor"></circle></svg>Mark lambs</button><button class="sb-item sub" onclick="openEntry('buyin')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add sheep</button><button class="sb-item sub" onclick="openMore()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"></circle><circle cx="12" cy="12" r="1.6" fill="currentColor"></circle><circle cx="19" cy="12" r="1.6" fill="currentColor"></circle></svg>More</button></div></div><div class="sb-grp" data-tab="flock"><button class="sb-item" data-tab="flock" onclick="goTab('flock')"><svg width="28" height="26" viewBox="0 0 26 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M6.5 16a2.6 2.6 0 0 1-1.4-4.8A2.7 2.7 0 0 1 8.6 7.6a2.8 2.8 0 0 1 4.6-.6 2.8 2.8 0 0 1 4.3 1.6 2.6 2.6 0 0 1 .3 5.1A2.6 2.6 0 0 1 15.5 16z"></path><path d="M17.6 8.4c.6-1.5 1.8-2.4 3.1-2.4 1.6 0 2.6 1.5 2.6 3.3 0 1.9-1.1 3.4-2.6 3.4-.9 0-1.7-.5-2.2-1.3"></path><path d="M20 6.2l-.9-1.6"></path><path d="M8.5 16v4M14 16v4"></path></svg>Flock<svg class="chv" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><div class="sb-subs"><button class="sb-item sub" data-sub="flock:sheep" onclick="goFlock('sheep')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M3 4h8l10 10-7 7L4 11z"></path><circle cx="8" cy="8" r="1.4"></circle></svg>Sheep</button><button class="sb-item sub" data-sub="flock:mobs" onclick="goFlock('mobs')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><circle cx="7" cy="9" r="3"></circle><circle cx="17" cy="9" r="3"></circle><path d="M2 20c0-3 2.2-5 5-5s5 2 5 5M12 20c0-3 2.2-5 5-5s5 2 5 5"></path></svg>Mobs</button></div></div><div class="sb-grp" data-tab="breeding"><button class="sb-item" data-tab="breeding" onclick="goTab('breeding')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"></path></svg>Breeding<svg class="chv" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><div class="sb-subs"><button class="sb-item sub" data-sub="bd:seasons" onclick="bdJump('seasons')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"></path></svg>Seasons</button><button class="sb-item sub" data-sub="bd:year" onclick="bdJump('year')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="4" rx="1.5"></rect><rect x="13" y="10" width="7" height="10" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect></svg>Year on year</button></div></div><div class="sb-grp" data-tab="stats"><button class="sb-item" data-tab="stats" onclick="goTab('stats')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"></path></svg>Reports<svg class="chv" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><div class="sb-subs"><button class="sb-item sub" data-sub="rep:overview" onclick="goReports('overview')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="4" rx="1.5"></rect><rect x="13" y="10" width="7" height="10" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect></svg>Overview</button><button class="sb-item sub" data-sub="rep:year" onclick="goReports('year')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="4" rx="1.5"></rect><rect x="13" y="10" width="7" height="10" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect></svg>By year</button><button class="sb-item sub" data-sub="rep:money" onclick="goReports('money')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M14.6 9.4c-.5-.9-1.5-1.4-2.6-1.4-1.4 0-2.5.8-2.5 2s1 1.6 2.5 2 2.5.9 2.5 2-1.1 2-2.5 2c-1.1 0-2.1-.5-2.6-1.4M12 6.5v11"></path></svg>Money and drench</button></div></div>
     </div>
     <button class="sb-item " data-tab="set" onclick="goTab('set')" style="--ibg:#0c1508"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true"><path d="M4 7h16M4 17h16"></path><circle cx="9" cy="7" r="2.6" fill="var(--ibg,#fffdf8)"></circle><circle cx="15" cy="17" r="2.6" fill="var(--ibg,#fffdf8)"></circle></svg>Settings</button>
+    <button class="sb-hide-btn" onclick="sbHideTap()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg><span class="h">Hide menu</span><span class="c">Close menu</span></button>
   </div>
 </div>
 <style>
@@ -2621,7 +2674,7 @@ function obFinish(){
   updateFarmDisplay();
   updateSettingsDisplay();
   renderPaddockList();
-  toast('Welcome to Sheep Tracker v14!');
+  toast('Welcome to Sheep Tracker v14.1');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2730,6 +2783,8 @@ function renderPaddockOverview(){
     return;
   }
   const stMap = _mem.status;
+  const lastW = {}, lastD = {};
+  _mem.data.forEach(r=>{ if(r.weight>0 && (!lastD[r.tag] || r.date>=lastD[r.tag])){ lastD[r.tag]=r.date; lastW[r.tag]=r.weight; } });
   const used = [...new Set(paddocks.map(p=>p.pastureType||''))];
   const legend = '<div class="pd-legend">'+used.map(t=>'<span><i style="background:'+pastureColor(t)+';border:1.5px solid rgba(0,0,0,.15)"></i>'+(t||'Not set')+'</span>').join('')+'</div>';
   el.innerHTML = legend+'<div class="pd-grid">'+paddocks.map(p=>{
@@ -2737,10 +2792,7 @@ function renderPaddockOverview(){
     const tags = mobsHere.flatMap(m=>
       _mem.mobhist.filter(h=>h.currentMob===m.name).map(h=>h.tag)
     ).filter(t=>{ const s=stMap[t]?.status; return !s||!['sold','dead'].includes(s); });
-    const ws = tags.map(t=>{
-      const e = _mem.data.filter(r=>r.tag===t&&r.weight>0).sort((a,b)=>b.date.localeCompare(a.date));
-      return e[0]?.weight||0;
-    }).filter(Boolean);
+    const ws = tags.map(t=>lastW[t]||0).filter(Boolean);
     const avg = ws.length ? (ws.reduce((a,b)=>a+b,0)/ws.length).toFixed(1)+' kg' : 'No weights yet';
     const rams = tags.filter(t=>_mem.sex[t]==='ram').length;
     const ewes = tags.filter(t=>_mem.sex[t]==='ewe').length;
@@ -2855,7 +2907,7 @@ function updateFarmDisplay(){
   hdPaint();
   // Settings hero
   const sName= document.getElementById('settingsFarmName'); if(sName) sName.textContent=name;
-  const sSub = document.getElementById('settingsFarmSub');  if(sSub)  sSub.textContent=(loc?loc+' · ':'')+'Sheep Tracker v14';
+  const sSub = document.getElementById('settingsFarmSub');  if(sSub)  sSub.textContent=(loc?loc+' · ':'')+'Sheep Tracker v14.1';
   // Sidebar brand (wide screens)
   const sbName= document.getElementById('sbFarmName'); if(sbName) sbName.textContent=name;
   // Sidebar footer (wide screens)
@@ -2900,7 +2952,7 @@ let _mem = {
   data:[], sex:{}, status:{}, drench:[], costs:[], notes:[],
   mobs:[], mobhist:[], drenchEvents:[], mobMoves:[], flags:{},
   prefixes:[], activeYr:'', lastUpdated:'', lastSync:null,
-  joining:[], paddocks:[]
+  joining:[], paddocks:[], eid:{}
 };
 
 // ── v12 sync-ready groundwork ──────────────────────────────────
@@ -2911,6 +2963,9 @@ let _mem = {
 // created or edited from here on; no UI surface for this yet (that's v12).
 function genId(){ return (crypto.randomUUID ? crypto.randomUUID() : 'id-'+Date.now()+'-'+Math.random().toString(36).slice(2,10)); }
 function nowStamp(){ return new Date().toISOString(); }
+// Calendar dates use the phone's own day. toISOString() is UTC, which in NSW is the day before until 10 or 11am.
+function isoLocal(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function todayISO(){ return isoLocal(new Date()); }
 
 let _db = null;
 function openDB(){
@@ -2949,14 +3004,41 @@ function idbSet(store, key, val){
 // shown anywhere. Every hot-store write now also lands in localStorage
 // synchronously, so there's always a durable copy even if IDB never comes up.
 const LS_PREFIX = 'st11_';
-function lsWrite(key, val){ try{ localStorage.setItem(LS_PREFIX+key, JSON.stringify(val)); }catch(e){ console.warn('localStorage write failed', key, e); } }
+function lsWrite(key, val){ try{ localStorage.setItem(LS_PREFIX+key, JSON.stringify(val)); return true; }catch(e){ console.warn('localStorage write failed', key, e); storageWarn('full'); return false; } }
 function lsRead(key){ try{ const v=localStorage.getItem(LS_PREFIX+key); return v==null?undefined:JSON.parse(v); }catch(e){ return undefined; } }
 
+// Each copy also keeps when it was last saved (__ts_<key>), so boot can load whichever copy is newer.
+// Before v14.1 boot always took IndexedDB, so a failed IndexedDB write lost to its own older value.
+function lsTsRead(key){ try{ return Number(localStorage.getItem(LS_PREFIX+'__ts_'+key))||0; }catch(e){ return 0; } }
+function idbSetWithTs(key, val, ts){
+  return new Promise((res,rej)=>{
+    const tx = _db.transaction(STORE_HOT,'readwrite'), st = tx.objectStore(STORE_HOT);
+    st.put(val, key); st.put(ts, '__ts_'+key);
+    tx.oncomplete = () => res(); tx.onerror = e => rej(e.target.error); tx.onabort = e => rej(e.target.error);
+  });
+}
 function idbWrite(key, val){
-  lsWrite(key, val);
+  const ts = Date.now();
+  const lsOk = lsWrite(key, val);
+  if(lsOk){ try{ localStorage.setItem(LS_PREFIX+'__ts_'+key, String(ts)); }catch(e){} }
   if(typeof cloudMarkDirty==='function') cloudMarkDirty(key);
-  if(!_db) return;
-  idbSet(STORE_HOT, key, val).catch(e=>console.warn('IndexedDB write failed — localStorage copy is current', key, e));
+  if(!_db){ if(!lsOk) storageWarn('lost'); return; }
+  idbSetWithTs(key, val, ts).catch(e=>{ console.warn('IndexedDB write failed', key, e); if(!lsOk) storageWarn('lost'); });
+}
+// A bar at the top when a save fails. 'lost': neither copy saved. 'full': the localStorage copy is full.
+const _swShown = {};
+function storageWarn(kind){
+  if(_swShown[kind]) return; _swShown[kind] = true;
+  const msg = kind==='lost'
+    ? '<b>This phone couldn\'t save your last change.</b> Make a backup now, then close and reopen the app.'
+    : '<b>Storage for the app is getting full on this phone.</b> Your records are still saved. Make a backup soon.';
+  topBar('saveWarn', msg, kind==='lost'?'bad':'warn', '<button onclick="exportBackup()">Back up now</button>');
+}
+function topBar(id, html, kind, btn){
+  let el = document.getElementById(id);
+  if(!el){ el = document.createElement('div'); el.id = id; document.body.appendChild(el); }
+  el.className = 'top-bar '+(kind||'');
+  el.innerHTML = '<div class="tb-t">'+html+'</div>'+(btn||'')+'<button class="tb-x" aria-label="Close" onclick="this.parentNode.remove()">×</button>';
 }
 function idbWriteArc(key, val){ if(!_db) return; idbSet(STORE_ARC, key, val).catch(()=>{}); }
 
@@ -2997,13 +3079,19 @@ async function migrateFromLocalStorage(){
 async function loadAllIntoMemory(){
   const keys = ['data','sex','status','drench','costs','notes','mobs','mobhist',
                  'drenchEvents','mobMoves','flags','prefixes','activeYr','lastUpdated','lastSync',
-                 'farmName','farmLoc','joining','paddocks'];
+                 'farmName','farmLoc','joining','paddocks','eid'];
   for(const key of keys){
     const idbVal = _db ? await idbGet(STORE_HOT, key).catch(()=>null) : null;
-    if(idbVal !== null && idbVal !== undefined){ _mem[key] = idbVal; continue; }
-    // IDB unavailable or empty for this key — fall back to the localStorage mirror
-    const lsVal = lsRead(key);
-    if(lsVal !== undefined) _mem[key] = lsVal;
+    const idbTs  = _db ? (await idbGet(STORE_HOT, '__ts_'+key).catch(()=>null))||0 : 0;
+    const lsVal = lsRead(key), lsTs = lsTsRead(key);
+    const hasIdb = idbVal !== null && idbVal !== undefined;
+    // Take the localStorage mirror when IDB is missing or the mirror was saved later (an IDB write failed)
+    if(lsVal !== undefined && (!hasIdb || (lsTs && lsTs > idbTs))){
+      _mem[key] = lsVal;
+      if(_db && hasIdb) idbSetWithTs(key, lsVal, lsTs).catch(()=>{});
+      continue;
+    }
+    if(hasIdb) _mem[key] = idbVal;
   }
   if(!Array.isArray(_mem.prefixes)||!_mem.prefixes.length){
     const y = new Date().getFullYear();
@@ -3017,14 +3105,15 @@ async function loadAllIntoMemory(){
   if(!_mem.mobMoves) _mem.mobMoves = [];
   if(!Array.isArray(_mem.joining)) _mem.joining = [];
   if(!Array.isArray(_mem.paddocks)) _mem.paddocks = [];
+  if(!_mem.eid || typeof _mem.eid!=='object' || Array.isArray(_mem.eid)) _mem.eid = {};
 }
 
 async function runArchiveSweep(){
   const today  = new Date();
   const cutoff = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-1);
-  const cutoffStr = cutoff.toISOString().split('T')[0];
+  const cutoffStr = isoLocal(cutoff);
   const lastSweep = await idbGet(STORE_HOT,'__lastSweep').catch(()=>null);
-  if(lastSweep === today.toISOString().split('T')[0]) return;
+  if(lastSweep === isoLocal(today)) return;
   const archData = await idbGet(STORE_ARC,'data').catch(()=>[]) || [];
   const toArc = _mem.data.filter(r=>r.date && r.date < cutoffStr);
   const toKeep= _mem.data.filter(r=>!r.date || r.date >= cutoffStr);
@@ -3037,7 +3126,7 @@ async function runArchiveSweep(){
   const mmArc = _mem.mobMoves.filter(m=>m.date && m.date < cutoffStr);
   const mmKeep= _mem.mobMoves.filter(m=>!m.date || m.date >= cutoffStr);
   if(mmArc.length){ _mem.mobMoves=mmKeep; await idbSet(STORE_HOT,'mobMoves',mmKeep); await idbSet(STORE_ARC,'mobMoves',[...arcMM,...mmArc]); }
-  await idbSet(STORE_HOT,'__lastSweep', today.toISOString().split('T')[0]);
+  await idbSet(STORE_HOT,'__lastSweep', isoLocal(today));
 }
 
 async function loadFullHistoryForTag(tag){
@@ -3087,6 +3176,8 @@ const saveDrenchEvts = e => { _mem.drenchEvents=e;    idbWrite('drenchEvents',e)
 const saveFlagsData  = f => { _mem.flags=f;           idbWrite('flags',f); };
 const saveMobMoves   = m => { _mem.mobMoves=m;        idbWrite('mobMoves',m); };
 const saveLastSync   = s => { _mem.lastSync=s;        idbWrite('lastSync',s); };
+const loadEid        = () => _mem.eid;
+const saveEidData    = e => { _mem.eid=e;             idbWrite('eid',e); };
 
 // FY helpers
 function getCurrentFY(){ const n=new Date(); return n.getMonth()>=6?n.getFullYear():n.getFullYear()-1; }
@@ -3181,7 +3272,7 @@ function doRemoveLambEvent(jid,idx){
 // ── Feedback round 2 (v14) ──
 // Weigh: one mode now. Date and note are available on the row under the keypad; the session total sits at the bottom.
 function setWeighMode(m){ weighMode='normal'; }
-function wResetDate(){ const d=document.getElementById('wDt'); if(d) d.value=new Date().toISOString().split('T')[0]; const n=document.getElementById('wNotes'); if(n) n.value=''; const mo=document.getElementById('wMore'); if(mo) mo.style.display='none'; wMetaUpd(); }
+function wResetDate(){ const d=document.getElementById('wDt'); if(d) d.value=todayISO(); const n=document.getElementById('wNotes'); if(n) n.value=''; const mo=document.getElementById('wMore'); if(mo) mo.style.display='none'; wMetaUpd(); }
 function wNote(tag){
   const t=tag||wCurTag(); if(!t){ toast('Enter tag number'); return; }
   showModal(`<h3>Note for ${t}</h3><div class="fg"><textarea id="wNoteTxt" placeholder="Type your note here"></textarea></div>
@@ -3205,7 +3296,7 @@ function onJSeq(){
 }
 function jMark(status){
   const tag=jCurTag(); if(!tag){ toast('Enter tag number'); return; }
-  const date=document.getElementById('jDt').value||new Date().toISOString().split('T')[0];
+  const date=document.getElementById('jDt').value||todayISO();
   const cause=status==='dead'?(document.getElementById('jCause').value.trim()):'';
   const prev=_mem.status[tag]; let row=null;
   if(!_mem.data.some(r=>r.tag===tag)){ row={id:genId(),updatedAt:nowStamp(),tag,weight:0,date,notes:''}; _mem.data.push(row); saveData(_mem.data); }
@@ -3250,7 +3341,7 @@ function lmOpenFor(id,mode){
 }
 function initLambMark() {
   _lm = { joiningId:null, noJoin:false, locked:false, mode:lmMode(), mob:'', paddock:'', paddockId:'', startNum:1, currentNum:1,
-          counts:{ram:0,ewe:0,wether:0}, tagged:[], hist:[], date:new Date().toISOString().split('T')[0] };
+          counts:{ram:0,ewe:0,wether:0}, tagged:[], hist:[], date:todayISO() };
   document.getElementById('lmSetup').style.display='grid';
   document.getElementById('lmMarking').style.display='none';
   document.getElementById('lmTally').style.display='none';
@@ -3392,7 +3483,7 @@ function weanHtml(j){
 function openRecordWeaning(id){
   const j=loadJoining().find(x=>x.id===id); if(!j) return;
   showModal(`<h3>Weaning</h3><p>When the lambs were weaned for <strong>${j.mob||'this joining'}</strong>. Weigh the lambs on that day (or the next two) and their average shows on the card.</p>
-    <div class="fg"><span class="lbl">Weaning date</span><input type="date" id="weanInp" value="${j.weanDate||new Date().toISOString().split('T')[0]}"></div>
+    <div class="fg"><span class="lbl">Weaning date</span><input type="date" id="weanInp" value="${j.weanDate||todayISO()}"></div>
     <div class="modal-btns"><button onclick="saveWeaning('${id}')" style="background:var(--ac);color:white;flex:2;">Save</button>${j.weanDate?`<button onclick="clearWeaning('${id}')" style="background:var(--c-red-l);color:var(--c-red);">Remove</button>`:''}<button onclick="closeModal()" style="background:var(--bg);color:var(--mut);">Cancel</button></div>`);
 }
 function saveWeaning(id){
@@ -3438,7 +3529,7 @@ function saveWeigh(opts) {
   if((!wt||wt<=0) && !opts.status) { toast('Enter a weight'); return; }
   if(wt>250) { toast('That weight looks too big. Check it.'); return; }
   const tag = _mem.activeYr+raw.padStart(3,'0');
-  const date = document.getElementById('wDt').value || new Date().toISOString().split('T')[0];
+  const date = document.getElementById('wDt').value || todayISO();
   const notes = document.getElementById('wNotes').value.trim();
   if(curSex){ _mem.sex[tag]=curSex; saveSex(_mem.sex); }
   let addedRow=null;
@@ -3467,7 +3558,7 @@ function saveWeigh(opts) {
 }
 function wNoteSave(tag){
   const text=(document.getElementById('wNoteTxt')?.value||'').trim(); if(!text){ toast('Type a note first'); return; }
-  _mem.notes.push({id:genId(),updatedAt:nowStamp(),tag,text,date:new Date().toISOString().split('T')[0]}); saveNotesData(_mem.notes);
+  _mem.notes.push({id:genId(),updatedAt:nowStamp(),tag,text,date:todayISO()}); saveNotesData(_mem.notes);
   closeModal(); toast('Note saved'); flashOk();
 }
 
@@ -3484,7 +3575,7 @@ function renderPenAssign(){
     const opt=(m,l,cls)=>'<button class="'+(d.mode===m?'on ':'')+(cls||'')+'" onclick="penSet(\''+id+'\',\''+m+'\')">'+l+'</button>';
     return '<div class="pg-row"><div class="t"><span style="color:'+penColor(id)+'">'+penName(id)+' · '+list.length+(list.length===1?' sheep':' sheep')+'</span><span>average '+avg+' kg</span></div>'
       +'<div class="pg-opts">'+opt('stay','Stays')+opt('sold','Sold','sold')+opt('mob','Other mob')+'</div>'
-      +(d.mode==='mob'?'<select onchange="penMob(\''+id+'\',this.value)"><option value="">Choose a mob</option>'+mobs.map(m=>'<option value="'+m.name+'"'+(d.mob===m.name?' selected':'')+'>'+m.name+'</option>').join('')+'</select>':'')+'</div>';
+      +(d.mode==='mob'?'<select onchange="penMob(\''+id+'\',this.value)"><option value="">Choose a mob</option>'+mobs.map(m=>'<option value="'+escH(m.name)+'"'+(d.mob===m.name?' selected':'')+'>'+m.name+'</option>').join('')+'</select>':'')+'</div>';
   }).join('');
   const total=Object.keys(penDest).reduce((a,id)=>a+(sessPens[id]||[]).length,0);
   showModal('<h3>Where does each pen go?</h3>'+rows
@@ -3493,7 +3584,7 @@ function renderPenAssign(){
 function penSet(id,mode){ penDest[id].mode=mode; renderPenAssign(); }
 function penMob(id,name){ penDest[id].mob=name; }
 function applyPens(){
-  const today=new Date().toISOString().split('T')[0];
+  const today=todayISO();
   for(const id of Object.keys(penDest)){ if(penDest[id].mode==='mob' && !penDest[id].mob){ toast('Choose a mob for '+penName(id)); return; } }
   const undo={status:{},mh:{},moves:[]};
   Object.keys(penDest).forEach(id=>{
@@ -3621,6 +3712,110 @@ function kpPress(btn){
 }
 document.addEventListener('focusin', e=>{ if(e.target.classList&&e.target.classList.contains('kp-t')) kpSet(e.target); });
 document.addEventListener('click', e=>{ const t=e.target.closest&&e.target.closest('.kp-t'); if(t) kpSet(t); });
+
+// ── eID tag reader (v14.1) ──
+// The table reader is a Bluetooth keyboard: each scan types 15 digits then Enter, fast.
+// The management number (26001) stays every sheep's ID. _mem.eid maps it to the 15-digit eID,
+// e.g. {'26001':'982000123456789'}. It syncs like sex/status/flags (CLOUD_COLS.eid).
+const EID_LEN=15;
+function eidClean(s){ const d=String(s==null?'':s).replace(/\D/g,''); return d.length===EID_LEN?d:''; }
+function eidFmt(e){ e=String(e||''); return e.length===EID_LEN ? e.slice(0,3)+' '+e.slice(3) : e; }
+function eidShort(e){ e=String(e||''); return e.length>=8 ? '… '+e.slice(-8,-4)+' '+e.slice(-4) : e; }
+function eidOf(tag){ return (_mem.eid||{})[tag]||''; }
+function eidTagOf(eid){
+  eid=eidClean(eid); if(!eid) return '';
+  const m=_mem.eid||{}; for(const t in m){ if(m[t]===eid) return t; }
+  return '';
+}
+// Link an eID to a management number. Never lets one eID sit on two sheep.
+// Returns {ok:true, prev} (prev = the eID this sheep had before, or ''), or {ok:false, why:'bad'|'taken', other}.
+function eidLink(tag, eid){
+  const e=eidClean(eid); if(!tag||!e) return {ok:false, why:'bad'};
+  const other=eidTagOf(e);
+  if(other && other!==tag) return {ok:false, why:'taken', other};
+  const m=Object.assign({}, _mem.eid||{}), prev=m[tag]||'';
+  if(prev===e) return {ok:true, prev};
+  m[tag]=e; saveEidData(m);
+  return {ok:true, prev};
+}
+function eidUnlink(tag){
+  const m=Object.assign({}, _mem.eid||{}), prev=m[tag]||'';
+  if(!prev) return '';
+  delete m[tag]; saveEidData(m); return prev;
+}
+// Put an eID map from a backup into this phone's map. Skips any that clash.
+function eidMergeIn(obj){
+  const m=Object.assign({}, _mem.eid||{}), byE={}; let added=0, clash=0;
+  Object.keys(m).forEach(t=>{ byE[m[t]]=t; });
+  Object.keys(obj||{}).forEach(t=>{
+    const e=eidClean(obj[t]); if(!e) return;
+    if(m[t]===e) return;
+    if((byE[e] && byE[e]!==t) || (m[t] && m[t]!==e)){ clash++; return; }
+    m[t]=e; byE[e]=t; added++;
+  });
+  if(added) saveEidData(m);
+  return {added, clash};
+}
+// After two phones sync, the same eID could end up on two sheep. List those so a screen can warn.
+function eidDupes(){
+  const m=_mem.eid||{}, by={};
+  Object.keys(m).forEach(t=>{ (by[m[t]]=by[m[t]]||[]).push(t); });
+  return Object.keys(by).filter(e=>by[e].length>1).map(e=>({eid:e, tags:by[e].sort()}));
+}
+
+// ── Scan capture ──
+// A reader sends 15 digits about 10-30 ms apart, then Enter. People type far slower, so a burst
+// of 15 quick digits plus Enter is treated as a scan wherever the focus is. If a field (weight,
+// tag number) caught those digits on the way, it is put back how it was. Listens on window in the
+// capture phase so it runs before the in-app keypad's own keydown handler.
+const SCAN_GAP_MS=120, SCAN_MAX_MS=2500;
+const _scan={buf:'', t0:0, last:0, fields:new Map(), first:null, lastEid:'', lastAt:0};
+let eidScanHook=null;   // a screen sets this to handle scans itself; return false to fall through
+function scanNow(){ return (window.performance&&performance.now)?performance.now():Date.now(); }
+function scanReset(){ _scan.buf=''; _scan.fields=new Map(); _scan.first=null; }
+function scanIsField(el){ return !!el && (el.tagName==='INPUT'||el.tagName==='TEXTAREA') && el.type!=='password'; }
+function scanKeyCapture(e){
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  const now=scanNow(), t=e.target;
+  if(t && t.dataset && t.dataset.eidIn) return;   // an eID box handles its own typing and Enter
+  if(/^[0-9]$/.test(e.key)){
+    if(!_scan.buf || now-_scan.last>SCAN_GAP_MS){ scanReset(); _scan.t0=now; _scan.first=t; }
+    if(scanIsField(t) && !_scan.fields.has(t)) _scan.fields.set(t, t.value);
+    _scan.buf+=e.key; _scan.last=now;
+    if(_scan.buf.length>EID_LEN+5) scanReset();
+    return;
+  }
+  if(e.key==='Enter'){
+    const ok=_scan.buf.length===EID_LEN && now-_scan.last<=SCAN_GAP_MS*2 && now-_scan.t0<=SCAN_MAX_MS;
+    if(ok){
+      e.preventDefault(); e.stopPropagation();
+      const eid=_scan.buf, fields=_scan.fields, first=_scan.first;
+      scanReset();
+      fields.forEach((v,el)=>{ if(el.value!==v){ el.value=v; el.dispatchEvent(new Event('input',{bubbles:true})); } });
+      if(first && first.classList && first.classList.contains('kp-t')) kpSet(first);
+      eidOnScan(eid);
+    } else scanReset();
+    return;
+  }
+  if(e.key && e.key.length===1) scanReset();   // a letter or space: someone is typing, not scanning
+}
+window.addEventListener('keydown', scanKeyCapture, true);
+function eidOnScan(raw){
+  const eid=eidClean(raw); if(!eid) return;
+  _scan.lastEid=eid; _scan.lastAt=Date.now();
+  try{ if(typeof eidScanHook==='function' && eidScanHook(eid)!==false) return; }
+  catch(err){ console.warn('scan handler failed', err); }
+  eidScanDefault(eid);
+}
+// Anywhere without its own handler: open the sheep's card, or say the eID isn't linked yet.
+function eidScanDefault(eid){
+  const tag=eidTagOf(eid);
+  if(!tag){ toast('eID '+eidShort(eid)+' is not linked to a sheep yet'); return; }
+  flashOk();
+  const ov=document.getElementById('modalOv'), onMain=['home','flock','stats','breeding'].some(t=>{ const p=document.getElementById('pnl-'+t); return p&&p.classList.contains('on'); });
+  if(onMain && !(ov&&ov.classList.contains('open'))){ openLamb(tag); toast('Scanned '+tag); }
+  else toast('That eID belongs to '+tag);   // mid-entry: don't pull you off the screen you're on
+}
 document.addEventListener('keydown', e=>{
   const t=e.target; if(!t.classList||!t.classList.contains('kp-t')||!kpEnabled()) return;   // an iPad with a keyboard still works
   if(/^[0-9]$/.test(e.key)) { e.preventDefault(); kpKey(t,e.key); }
@@ -3646,9 +3841,11 @@ window.addEventListener('load', async () => {
 
   // 4. Archive sweep (IDB-only optimization — nothing lost if skipped, data
   // just stays in the hot store instead of being pruned into cold storage)
-  // Skipped while signed in to cloud sync: moving old weights out of the hot store
-  // would look like deletions. The cloud keeps full history and the volume is tiny.
-  if(_db && !cloudSignedIn()) await runArchiveSweep();
+  // Skipped on any phone that has ever synced, signed in or not: moving old weights out of the
+  // hot store looks like deletions to the next sync (signing out and back in used to delete them
+  // from the cloud). The cloud keeps full history and the volume is tiny.
+  if(_db && !cloudSignedIn() && !cloudMeta.firstSyncDone && !Object.keys(cloudBase).length) await runArchiveSweep();
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{}); }catch(e){}
 
   // 5. v10 onboarding check
   const obDone = await idbGet(STORE_HOT,'__obDone').catch(()=>null);
@@ -3663,7 +3860,7 @@ window.addEventListener('load', async () => {
   }
 
   // 7. Render UI
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayISO();
   document.getElementById('hDate').textContent = fmtD(today);
   ['wDt','sDt','dDt','cDt'].forEach(id => { const el=document.getElementById(id); if(el) el.value=today; });
   // v10 farm display
@@ -3684,7 +3881,7 @@ window.addEventListener('load', async () => {
   populateCostFySelect();
   updateLastUpdated();
   cloudInit();
-  kpBuild(); applyTextSize(); applyTheme(); paintPrefs();
+  kpBuild(); applyTextSize(); applyTheme(); paintPrefs(); sbApply();
   const _ms=document.getElementById('mainScroll'); if(_ms) _ms.addEventListener('scroll', rpSpy, {passive:true});
 
   // 8. What's New popup — show once per version. Read falls back to the
@@ -3693,7 +3890,7 @@ window.addEventListener('load', async () => {
   (async () => {
     const idbSeen = _db ? await idbGet(STORE_HOT,'__wnSeen').catch(()=>null) : null;
     const seen = (idbSeen!==null && idbSeen!==undefined) ? idbSeen : lsRead('__wnSeen');
-    if(seen!=='v14'){
+    if(seen!=='v14.1'){
       const wn=document.getElementById('whatsNewModal');
       if(wn) setTimeout(()=>{ wn.style.display='flex'; },800);
     }
@@ -3715,7 +3912,7 @@ window.addEventListener('load', async () => {
 function closeWhatsNew(){
   const m=document.getElementById('whatsNewModal');
   if(m) m.style.display='none';
-  idbWrite('__wnSeen','v14');
+  idbWrite('__wnSeen','v14.1');
 }
 function showWhatsNew(){
   const m=document.getElementById('whatsNewModal');
@@ -3726,7 +3923,7 @@ function showAbout(){
     <div style="text-align:center;padding:8px 0 16px;">
       
       <div style="font-size:1.125rem;font-weight:900;color:var(--txt);">Sheep Tracker</div>
-      <div style="font-size:0.9375rem;font-weight:700;color:var(--mut);margin-top:4px;">Version 14 · October 2026</div>
+      <div style="font-size:0.9375rem;font-weight:700;color:var(--mut);margin-top:4px;">Version 14.1 · November 2026</div>
       <div style="font-size:0.9375rem;color:var(--mut);margin-top:10px;line-height:1.6;">Built for Durran Durra, Charleyong NSW.<br>Works with no signal. Syncs when there is.</div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px;">
@@ -3776,13 +3973,30 @@ function ic(name, size, sw, style){
 }
 
 // ── header modes (main / task with Back) ──
-const TASK_TITLES = {set:'Settings', weigh:'Weigh and sort', sheepjobs:'Sold, dead, note', lambmark:'Mark lambs', buyin:'Add sheep', mobjobs:'Mob jobs', status:'Sold / Dead', drench:'Drench', cost:'Money', notes:'Notes', newsheep:'Add sheep', movemob:'Move a mob'};
+const TASK_TITLES = {set:'Settings', weigh:'Weigh and sort', sheepjobs:'Sold, dead, note', lambmark:'Mark lambs', buyin:'Add sheep', mobjobs:'Mob jobs', status:'Sold / Dead', drench:'Drench', cost:'Money', notes:'Notes', newsheep:'Add sheep', movemob:'Move a mob', joining:'Joining'};
 function hdSetMode(mode){
   const task = mode && mode!=='main';
-  document.body.classList.toggle('task', !!task);
+  document.body.classList.toggle('task', !!task); document.body.classList.remove('sb-peek');
   const t=document.getElementById('hdTitle'); if(t) t.textContent = task ? (TASK_TITLES[mode]||'') : '';
 }
+// ── Side menu on iPad and computer (v14.1): Hide menu on the main tabs (remembered on this device, not synced),
+// always hidden on job screens like the phone's bottom bar, and Menu opens it over a job screen ──
+function sbApply(){
+  document.body.classList.toggle('sb-hide', lsRead('sbHidden')===true);
+  const t=document.getElementById('sbStripT'); if(t) t.textContent={home:'Jobs',flock:'Flock',breeding:'Breeding',stats:'Reports'}[curTab]||'';
+}
+function sbPeek(on){ document.body.classList.toggle('sb-peek', !!on); }
+function sbHideTap(){
+  if(document.body.classList.contains('sb-peek')){ sbPeek(false); return; }
+  lsWrite('sbHidden', true); sbApply(); sbRelayout();
+}
+function sbMenuTap(){
+  if(document.body.classList.contains('task')){ sbPeek(true); return; }
+  lsWrite('sbHidden', false); sbApply(); sbRelayout();
+}
+function sbRelayout(){ if(curTab==='flock' && !document.body.classList.contains('task')) renderFlock(); } // list-and-detail depends on width
 function navSetActive(tab){
+  sbApply();
   document.querySelectorAll('.sb-grp').forEach(g=>g.classList.toggle('open', g.dataset.tab===tab));
   document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on', b.dataset.tab===tab));
   document.querySelectorAll('.sb-item[data-tab]').forEach(b=>b.classList.toggle('on', b.dataset.tab===tab));
@@ -3792,7 +4006,7 @@ function sbSub(key){
   document.querySelectorAll('.sb-item.sub').forEach(b=>b.classList.toggle('on', b.dataset.sub===key));
 }
 function goTab(tab) {
-  closeFabOv();
+  closeFabOv(); _entryBack=null;
   if(tab==='set'){ openEntry('set'); navSetActive('set'); updateSettingsDisplay(); return; }
   hdSetMode('main');
   document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
@@ -3809,6 +4023,8 @@ function openMore(){ fabOpen=true; document.getElementById('fabOv').classList.ad
 function closeFabOv(e){ fabOpen=false; const o=document.getElementById('fabOv'); if(o) o.classList.remove('open'); }
 function moreAddJoining(){ closeFabOv(); goTab('breeding'); setTimeout(openAddJoining, 50); }
 function closeFabEntry() {
+  if(_entryBack==='joining' && jpCur()){ _entryBack=null; openJoining(_jpId); return; }
+  _entryBack=null;
   document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
   const prevEl=document.getElementById('pnl-'+prevTab); if(prevEl) prevEl.classList.add('on');
   hdSetMode('main'); navSetActive(prevTab); hdPaint(prevTab);
@@ -3862,14 +4078,17 @@ function renderHome() {
   refreshCount();
   const today = new Date(); today.setHours(0,0,0,0);
   const stMap=_mem.status;
-  const activeTags=[...new Set(_mem.data.map(r=>r.tag))].filter(t=>{ const s=stMap[t]?.status; return !s||!['sold','dead'].includes(s); });
-  const mobTags=name=>_mem.mobhist.filter(h=>h.currentMob===name).map(h=>h.tag).filter(t=>{ const s=stMap[t]?.status; return !s||!['sold','dead'].includes(s); });
+  // One pass over the records: weights by tag (oldest first) and tags by mob, instead of a scan per sheep
+  const live=t=>{ const s=stMap[t]?.status; return !s||!['sold','dead'].includes(s); };
+  const wBy={}, tagSet=new Set(), hBy={};
+  _mem.data.forEach(r=>{ tagSet.add(r.tag); if(r.weight>0) (wBy[r.tag]=wBy[r.tag]||[]).push(r); });
+  Object.values(wBy).forEach(a=>a.sort((x,y)=>x.date.localeCompare(y.date)));
+  _mem.mobhist.forEach(h=>{ (hBy[h.currentMob]=hBy[h.currentMob]||[]).push(h.tag); });
+  const activeTags=[...tagSet].filter(live);
+  const mobTags=name=>(hBy[name]||[]).filter(live);
   function mobLastWeighed(mobName) {
     let latest=null;
-    mobTags(mobName).forEach(t=>{
-      const we=_mem.data.filter(r=>r.tag===t&&r.weight>0).sort((a,b)=>b.date.localeCompare(a.date));
-      if(we.length && (!latest||we[0].date>latest)) latest=we[0].date;
-    });
+    mobTags(mobName).forEach(t=>{ const d=wBy[t]?.at(-1)?.date; if(d && (!latest||d>latest)) latest=d; });
     return latest;
   }
   function weighStatus(mob) {
@@ -3887,7 +4106,7 @@ function renderHome() {
   // Needs doing
   const rows=[];
   const wlossTags=activeTags.filter(t=>{
-    const we=_mem.data.filter(r=>r.tag===t&&r.weight>0).sort((a,b)=>a.date.localeCompare(b.date));
+    const we=wBy[t]||[];
     return we.length>=2 && (we.at(-1).weight-we[we.length-2].weight)<-1;
   });
   if(wlossTags.length){ window._pendingWtLoss=wlossTags; rows.push(row('#982018','Losing weight','Down since last weigh',wlossTags.length,'showWtLossSheep()')); }
@@ -3909,7 +4128,7 @@ function renderHome() {
     const maxRem=Math.max(d.localWH?Math.max(0,d.localWH-days):0, d.exportWH?Math.max(0,d.exportWH-days):0);
     if(maxRem>0){
       const clear=new Date(dDate); clear.setDate(clear.getDate()+maxWH);
-      rows.push(row('#1a58a0','On withholding', (d.name||'Mob')+' · clear '+fmtD(clear.toISOString().split('T')[0]), maxRem+' day'+(maxRem!==1?'s':''), "goReports('drench')"));
+      rows.push(row('#1a58a0','On withholding', (d.name||'Mob')+' · clear '+fmtD(isoLocal(clear)), maxRem+' day'+(maxRem!==1?'s':''), "goReports('drench')"));
     }
   });
   document.getElementById('jobsNeeds').innerHTML = rows.length ? rows.join('')
@@ -3945,7 +4164,7 @@ function renderHome() {
 
 // ── Move a mob ──
 let _mm={mob:null};
-function mmToday(){ return new Date().toISOString().split('T')[0]; }
+function mmToday(){ return todayISO(); }
 function mmMobCount(name){ const st=_mem.status; return _mem.mobhist.filter(h=>h.currentMob===name && !['sold','dead'].includes(st[h.tag]?.status)).length; }
 function initMoveMob(){
   _mm={mob:null};
@@ -4211,7 +4430,7 @@ function wDeltaUpd(){
 }
 function wMetaUpd(){
   const el=document.getElementById('wDateLbl'); if(!el) return;
-  const v=(document.getElementById('wDt')||{}).value, t=new Date().toISOString().split('T')[0];
+  const v=(document.getElementById('wDt')||{}).value, t=todayISO();
   el.textContent = (!v||v===t) ? 'Today, '+fmtD(t) : fmtD(v);
 }
 function toggleWMore(){ const m=document.getElementById('wMore'); const open=m.style.display==='none'; m.style.display=open?'grid':'none'; }
@@ -4285,7 +4504,7 @@ function hdPaint(tab){
   const t=T[tab]||T.home;
   const a=document.getElementById('hFarmName'), b=document.getElementById('hDate'), c=document.getElementById('hdChev');
   if(a) a.textContent=t[0];
-  if(b) b.textContent=t[1]||fmtD(new Date().toISOString().split('T')[0]);
+  if(b) b.textContent=t[1]||fmtD(todayISO());
   if(c) c.style.display=(tab==='home')?'inline-flex':'none';
 }
 function hdBrandTap(){ if(curTab==='home') goTab('set'); }
@@ -4376,45 +4595,96 @@ function renderYearComparison() {
 }
 function renderJoiningList() {
   const el=document.getElementById('joiningList'); if(!el) return;
-  const list=loadJoining().slice().sort((a,b)=>b.startDate.localeCompare(a.startDate));
-  if(!list.length){ el.innerHTML='<div class="empty2">No joining events yet. Tap + Add joining.</div>'; return; }
-  const today=new Date(); today.setHours(0,0,0,0);
-  const short=d=>{ if(!d) return '—'; const x=fmtD(d).split(' '); return x[0]+' '+x[1]; };
-  el.innerHTML=list.map(j=>{
-    const rams=ramsList(j), ms=markingStats(j), yr=(j.startDate||'').slice(0,4);
-    let big='', unit='', status='';
-    if(j.lambDate){ const ld=new Date(j.lambDate); ld.setHours(0,0,0,0); const d=Math.round((ld-today)/864e5);
-      if(d>0){ big=d; unit=d===1?'day to go':'days to go'; status='Lambing starts '+fmtD(j.lambDate); }
-      else if(d>=-60){ big='Now'; unit='lambing'; status='Lambing underway'; }
-      else status='Lambing done'; }
-    let badge='';
-    if(j.actualLambDate && j.lambDate){ const diff=Math.round((new Date(j.actualLambDate)-new Date(j.lambDate))/864e5);
-      badge = diff===0 ? '<span class="jc-badge" style="background:var(--t-grn);color:var(--x-grn)">On estimate</span>'
-            : diff<0 ? '<span class="jc-badge" style="background:var(--t-pur);color:var(--x-pur)">'+Math.abs(diff)+' days early</span>'
-            : '<span class="jc-badge" style="background:var(--t-amb2);color:var(--x-amb)">'+diff+' days late</span>'; }
-    const ramHtml=rams.map(r=>'<div class="jc-ram"><span class="tg">'+r.tag+'</span><span>In '+short(r.inDate)+' · Out '+short(r.outDate)+'</span></div>').join('');
-    const lamb = j.actualLambDate
-      ? '<div class="jc-line"><span>Lambing started '+fmtD(j.actualLambDate)+'</span>'+badge+'</div>'
-      : '<div class="jc-line"><span>Est. lambing '+(j.lambDate?fmtD(j.lambDate):'—')+'</span></div>';
-    const tiles=(r,e,w)=>'<div class="jc-tiles"><div class="jc-tile" style="background:var(--t-blue);color:var(--x-blue)"><div class="v">'+r+'</div><div class="l">Ram lambs</div></div><div class="jc-tile" style="background:var(--t-pur);color:var(--x-pur)"><div class="v">'+e+'</div><div class="l">Ewe lambs</div></div><div class="jc-tile" style="background:var(--t-teal);color:var(--x-teal)"><div class="v">'+w+'</div><div class="l">Wethers</div></div></div>';
-    const ew=j.eweCount||0, pc=n=>ew>0?Math.round((n/ew)*100):null;
-    const bigLine=(n,word)=>'<div style="display:flex;align-items:baseline;gap:10px;margin-top:2px;flex-wrap:wrap"><span class="jc-pct">'+n+'</span><span class="jc-pcts">'+word+(pc(n)!==null?' · '+pc(n)+'% of '+ew+' ewes':'')+'</span></div>';
-    let mark='';
-    if(ms.hasTally){
-      mark='<div class="jc-mark"><div class="jc-lab">Tally · '+(ms.tallyCount>1?ms.tallyCount+' counts, last ':'')+fmtD(ms.tallyDate)+'</div>'+bigLine(ms.total,'lambs')+'</div>'+tiles(ms.ram,ms.ewe,ms.wether);
-      if(ms.tagged.total) mark+='<div class="jc-mark"><div class="jc-lab">Tagged · '+fmtD(ms.tagDate)+'</div>'+bigLine(ms.tagged.total,'lambs tagged')+'</div>'+tiles(ms.tagged.ram,ms.tagged.ewe,ms.tagged.wether);
-    } else if(ms.total){
-      mark='<div class="jc-mark"><div class="jc-lab">Marked</div>'+bigLine(ms.total,'lambs marked')+'</div>'+tiles(ms.ram,ms.ewe,ms.wether);
-    }
-    return '<div class="jc"><div class="jc-top"><div><div class="jc-lab">'+yr+' joining</div><div class="jc-t">'+(j.mob||'—')+(j.eweCount?' · '+j.eweCount+' ewes':'')+'</div><div class="jc-s">'+status+'</div></div>'
-      +(big!==''?'<div class="jc-days"><div class="n">'+big+'</div><div class="u">'+unit+'</div></div>':'')+'</div>'
-      +ramHtml+lamb+mark+lambEventsHtml(j)+(j.notes?'<div class="jc-note">'+j.notes+'</div>':'')
-      +weanHtml(j)
-      +'<div class="jc-go"><button class="lt" onclick="lmOpenFor(\''+j.id+'\',\'tally\')">Tally lambs</button><button class="lg" onclick="lmOpenFor(\''+j.id+'\',\'tag\')">Tag lambs</button></div>'
-      +'<div class="jc-act">'+(j.actualLambDate?'':'<button onclick="openRecordActualLambing(\''+j.id+'\')">Record lambing start</button>')+'<button'+(j.actualLambDate?' class="one"':'')+' onclick="openRecordWeaning(\''+j.id+'\')">'+(j.weanDate?'Change weaning':'Record weaning')+'</button><button class="del one" onclick="deleteJoining(\''+j.id+'\')">Delete joining</button></div></div>';
-  }).join('');
+  const list=loadJoining().slice().sort((a,b)=>(b.startDate||'').localeCompare(a.startDate||''));
+  el.innerHTML = list.length ? list.map(joiningShortHtml).join('') : '<div class="empty2">No joining events yet. Tap + Add joining.</div>';
+  // Keep an open joining page in step with any change (lamb events, weaning, sync), except while it is being edited
+  const pg=document.getElementById('pnl-joining');
+  if(_jpId && !_jpEdit && pg && pg.classList.contains('on')) jpRender();
 }
 
+// ── Joining page (v14.1): one joining on its own page, with Edit ──
+let _jpId=null, _jpEdit=false, _entryBack=null;
+function jpCur(){ return _jpId ? loadJoining().find(j=>j.id===_jpId)||null : null; }
+function jpTop(j){
+  const today=new Date(); today.setHours(0,0,0,0);
+  const ms=markingStats(j), yr=(j.startDate||'').slice(0,4);
+  let big='', unit='', status='';
+  if(j.lambDate){ const ld=new Date(j.lambDate); ld.setHours(0,0,0,0); const d=Math.round((ld-today)/864e5);
+    if(d>0){ big=d; unit=d===1?'day to go':'days to go'; status='Lambing starts '+fmtD(j.lambDate); }
+    else if(d>=-60){ big='Now'; unit='lambing'; status='Lambing underway'; }
+    else status='Lambing done'; }
+  return {ms, yr, big, unit, status};
+}
+function jpNeeds(j){
+  const n=[];
+  if(!ramsList(j).some(r=>r.tag)) n.push('rams');
+  if(!j.eweCount) n.push('ewe count');
+  if(!j.lambDate) n.push('lambing date');
+  return n;
+}
+function joiningShortHtml(j){
+  const t=jpTop(j), ms=t.ms, pc=ms.pct;
+  let big=t.big, unit=t.unit, status=t.status;
+  if(big==='' && ms.total){ big=pc!==null?pc+'%':ms.total; unit=pc!==null?'marking':'lambs'; }
+  if(ms.total) status=(status?status+' · ':'')+ms.total+(ms.total===1?' lamb':' lambs')+(pc!==null?' · '+pc+'%':'');
+  const needs=jpNeeds(j), ramTxt=ramsDisplayShort(j);
+  const foot = needs.length ? '<span class="need">Needs: '+needs.join(', ')+'</span>' : '<span>Rams '+escH(ramTxt)+'</span>';
+  return '<button class="jc jc-short" onclick="openJoining(\''+j.id+'\')"><div class="jc-top"><div><div class="jc-lab">'+t.yr+' joining</div><div class="jc-t">'+escH(j.mob||'—')+(j.eweCount?' · '+j.eweCount+' ewes':'')+'</div><div class="jc-s">'+status+'</div></div>'
+    +(big!==''?'<div class="jc-days"><div class="n">'+big+'</div><div class="u">'+unit+'</div></div>':'')+'</div>'
+    +'<div class="jc-foot">'+foot+ic('chevR',22,3,'color:var(--txt);flex:none')+'</div></button>';
+}
+function joiningPageHtml(j){
+  const t=jpTop(j), ms=t.ms;
+  const short=d=>{ if(!d) return '—'; const x=fmtD(d).split(' '); return x[0]+' '+x[1]; };
+  let badge='';
+  if(j.actualLambDate && j.lambDate){ const diff=Math.round((new Date(j.actualLambDate)-new Date(j.lambDate))/864e5);
+    badge = diff===0 ? ' <span class="jc-badge" style="background:var(--t-grn);color:var(--x-grn)">On estimate</span>'
+          : diff<0 ? ' <span class="jc-badge" style="background:var(--t-pur);color:var(--x-pur)">'+Math.abs(diff)+' days early</span>'
+          : ' <span class="jc-badge" style="background:var(--t-amb2);color:var(--x-amb)">'+diff+' days late</span>'; }
+  const tiles=(r,e,w)=>'<div class="jc-tiles"><div class="jc-tile" style="background:var(--t-blue);color:var(--x-blue)"><div class="v">'+r+'</div><div class="l">Ram lambs</div></div><div class="jc-tile" style="background:var(--t-pur);color:var(--x-pur)"><div class="v">'+e+'</div><div class="l">Ewe lambs</div></div><div class="jc-tile" style="background:var(--t-teal);color:var(--x-teal)"><div class="v">'+w+'</div><div class="l">Wethers</div></div></div>';
+  const ew=j.eweCount||0, pc=n=>ew>0?Math.round((n/ew)*100):null;
+  const bigLine=(n,word)=>'<div style="display:flex;align-items:baseline;gap:10px;margin-top:2px;flex-wrap:wrap"><span class="jc-pct">'+n+'</span><span class="jc-pcts">'+word+(pc(n)!==null?' · '+pc(n)+'% of '+ew+' ewes':'')+'</span></div>';
+  let mark='';
+  if(ms.hasTally){
+    mark='<div class="jc-mark"><div class="jc-lab">Tally · '+(ms.tallyCount>1?ms.tallyCount+' counts, last ':'')+fmtD(ms.tallyDate)+'</div>'+bigLine(ms.total,'lambs')+'</div>'+tiles(ms.ram,ms.ewe,ms.wether);
+    if(ms.tagged.total) mark+='<div class="jc-mark"><div class="jc-lab">Tagged · '+fmtD(ms.tagDate)+'</div>'+bigLine(ms.tagged.total,'lambs tagged')+'</div>'+tiles(ms.tagged.ram,ms.tagged.ewe,ms.tagged.wether);
+  } else if(ms.total){
+    mark='<div class="jc-mark"><div class="jc-lab">Marked</div>'+bigLine(ms.total,'lambs marked')+'</div>'+tiles(ms.ram,ms.ewe,ms.wether);
+  }
+  const need='<span class="need">Not entered</span>';
+  const rams=ramsList(j).filter(r=>r.tag);
+  const row=(k,v)=>'<div class="jp-row"><span>'+k+'</span><span>'+v+'</span></div>';
+  const det='<div class="jp-dh"><span class="h">Details</span><button onclick="openEditJoining()">Edit</button></div>'
+    + row('Mob', j.mob?escH(j.mob):need)
+    + (rams.length ? rams.map((r,i)=>row(i?'':'Rams','<span class="tg">'+escH(r.tag)+'</span> · In '+short(r.inDate)+' · Out '+short(r.outDate))).join('') : row('Rams', need))
+    + row('Joining start', j.startDate?fmtD(j.startDate):need)
+    + row('Est. lambing', j.lambDate?fmtD(j.lambDate):need)
+    + row('Lambing started', (j.actualLambDate?fmtD(j.actualLambDate):'Not yet')+badge)
+    + row('Ewes joined', j.eweCount?j.eweCount:need)
+    + row('Notes', j.notes?escH(j.notes):'None');
+  return '<div class="jc"><div class="jc-top"><div><div class="jc-lab">'+t.yr+' joining</div><div class="jc-t">'+escH(j.mob||'—')+(j.eweCount?' · '+j.eweCount+' ewes':'')+'</div><div class="jc-s">'+t.status+'</div></div>'
+      +(t.big!==''?'<div class="jc-days"><div class="n">'+t.big+'</div><div class="u">'+t.unit+'</div></div>':'')+'</div>'
+      +mark
+      +'<div class="jc-go"><button class="lt" onclick="lmOpenFor(\''+j.id+'\',\'tally\')">Tally lambs</button><button class="lg" onclick="lmOpenFor(\''+j.id+'\',\'tag\')">Tag lambs</button></div>'
+      +det+lambEventsHtml(j)+weanHtml(j)
+      +'<div class="jc-act" style="padding-top:12px;border-top:1.5px solid var(--divider)">'+(j.actualLambDate?'':'<button onclick="openRecordActualLambing(\''+j.id+'\')">Record lambing start</button>')+'<button'+(j.actualLambDate?' class="one"':'')+' onclick="openRecordWeaning(\''+j.id+'\')">'+(j.weanDate?'Change weaning':'Record weaning')+'</button><button class="del one" onclick="deleteJoining(\''+j.id+'\')">Delete joining</button></div></div>';
+}
+function jpRender(){
+  const v=document.getElementById('jpView'), f=document.getElementById('joiningForm'); if(!v||!f) return;
+  const j=jpCur();
+  const t=document.getElementById('hdTitle');
+  if(_jpEdit){ v.style.display='none'; f.style.display='block'; if(t) t.textContent=j?'Edit joining':'Add a joining'; return; }
+  f.style.display='none'; v.style.display='grid';
+  if(!j){ v.innerHTML='<div class="empty2">This joining is gone.</div>'; return; }
+  if(t) t.textContent=((j.startDate||'').slice(0,4)+' joining').trim();
+  v.innerHTML=joiningPageHtml(j);
+}
+function openJoining(id){ _jpId=id; _jpEdit=false; openEntry('joining'); jpRender(); }
+function openEditJoining(){
+  const j=jpCur(); if(!j) return;
+  _jpEdit=true; jFormFill(j); jpRender();
+  const ms=document.getElementById('mainScroll'); if(ms) ms.scrollTop=0;
+}
 // ── Money ──
 function costsForPeriod(){ const v=document.getElementById('costFySel')?.value||'all'; return v==='all'?_mem.costs:_mem.costs.filter(c=>dateInFY(c.date,+v)); }
 function renderStatsCosts(){ renderCostLog(); }
@@ -4484,20 +4754,21 @@ function renderYearStats() {
 // ═══════════════════════════════════
 function openEntry(screen) {
   closeFabOv(); setTimeout(()=>kpStart('pnl-'+screen),0);
+  _entryBack = (screen!=='joining' && document.getElementById('pnl-joining')?.classList.contains('on')) ? 'joining' : null;
   prevTab = curTab;
   document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
   document.getElementById('pnl-'+screen).classList.add('on');
   hdSetMode(screen); if(screen==='movemob') initMoveMob(); if(screen==='mobjobs'){ _mj=null; mjRender(); }
   document.getElementById('mainScroll').scrollTop = 0;
   if(screen==='weigh') { wResetDate(); paintSort(); renderChips('w'); updateWRecent(); dismissBanners(); wMetaUpd(); wDeltaUpd(); wInfoUpd(); }
-  if(screen==='sheepjobs') { renderChips('j'); document.getElementById('jSeq').value=''; document.getElementById('jTagVal').textContent='—'; document.getElementById('jSummary').style.display='none'; document.getElementById('jDt').value=new Date().toISOString().split('T')[0]; }
+  if(screen==='sheepjobs') { renderChips('j'); document.getElementById('jSeq').value=''; document.getElementById('jTagVal').textContent='—'; document.getElementById('jSummary').style.display='none'; document.getElementById('jDt').value=todayISO(); }
   if(screen==='status') { renderChips('s'); activeStatusChoice=null; document.getElementById('btnSold').classList.remove('sel-sold'); document.getElementById('btnDead').classList.remove('sel-dead'); document.getElementById('causeGrp').style.display='none'; document.getElementById('sSummary').style.display='none'; document.getElementById('sSeq').value=''; document.getElementById('sTagVal').textContent='—'; updateSRecent(); }
   if(screen==='newsheep') { renderChips('ns'); initNewSheep(); }
   if(screen==='buyin') { initBuyin(); }
   if(screen==='lambmark') { initLambMark(); }
   if(screen==='notes') { renderChips('n'); clearNotesForm(); }
-  if(screen==='drench') { populateDrenchMobSelect(); document.getElementById('dDt').value=new Date().toISOString().split('T')[0]; drClearUpd(); }
-  if(screen==='cost') { document.getElementById('cDt').value=new Date().toISOString().split('T')[0]; }
+  if(screen==='drench') { populateDrenchMobSelect(); document.getElementById('dDt').value=todayISO(); drClearUpd(); }
+  if(screen==='cost') { document.getElementById('cDt').value=todayISO(); }
 }
 
 // ═══════════════════════════════════
@@ -4546,7 +4817,7 @@ function onWSeqCore() {
   const sex = _mem.sex[tag];
   if(sex) { hideSexUI(); } else { showSexRow(); }
   // dup check
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayISO();
   const dup = _mem.data.find(r=>r.tag===tag && r.date===today && r.weight>0);
   if(dup) { document.getElementById('banDupTxt').textContent=`${tag} already recorded at ${dup.weight}kg today`; document.getElementById('banDup').style.display='block'; }
   // sold/dead check
@@ -4693,12 +4964,12 @@ function toggleUwFlag(tag) {
 function confirmUwFlag(tag) {
   const reason=(document.getElementById('uwFlagReason')?.value||'').trim();
   const s=uwPool.find(x=>x.tag===tag); if(!s)return;
-  s.flagged=true; _mem.flags[tag]={date:new Date().toISOString().split('T')[0],reason}; saveFlagsData(_mem.flags);
+  s.flagged=true; _mem.flags[tag]={date:todayISO(),reason}; saveFlagsData(_mem.flags);
   closeModal({target:document.getElementById('modalOv')}); renderUwList(); toast(`${tag} flagged`+(reason?' — '+reason:''));
 }
 function uwBulkFlag() {
   if(!uwSel.size){toast('Select sheep first');return;}
-  const date=new Date().toISOString().split('T')[0];
+  const date=todayISO();
   uwSel.forEach(tag=>{ const s=uwPool.find(x=>x.tag===tag); if(s)s.flagged=true; _mem.flags[tag]={date}; });
   saveFlagsData(_mem.flags);
   renderUwList(); toast(`${uwSel.size} sheep flagged`);
@@ -4719,7 +4990,7 @@ function doUwMove() {
     const h=_mem.mobhist.find(x=>x.tag===tag);
     if(h){h.currentMob=uwDest;h.currentLoc=destLoc;}
     else _mem.mobhist.push({tag,currentMob:uwDest,currentLoc:destLoc});
-    _mem.mobMoves.push({tag,from:uwMobName,to:uwDest,toLoc:destLoc,date:new Date().toISOString().split('T')[0]});
+    _mem.mobMoves.push({tag,from:uwMobName,to:uwDest,toLoc:destLoc,date:todayISO()});
   });
   saveMobHist(_mem.mobhist); saveMobMoves(_mem.mobMoves);
   uwPool=uwPool.filter(s=>!uwSel.has(s.tag)); uwSel.clear(); uwDest=null;
@@ -5012,7 +5283,7 @@ function quickFillS(tag) { const pre=tag.slice(0,2),seq=tag.slice(2); _mem.activ
 // ═══════════════════════════════════
 function populateDrenchMobSelect() {
   const sel=document.getElementById('dName'); if(!sel)return;
-  sel.innerHTML='<option value="">— Select mob —</option>'+_mem.mobs.map(m=>`<option value="${m.name}">${m.name}</option>`).join('');
+  sel.innerHTML='<option value="">— Select mob —</option>'+_mem.mobs.map(m=>`<option value="${escH(m.name)}">${escH(m.name)}</option>`).join('');
 }
 // Sheep that were sold or died are not in the mob any more, so they must not get a drench record.
 function drenchMobTags(name){
@@ -5083,7 +5354,7 @@ function saveNote() {
   if(!raw){toast('Enter a tag number');return;}
   if(!text){toast('Type a note first');return;}
   const tag=_mem.activeYr+raw.padStart(3,'0');
-  _mem.notes.push({id:genId(),updatedAt:nowStamp(),tag,text,date:new Date().toISOString().split('T')[0]});
+  _mem.notes.push({id:genId(),updatedAt:nowStamp(),tag,text,date:todayISO()});
   saveNotesData(_mem.notes);
   toast('Note saved'); flashOk(); document.getElementById('noteText').value='';
   loadNotesProfile(tag);
@@ -5100,7 +5371,7 @@ function flagFromNotes(tag) {
 }
 function confirmFlagFromNotes(tag) {
   const reason=(document.getElementById('nFlagReason')?.value||'').trim();
-  _mem.flags[tag]={date:new Date().toISOString().split('T')[0],reason};
+  _mem.flags[tag]={date:todayISO(),reason};
   closeModal({target:document.getElementById('modalOv')});
   toast(`${tag} flagged`+(reason?' — '+reason:'')); loadNotesProfile(tag);
 }
@@ -5121,7 +5392,7 @@ function addSireTag() {
 }
 function removeSireTag(tag) { nsSireTags=nsSireTags.filter(t=>t!==tag); renderSireChips(); }
 function addNewSheep() {
-  const date=new Date().toISOString().split('T')[0];
+  const date=todayISO();
   let tag;
   if(nsManualMode){const raw=document.getElementById('nsManualTag').value.trim(); if(!raw){toast('Enter a tag number');return;} tag=raw.length<=3?_mem.activeYr+raw.padStart(3,'0'):raw;}
   else{if(!document.getElementById('nsStart').value){toast('Enter a starting tag number');return;} tag=_mem.activeYr+String(nsCurrentNum).padStart(3,'0');}
@@ -5186,7 +5457,7 @@ function doAddNewSheep(tag, date) {
 // ═══════════════════════════════════
 function bulkUnflagAll() { Object.keys(_mem.flags).forEach(t=>delete _mem.flags[t]); saveFlagsData(_mem.flags); toast('All sheep unflagged'); renderFlock(); }
 function bulkMarkAll(status) {
-  const date=new Date().toISOString().split('T')[0];
+  const date=todayISO();
   Object.keys(_mem.flags).forEach(t=>{ _mem.status[t]={status,date,cause:''}; delete _mem.flags[t]; });
   saveStatusData(_mem.status); saveFlagsData(_mem.flags);
   toast(`All flagged sheep marked as ${status}`); refreshCount(); renderFlock();
@@ -5208,7 +5479,7 @@ function toggleFlag(tag) {
 }
 function confirmFlag(tag) {
   const reason=(document.getElementById('flagReason')?.value||'').trim();
-  _mem.flags[tag]={date:new Date().toISOString().split('T')[0],reason};
+  _mem.flags[tag]={date:todayISO(),reason};
   closeModal({target:document.getElementById('modalOv')});
   toast(`${tag} flagged`+(reason?' — '+reason:'')); reopenCard(tag);
 }
@@ -5224,7 +5495,7 @@ function openFlagActions(tag) {
     </div>`);
 }
 function flagMarkStatus(tag, status) {
-  const date=new Date().toISOString().split('T')[0];
+  const date=todayISO();
   _mem.status[tag]={status,date,cause:''}; delete _mem.flags[tag];
   saveStatusData(_mem.status); saveFlagsData(_mem.flags);
   closeModal({target:document.getElementById('modalOv')});
@@ -5247,7 +5518,7 @@ function deleteSheepConfirm(tag) {
   const nc=_mem.notes.filter(n=>n.tag===tag).length;
   showModal(`<h3 style="color:var(--c-red);margin-bottom:9px;">Delete ${tag}?</h3>
     <p style="font-size:0.9375rem;margin-bottom:8px;line-height:1.5;">Permanently removes <strong>${tag}</strong> and all associated data:</p>
-    <div style="background:var(--c-red-l);border-radius:9px;padding:9px 12px;margin-bottom:14px;font-size:0.9375rem;color:var(--x-red);font-weight:700;">${wc} weight record${wc!==1?'s':''}${nc?' · '+nc+' note'+(nc!==1?'s':''):''} · mob history</div>
+    <div style="background:var(--c-red-l);border-radius:9px;padding:9px 12px;margin-bottom:14px;font-size:0.9375rem;color:var(--x-red);font-weight:700;">${wc} weight record${wc!==1?'s':''}${nc?' · '+nc+' note'+(nc!==1?'s':''):''} · mob history${eidOf(tag)?' · eID link':''}</div>
     <p style="font-size:0.9375rem;color:var(--mut);margin-bottom:14px;">Cannot be undone. Export a backup first if needed.</p>
     <div class="modal-btns">
       <button onclick="doDeleteSheep('${tag}')" style="background:var(--c-red);color:white;flex:2;">Delete everything</button>
@@ -5262,6 +5533,7 @@ function doDeleteSheep(tag) {
   saveData(_mem.data); saveNotesData(_mem.notes); saveMobHist(_mem.mobhist);
   saveMobMoves(_mem.mobMoves); saveDrenchEvts(_mem.drenchEvents);
   saveSex(_mem.sex); saveStatusData(_mem.status); saveFlagsData(_mem.flags);
+  eidUnlink(tag);   // frees the eID so it can go on another sheep
   closeModal({target:document.getElementById('modalOv')});
   toast(`${tag} deleted`); refreshCount(); renderFlock();
 }
@@ -5394,7 +5666,7 @@ function doMergeMobs(sourceName, destName) {
   const destMob = _mem.mobs.find(m=>m.name===destName);
   if(!destMob) { toast('Destination mob not found'); return; }
 
-  const date = new Date().toISOString().split('T')[0];
+  const date = todayISO();
   let moved = 0;
 
   // Move all source tags to destination in mobhist
@@ -5488,7 +5760,7 @@ function togglePaddockSel(id){
 }
 function applyMobMove(name, paddockIds, date) {
   const mob=_mem.mobs.find(m=>m.name===name); if(!mob)return;
-  date = date || new Date().toISOString().split('T')[0];
+  date = date || todayISO();
   // Capture old paddock name BEFORE updating mob
   const oldMobLoc = mob.loc||'';
   // Structured paddock only — derive loc string from the chosen paddock names
@@ -5522,7 +5794,7 @@ function confirmMovePaddock(name) {
 function openEditMob(name) {
   const mob=_mem.mobs.find(m=>m.name===name); if(!mob)return;
   showModal(`<h3 style="margin-bottom:9px;">Edit — ${name}</h3>
-    <div class="fg"><span class="lbl">Name</span><input id="emN" type="text" value="${mob.name}" style="width:100%;padding:9px;border:2px solid var(--bor);border-radius:8px;font-family:inherit;font-size:0.9375rem;font-weight:700;"></div>
+    <div class="fg"><span class="lbl">Name</span><input id="emN" type="text" value="${escH(mob.name)}" style="width:100%;padding:9px;border:2px solid var(--bor);border-radius:8px;font-family:inherit;font-size:0.9375rem;font-weight:700;"></div>
     <div class="fg"><span class="lbl">Weigh every (days) — leave blank for no reminder</span><input id="emW" type="number" min="1" max="365" inputmode="numeric" value="${mob.weighEvery||''}" placeholder="e.g. 14, 21, 28…" style="width:100%;padding:9px;border:2px solid var(--bor);border-radius:8px;font-family:inherit;font-size:1.125rem;font-weight:800;text-align:center;"></div>
     <div style="font-size:0.9375rem;color:var(--mut);font-weight:600;padding:6px 2px;">Paddock: <strong>${mob.loc||'Not set'}</strong> — use the Paddock button on the mob card to move paddocks</div>
     <div class="modal-btns">
@@ -5771,7 +6043,7 @@ function atsAddOne(mobName) {
   if(!seq){ toast('Enter a tag number'); return; }
   const tag=_mem.activeYr+seq.padStart(3,'0');
   const mob=_mem.mobs.find(m=>m.name===mobName); if(!mob) return;
-  const date=new Date().toISOString().split('T')[0];
+  const date=todayISO();
   const sex=window._atsSex['atsOne'];
   if(sex){ _mem.sex[tag]=sex; saveSex(_mem.sex); }
   const existing=_mem.mobhist.find(h=>h.tag===tag);
@@ -5823,7 +6095,7 @@ function doAddSheepToMob(mobName) {
   const tags = parseTagList(raw);
   if(!tags.length){ toast('Enter at least one tag'); return; }
   const mob = _mem.mobs.find(m=>m.name===mobName); if(!mob) return;
-  const date = new Date().toISOString().split('T')[0];
+  const date = todayISO();
   let added = 0, already = 0;
   tags.forEach(tag=>{
     const existing = _mem.mobhist.find(h=>h.tag===tag);
@@ -5868,7 +6140,7 @@ function doCreateMob() {
   const paddockId=document.getElementById('cmPaddock')?.value||'';
   const we=parseInt(document.getElementById('cmWe')?.value)||null;
   if(!name){toast('Enter a mob name');return;}
-  const date=new Date().toISOString().split('T')[0];
+  const date=todayISO();
   const paddock = (_mem.paddocks||[]).find(p=>p.id===paddockId);
   const locVal = paddock ? paddock.name : 'Not set';
   _mem.mobs.push({id:genId(),updatedAt:nowStamp(),name,loc:locVal,paddockId:paddockId||null,weighEvery:we,locationLog:[{loc:locVal,date}],movedDate:date});
@@ -5949,7 +6221,7 @@ function exportBreedingPDF(ids) {
   const years = yearComparisonData();
   const farmName = _mem.farmName || 'Sheep Tracker';
   const farmLoc  = _mem.farmLoc  || '';
-  const genDate  = fmtD(new Date().toISOString().split('T')[0]);
+  const genDate  = fmtD(todayISO());
   const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const cap = s => s?s.charAt(0).toUpperCase()+s.slice(1):'';
   const pctOf = (n,ew) => ew>0 ? Math.round((n/ew)*100)+'%' : '—';
@@ -6006,7 +6278,7 @@ function exportBreedingPDF(ids) {
     const lambRows = lambs.map(t=>{
       const ws=_mem.data.filter(r=>r.tag===t&&r.weight>0).sort((a,b)=>a.date.localeCompare(b.date));
       const f=ws[0], l=ws.at(-1), st=_mem.status[t]?.status, mh=_mem.mobhist.find(h=>h.tag===t);
-      return {t, sex:_mem.sex[t]||'', date:tagDate[t]||'', f, l, gain:(f&&l&&ws.length>1)?+(l.weight-f.weight).toFixed(1):null, status:st==='sold'?'Sold':st==='dead'?'Dead':'Active', mob:(mh&&mh.currentMob)||''};
+      return {t, eid:eidOf(t), sex:_mem.sex[t]||'', date:tagDate[t]||'', f, l, gain:(f&&l&&ws.length>1)?+(l.weight-f.weight).toFixed(1):null, status:st==='sold'?'Sold':st==='dead'?'Dead':'Active', mob:(mh&&mh.currentMob)||''};
     });
     const wl = lambRows.filter(r=>r.l);
     const avgW = wl.length ? (wl.reduce((a,r)=>a+r.l.weight,0)/wl.length).toFixed(1) : null;
@@ -6043,8 +6315,8 @@ function exportBreedingPDF(ids) {
       ${j.weanDate?`<div class="tile-label">Weaning · ${fmtD(j.weanDate)}</div>
       ${w&&w.weighed?`<table class="rams-table"><thead><tr><th>Lambs tagged</th><th>Weighed</th><th>Average kg</th><th>Rams kg</th><th>Ewes kg</th><th>Wethers kg</th></tr></thead><tbody><tr><td>${w.lambs}</td><td>${w.weighed}</td><td><b>${w.avg}</b></td><td>${dash(w.ram)}</td><td>${dash(w.ewe)}</td><td>${dash(w.wether)}</td></tr></tbody></table>`:'<p class="muted">No weaning weights yet. Weigh the tagged lambs on the weaning day or the two days after.</p>'}`:''}
       ${lambRows.length?`<div class="tile-label">Tagged lambs · ${lambRows.length} (${nAct} active${nSold?', '+nSold+' sold':''}${nDead?', '+nDead+' dead':''})${avgW?' · average latest weight '+avgW+' kg (lightest '+minW+', heaviest '+maxW+')':''}</div>
-      <table class="rams-table lambs"><thead><tr><th>Tag</th><th>Sex</th><th>Tagged</th><th>First kg</th><th>Latest kg</th><th>Latest date</th><th>Gain kg</th><th>Status</th><th>Mob</th></tr></thead>
-      <tbody>${lambRows.map(r=>`<tr><td class="mono">${r.t}</td><td>${cap(r.sex)||'—'}</td><td>${r.date?fmtD(r.date):'—'}</td><td>${r.f?r.f.weight.toFixed(1):'—'}</td><td>${r.l?r.l.weight.toFixed(1):'—'}</td><td>${r.l?fmtD(r.l.date):'—'}</td><td>${r.gain!==null?(r.gain>0?'+':'')+r.gain:'—'}</td><td>${r.status}</td><td>${esc(r.mob||'—')}</td></tr>`).join('')}</tbody></table>`:''}
+      <table class="rams-table lambs"><thead><tr><th>Tag</th><th>eID</th><th>Sex</th><th>Tagged</th><th>First kg</th><th>Latest kg</th><th>Latest date</th><th>Gain kg</th><th>Status</th><th>Mob</th></tr></thead>
+      <tbody>${lambRows.map(r=>`<tr><td class="mono">${r.t}</td><td class="mono" style="white-space:nowrap">${r.eid?eidFmt(r.eid):'—'}</td><td>${cap(r.sex)||'—'}</td><td>${r.date?fmtD(r.date):'—'}</td><td>${r.f?r.f.weight.toFixed(1):'—'}</td><td>${r.l?r.l.weight.toFixed(1):'—'}</td><td>${r.l?fmtD(r.l.date):'—'}</td><td>${r.gain!==null?(r.gain>0?'+':'')+r.gain:'—'}</td><td>${r.status}</td><td>${esc(r.mob||'—')}</td></tr>`).join('')}</tbody></table>`:''}
       ${j.notes?`<p class="notes"><b>Notes:</b> ${esc(j.notes)}</p>`:''}
     </section>`;
   }).join('');
@@ -6136,9 +6408,10 @@ function exportBreedingPDF(ids) {
 function populateJoiningMobSelect() {
   const sel = document.getElementById('jEweMob');
   if(!sel) return;
-  const mobs = _mem.mobs||[];
+  const mobs = _mem.mobs||[], keep = sel.value;
   sel.innerHTML = '<option value="">— Select mob —</option>'
-    + mobs.map(m=>`<option value="${m.name}">${m.name}</option>`).join('');
+    + mobs.map(m=>`<option value="${escH(m.name)}">${escH(m.name)}</option>`).join('');
+  if(keep && mobs.some(m=>m.name===keep)) sel.value = keep; // a refresh mid-edit keeps the choice
 }
 
 // ── Multi-ram rows ──────────────────────────────────────────────
@@ -6150,9 +6423,8 @@ function populateJoiningMobSelect() {
 let _jRams = [];
 
 function jRamAdd() {
-  const today = new Date().toISOString().split('T')[0];
-  const out = new Date(); out.setDate(out.getDate()+42);
-  _jRams.push({tag:'', inDate:today, outDate:out.toISOString().split('T')[0]});
+  const inD = document.getElementById('jStartDate')?.value || todayISO();
+  _jRams.push({tag:'', inDate:inD, outDate:addDaysISO(inD,42)});
   renderJRams();
   jRamsSyncTopDates();
 }
@@ -6163,56 +6435,73 @@ function jRamRemove(i) {
 }
 function jRamField(i, field, val) {
   if(!_jRams[i]) return;
+  const was = _jRams[i][field];
   _jRams[i][field] = val;
   if(field==='inDate' && val) {
-    const d = new Date(val); d.setDate(d.getDate()+42);
-    _jRams[i].outDate = d.toISOString().split('T')[0];
+    const o = _jRams[i].outDate;
+    if(!o || (was && o===addDaysISO(was,42))) _jRams[i].outDate = addDaysISO(val,42);
     renderJRams();
   }
-  jRamsSyncTopDates();
+  if(field!=='tag') jRamsSyncTopDates();
 }
 function renderJRams() {
   const el = document.getElementById('jRamsList'); if(!el) return;
   el.innerHTML = _jRams.map((r,i)=>`
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;align-items:end;margin-bottom:8px;">
-      <div><span class="lbl" style="font-size:0.9375rem;">Ram tag</span><input type="text" value="${r.tag}" oninput="jRamField(${i},'tag',this.value)" placeholder="e.g. 25004" autocomplete="off" style="font-family:'Courier Prime',monospace;font-weight:700;font-size:0.9375rem;"></div>
-      <div><span class="lbl" style="font-size:0.9375rem;">In</span><input type="date" value="${r.inDate}" oninput="jRamField(${i},'inDate',this.value)" style="font-size:0.9375rem;"></div>
-      <div><span class="lbl" style="font-size:0.9375rem;">Out</span><input type="date" value="${r.outDate}" oninput="jRamField(${i},'outDate',this.value)" style="font-size:0.9375rem;"></div>
-      <button type="button" onclick="jRamRemove(${i})" style="padding:9px 11px;background:none;border:1.5px solid var(--bor);border-radius:8px;color:var(--mut);font-weight:800;cursor:pointer;">×</button>
+    <div class="jr-row">
+      <div class="jr-top"><div style="flex:1;min-width:0"><span class="lbl">Ram tag</span><input type="text" value="${escH(r.tag)}" oninput="jRamField(${i},'tag',this.value)" placeholder="e.g. 25004" autocomplete="off" style="font-family:'Courier Prime',monospace;font-weight:700;font-size:0.9375rem;"></div><button type="button" class="jr-x" onclick="jRamRemove(${i})">Remove</button></div>
+      <div class="jr-dates"><div><span class="lbl">In</span><input type="date" value="${r.inDate}" oninput="jRamField(${i},'inDate',this.value)" style="font-size:0.9375rem;"></div><div><span class="lbl">Out</span><input type="date" value="${r.outDate}" oninput="jRamField(${i},'outDate',this.value)" style="font-size:0.9375rem;"></div></div>
     </div>`).join('') || `<div style="font-size:0.9375rem;color:var(--mut);padding:4px 0 8px;">No rams added yet — tap + Add ram below</div>`;
 }
 function jRamsSyncTopDates() {
   const ins = _jRams.map(r=>r.inDate).filter(Boolean).sort();
   if(!ins.length) return;
-  document.getElementById('jStartDate').value = ins[0];
-  const lambD = new Date(ins[0]); lambD.setDate(lambD.getDate()+147);
-  document.getElementById('jLambDate').value = lambD.toISOString().split('T')[0];
+  const st = document.getElementById('jStartDate');
+  if(st.value === ins[0]) return; // a hand-set lambing date stays until the earliest ram in-date moves
+  st.value = ins[0];
+  document.getElementById('jLambDate').value = addDaysISO(ins[0],147);
 }
 
 function openAddJoining() {
-  const form = document.getElementById('joiningForm');
-  if(!form) return;
-  form.style.display = 'block';
+  if(!document.getElementById('joiningForm')) return;
+  _jpId=null; _jpEdit=true;
+  jFormFill(null);
+  openEntry('joining'); jpRender();
+}
+// Fill the form for a new joining (j null) or an existing one
+function jFormFill(j) {
   populateJoiningMobSelect();
-  const today = new Date().toISOString().split('T')[0];
+  const sel=document.getElementById('jEweMob');
+  if(j && j.mob && ![...sel.options].some(o=>o.value===j.mob)) sel.insertAdjacentHTML('beforeend','<option value="'+escH(j.mob)+'">'+escH(j.mob)+'</option>');
+  sel.value = j ? (j.mob||'') : '';
+  document.getElementById('jFormTitle').textContent = j ? 'Edit '+((j.startDate||'').slice(0,4)+' joining').trim() : 'Add a joining';
+  document.getElementById('jSaveBtn').textContent = j ? 'Save changes' : 'Save joining';
+  document.getElementById('jEweCountHint').textContent = '';
+  if(j){
+    _jRams = ramsList(j).map(r=>({tag:r.tag||'', inDate:r.inDate||'', outDate:r.outDate||''}));
+    renderJRams();
+    document.getElementById('jStartDate').value = j.startDate||'';
+    document.getElementById('jLambDate').value = j.lambDate||'';
+    document.getElementById('jActualLambDate').value = j.actualLambDate||'';
+    document.getElementById('jEweCount').value = j.eweCount||'';
+    document.getElementById('jNotes').value = j.notes||'';
+    return;
+  }
+  const today = todayISO();
+  document.getElementById('jStartDate').value = today;
   _jRams = [];
   jRamAdd(); // start with one ram row, pre-filled with today's date
-  document.getElementById('jStartDate').value = today;
   // Default lambing: ram in + 147 days
-  const lambDate = new Date(); lambDate.setDate(lambDate.getDate()+147);
-  document.getElementById('jLambDate').value = lambDate.toISOString().split('T')[0];
+  document.getElementById('jLambDate').value = addDaysISO(today,147);
   document.getElementById('jActualLambDate').value = '';
   document.getElementById('jEweCount').value = '';
-  document.getElementById('jEweCountHint').textContent = '';
   document.getElementById('jNotes').value = '';
-  form.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function joiningStartChanged() {
   const val = document.getElementById('jStartDate').value;
   if(!val) return;
   // Est lambing: +147 days
   const lambD = new Date(val); lambD.setDate(lambD.getDate()+147);
-  document.getElementById('jLambDate').value = lambD.toISOString().split('T')[0];
+  document.getElementById('jLambDate').value = isoLocal(lambD);
 }
 function joiningMobChanged() {
   const mobName = document.getElementById('jEweMob').value;
@@ -6229,8 +6518,8 @@ function joiningMobChanged() {
 }
 
 function cancelJoining() {
-  const form = document.getElementById('joiningForm');
-  if(form) form.style.display = 'none';
+  if(_jpId && jpCur()){ _jpEdit=false; jpRender(); return; }
+  _jpEdit=false; closeFabEntry();
 }
 
 function saveJoining() {
@@ -6244,6 +6533,16 @@ function saveJoining() {
   if(!mob)   { toast('Select a mob / ewe group'); return; }
   if(!start) { toast('Enter joining start date'); return; }
   const end = rams.map(r=>r.outDate).filter(Boolean).sort().at(-1) || '';
+  if(_jpId){
+    // Editing: change only the fields on the form; lamb events, weaning and the rest stay as they are
+    const all = loadJoining(), j = all.find(x=>x.id===_jpId);
+    if(!j){ toast('That joining is gone'); _jpEdit=false; closeFabEntry(); return; }
+    Object.assign(j, {mob, rams, startDate:start, endDate:end, lambDate:lamb||'', actualLambDate:actualLamb, eweCount:count, notes, updatedAt:nowStamp()});
+    saveJoiningData(all);
+    _jpEdit=false; renderBreeding(); jpRender(); renderHome();
+    toast('Joining saved'); flashOk();
+    return;
+  }
   const rec = {
     id: genId(), updatedAt: nowStamp(),
     mob, rams,
@@ -6253,14 +6552,14 @@ function saveJoining() {
     actualLambDate: actualLamb,
     eweCount: count,
     notes,
-    created: new Date().toISOString().split('T')[0]
+    created: todayISO()
   };
   const list = loadJoining();
   list.push(rec);
   saveJoiningData(list);
-  cancelJoining();
-  renderJoiningList();
-  toast('Joining event saved');
+  _jpId=rec.id; _jpEdit=false;
+  renderBreeding(); jpRender(); renderHome();
+  toast('Joining saved'); flashOk();
 }
 
 function deleteJoining(id) {
@@ -6269,6 +6568,7 @@ function deleteJoining(id) {
 function doDeleteJoining(id) {
   const before=loadJoining().slice();
   saveJoiningData(before.filter(j=>j.id!==id));
+  if(_jpId===id){ _jpId=null; _jpEdit=false; if(document.getElementById('pnl-joining')?.classList.contains('on')) closeFabEntry(); }
   renderJoiningList();
   toastUndo('Joining deleted', ()=>{ saveJoiningData(before); renderJoiningList(); renderHome(); });
 }
@@ -6276,7 +6576,7 @@ function openRecordActualLambing(id) {
   const j = loadJoining().find(x=>x.id===id); if(!j) return;
   showModal(`<h3 style="margin-bottom:9px;">Actual lambing start</h3>
     <p style="font-size:0.9375rem;color:var(--mut);margin-bottom:12px;line-height:1.5;">Record when lambing actually started for <strong>${j.mob}</strong>. This builds a year-on-year comparison against your estimates.</p>
-    <div class="fg"><span class="lbl">Actual lambing start date</span><input type="date" id="actualLambInp" value="${j.actualLambDate||new Date().toISOString().split('T')[0]}"></div>
+    <div class="fg"><span class="lbl">Actual lambing start date</span><input type="date" id="actualLambInp" value="${j.actualLambDate||todayISO()}"></div>
     ${j.lambDate?`<div style="font-size:0.9375rem;color:var(--mut);margin-bottom:12px;font-weight:600;">Est. lambing was ${fmtD(j.lambDate)}</div>`:''}
     <div class="modal-btns">
       <button onclick="saveActualLambing('${id}')" style="background:var(--c-purple);color:white;flex:2;">Save</button>
@@ -6399,11 +6699,11 @@ const CLOUD_COLS = {
   drenchEvents:{t:'arr', key:r=>[r.tag,r.date,r.product].join('|')},
   mobMoves:{t:'arr', key:r=>[r.tag,r.date,r.to||''].join('|')},
   mobhist:{t:'arr', key:r=>r.tag},
-  sex:{t:'map'}, status:{t:'map'}, flags:{t:'map'}, settings:{t:'set'}
+  sex:{t:'map'}, status:{t:'map'}, flags:{t:'map'}, eid:{t:'map'}, settings:{t:'set'}
 };
 const CLOUD_SETTING_KEYS = ['prefixes','farmName','farmLoc'];
 const CLOUD_KEY_COL = {data:'data',notes:'notes',drench:'drench',costs:'costs',mobs:'mobs',joining:'joining',paddocks:'paddocks',
-  drenchEvents:'drenchEvents',mobMoves:'mobMoves',mobhist:'mobhist',sex:'sex',status:'status',flags:'flags',
+  drenchEvents:'drenchEvents',mobMoves:'mobMoves',mobhist:'mobhist',sex:'sex',status:'status',flags:'flags',eid:'eid',
   prefixes:'settings',farmName:'settings',farmLoc:'settings'};
 
 function cloudLoad(key, fallback){ try{ const v=JSON.parse(localStorage.getItem(key)||'null'); return v==null?fallback:v; }catch(e){ return fallback; } }
@@ -6411,8 +6711,8 @@ let cloudMeta  = cloudLoad('st11_cloudMeta', null) || {deviceId:genId(), auth:nu
 let cloudBase  = cloudLoad('st11_cloudBase', {});
 let cloudDirty = cloudLoad('st11_cloudDirty', {pending:false, cols:{}});
 const cloudState = {status:'idle', msg:'', busy:false, again:false, applying:false, timer:null, seq:0, lastTry:0, preview:null, blocked:null};
-function cloudSaveMeta(){ try{ localStorage.setItem('st11_cloudMeta', JSON.stringify(cloudMeta)); }catch(e){ console.warn('cloud meta save failed', e); } }
-function cloudSaveBase(){ try{ localStorage.setItem('st11_cloudBase', JSON.stringify(cloudBase)); }catch(e){ console.warn('cloud base save failed', e); } }
+function cloudSaveMeta(){ try{ localStorage.setItem('st11_cloudMeta', JSON.stringify(cloudMeta)); }catch(e){ console.warn('cloud meta save failed', e); storageWarn('full'); } }
+function cloudSaveBase(){ try{ localStorage.setItem('st11_cloudBase', JSON.stringify(cloudBase)); }catch(e){ console.warn('cloud base save failed', e); storageWarn('full'); } }
 function cloudSaveDirty(){ try{ localStorage.setItem('st11_cloudDirty', JSON.stringify(cloudDirty)); }catch(e){} }
 function cloudSignedIn(){ return !!(cloudMeta.auth && cloudMeta.auth.refreshToken); }
 
@@ -6806,16 +7106,20 @@ function exportAllData(){
   const g={};
   data.filter(r=>r.weight>0).forEach(r=>{(g[r.tag]=g[r.tag]||[]).push(r);});
   Object.values(g).forEach(e=>e.sort((a,b)=>a.date.localeCompare(b.date)));
-  const flockRows=[['Tag','Sex','Status','First Weigh Date','First kg','Latest Date','Latest kg','Gain kg','Records']];
-  Object.keys(g).sort().forEach(t=>{const e=g[t];flockRows.push([t,sx[t]||'unknown',st[t]?.status||'active',e[0].date,e[0].weight,e.at(-1).date,e.at(-1).weight,(e.at(-1).weight-e[0].weight).toFixed(1),e.length]);});
+  const ei=loadEid();
+  const flockRows=[['Tag','eID','Sex','Status','First Weigh Date','First kg','Latest Date','Latest kg','Gain kg','Records']];
+  Object.keys(g).sort().forEach(t=>{const e=g[t];flockRows.push([t,ei[t]?'="'+ei[t]+'"':'',sx[t]||'unknown',st[t]?.status||'active',e[0].date,e[0].weight,e.at(-1).date,e.at(-1).weight,(e.at(-1).weight-e[0].weight).toFixed(1),e.length]);});
   const weightRows=[['Tag','Sex','Status','Date','Weight (kg)','Notes']];
   [...data].filter(r=>r.weight>0).sort((a,b)=>a.tag.localeCompare(b.tag)||a.date.localeCompare(b.date)).forEach(r=>weightRows.push([r.tag,sx[r.tag]||'unknown',st[r.tag]?.status||'active',r.date,r.weight,r.notes||'']));
   const drenchRows=[['Mob/Group','Date','Product','ml/sheep','Local Withhold (days)','Export Withhold (days)']];
   loadDrench().forEach(d=>drenchRows.push([d.name,d.date,d.product,d.amount,d.localWH,d.exportWH]));
   const costRows=[['Title','Type','Amount (AUD)','Date','Financial Year','Notes']];
   loadCosts().forEach(c=>{const d=new Date(c.date);const fy=d.getMonth()>=6?d.getFullYear():d.getFullYear()-1;costRows.push([c.title,c.type,c.amount.toFixed(2),c.date,fyLabel(fy),c.notes||'']);});
-  const content='FLOCK SUMMARY\n'+csvStr(flockRows)+'\n\nALL WEIGHT RECORDS\n'+csvStr(weightRows)+'\n\nDRENCH LOG\n'+csvStr(drenchRows)+'\n\nCOSTS & INCOME\n'+csvStr(costRows);
-  dlCSV(content,'sheep-all-data-'+new Date().toISOString().split('T')[0]+'.csv');
+  // eID list for NLIS: every sheep with an eID linked, weighed or not. ="…" stops Excel turning 15 digits into 9.82E+14.
+  const eidRows=[['Tag','eID','Sex','Status','Mob']];
+  Object.keys(ei).sort().forEach(t=>{ const mh=loadMobHist().find(h=>h.tag===t); eidRows.push([t,'="'+ei[t]+'"',sx[t]||'unknown',st[t]?.status||'active',(mh&&mh.currentMob)||'']); });
+  const content='FLOCK SUMMARY\n'+csvStr(flockRows)+'\n\neID LIST (NLIS)\n'+csvStr(eidRows)+'\n\nALL WEIGHT RECORDS\n'+csvStr(weightRows)+'\n\nDRENCH LOG\n'+csvStr(drenchRows)+'\n\nCOSTS & INCOME\n'+csvStr(costRows);
+  dlCSV(content,'sheep-all-data-'+todayISO()+'.csv');
   toast('All data exported!');
 }
 
@@ -6827,9 +7131,9 @@ async function exportBackup(){
     records:[...loadData(),...arcData],sex:loadSex(),status:loadStatus(),
     drench:loadDrench(),costs:loadCosts(),notes:loadNotes(),mobs:loadMobs(),
     mobhist:loadMobHist(),mobmoves:[...loadMobMoves(),...arcMM],
-    drenchevents:[...loadDrenchEvts(),...arcDE],flags:loadFlags(),
+    drenchevents:[...loadDrenchEvts(),...arcDE],flags:loadFlags(),eid:loadEid(),
     paddocks:_mem.paddocks||[],joining:loadJoining(),farmName:_mem.farmName||'',farmLoc:_mem.farmLoc||''},null,2);
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v14-'+new Date().toISOString().split('T')[0]+'.json'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v14.1-'+todayISO()+'.json'});
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   toast('Backup saved!');
 }
@@ -6848,11 +7152,13 @@ function importBackup(ev){
       if(Array.isArray(b.drench)){const s2=new Set();saveDrenchData([...loadDrench(),...b.drench].filter(d=>s2.has(d.id)?false:s2.add(d.id)));}
       if(Array.isArray(b.costs)){const s3=new Set();saveCostsData([...loadCosts(),...b.costs].filter(c=>s3.has(c.id)?false:s3.add(c.id)));}
       if(Array.isArray(b.notes)){const s4=new Set();saveNotesData([...loadNotes(),...b.notes].filter(n=>s4.has(n.id)?false:s4.add(n.id)));}
-      if(Array.isArray(b.mobs)) saveMobsData(b.mobs);
-      if(Array.isArray(b.mobhist)) saveMobHist(b.mobhist);
+      // Mobs and mob members merge in: this phone's own mobs and memberships stay, the backup only adds missing ones
+      if(Array.isArray(b.mobs)){ const ids=new Set(loadMobs().map(m=>m.id).filter(Boolean)), names=new Set(loadMobs().map(m=>m.name)); saveMobsData([...loadMobs(),...b.mobs.filter(m=>m&&m.name&&!names.has(m.name)&&!(m.id&&ids.has(m.id)))]); }
+      if(Array.isArray(b.mobhist)){ const have=new Set(loadMobHist().map(x=>x.tag)); saveMobHist([...loadMobHist(),...b.mobhist.filter(x=>x&&x.tag&&!have.has(x.tag))]); }
       if(Array.isArray(b.mobmoves)){const s5=new Set();saveMobMoves([...loadMobMoves(),...b.mobmoves].filter(m=>s5.has(m.tag+'_'+m.date+'_'+(m.to||''))?false:s5.add(m.tag+'_'+m.date+'_'+(m.to||''))));}
       if(Array.isArray(b.drenchevents)){const s6=new Set();saveDrenchEvts([...loadDrenchEvts(),...b.drenchevents].filter(e=>s6.has(e.tag+'_'+e.date+'_'+e.product)?false:s6.add(e.tag+'_'+e.date+'_'+e.product)));}
       if(b.flags) saveFlagsData(Object.assign(loadFlags(),b.flags));
+      if(b.eid && typeof b.eid==='object'){ const r=eidMergeIn(b.eid); if(r.clash) toast(r.clash+' eID'+(r.clash===1?'':'s')+' in the backup clash with this phone and were skipped'); }
       // v10 — restore paddocks and farm details
       if(Array.isArray(b.paddocks)){
         const seen7=new Set((_mem.paddocks||[]).map(p=>p.id));
@@ -6879,13 +7185,13 @@ function clearAll(){
       <button onclick="closeModal()" style="background:var(--bg);color:var(--mut);">Cancel</button>
     </div>`);
 }
-const CLEAR_KEYS=['data','sex','status','drench','costs','notes','mobs','mobhist','drenchEvents','mobMoves','flags','joining','paddocks','lastUpdated','lastSync'];
+const CLEAR_KEYS=['data','sex','status','drench','costs','notes','mobs','mobhist','drenchEvents','mobMoves','flags','eid','joining','paddocks','lastUpdated','lastSync'];
 async function doClearAll(){
   const snap=JSON.parse(JSON.stringify(CLEAR_KEYS.reduce((o,k)=>{ o[k]=_mem[k]; return o; },{})));
   const arcSnap=_db?{data:await idbGet(STORE_ARC,'data').catch(()=>[]),de:await idbGet(STORE_ARC,'drenchEvents').catch(()=>[]),mm:await idbGet(STORE_ARC,'mobMoves').catch(()=>[])}:null;
   _mem.data=[]; _mem.sex={}; _mem.status={}; _mem.drench=[];
   _mem.costs=[]; _mem.notes=[]; _mem.mobs=[]; _mem.mobhist=[];
-  _mem.drenchEvents=[]; _mem.mobMoves=[]; _mem.flags={}; _mem.lastUpdated=''; _mem.lastSync=null;
+  _mem.drenchEvents=[]; _mem.mobMoves=[]; _mem.flags={}; _mem.eid={}; _mem.lastUpdated=''; _mem.lastSync=null;
   _mem.paddocks=[]; _mem.joining=[];
   // idbWrite writes both IndexedDB and the localStorage mirror. The old version only
   // emptied IndexedDB, so with no IndexedDB the data came straight back, and
@@ -6954,8 +7260,11 @@ function refreshCount(){
   const n=active.length;
   const el=document.getElementById('hCount'); if(el) el.textContent=n;
   const sfEl=document.getElementById('sfCount'); if(sfEl) sfEl.textContent=n;
+  const stEl=document.getElementById('sbStripN'); if(stEl) stEl.textContent=n;
 }
-function escMob(n){ return (n||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+// For a mob name inside onclick="fn('…')": escape for the JS string, then for the HTML attribute
+function escMob(n){ return (n||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+function escH(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function fmtD(d){
   if(!d) return '';
   const [y,m,day]=d.split('-');
@@ -7009,14 +7318,14 @@ function initBuyin() {
   const mobSel=document.getElementById('buyinMob');
   if(mobSel){
     mobSel.innerHTML='<option value="">— No mob —</option>'+
-      (_mem.mobs||[]).map(m=>`<option value="${m.name}">${m.name}</option>`).join('');
+      (_mem.mobs||[]).map(m=>`<option value="${escH(m.name)}">${escH(m.name)}</option>`).join('');
   }
 }
 function saveBuyin() {
   const raw=(document.getElementById('buyinTag')?.value||'').trim();
   if(!raw){ toast('Enter a tag number'); return; }
   const tag=raw.length<=3?_mem.activeYr+raw.padStart(3,'0'):raw;
-  const date=new Date().toISOString().split('T')[0];
+  const date=todayISO();
   const mobName=(document.getElementById('buyinMob')?.value||'').trim();
   const vendor=(document.getElementById('buyinVendor')?.value||'').trim();
   const price=parseFloat(document.getElementById('buyinPrice')?.value)||0;
@@ -7087,7 +7396,13 @@ function lmUpdatePreview() {
 
 
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  // A new sw.js takes over straight away (skipWaiting + claim). When it does, offer a reload so the new
+  // page shows now instead of after the app has been closed and opened twice.
+  const _hadSw = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', ()=>{ if(_hadSw) topBar('updBar','<b>New version ready.</b> Tap Update now to start using it.','info','<button onclick="location.reload()">Update now</button>'); });
+  navigator.serviceWorker.register('./sw.js').then(reg=>{
+    document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') reg.update().catch(()=>{}); });
+  }).catch(()=>{});
 }
 
 </script>
