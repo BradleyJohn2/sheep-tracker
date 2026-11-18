@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0c1508">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Sheep Tracker v14.1</title>
+<title>Sheep Tracker v15</title>
 <script>try{var _p='st11_',_th=JSON.parse(localStorage.getItem(_p+'theme')||'null'),_ts=JSON.parse(localStorage.getItem(_p+'textSize')||'null'),_r=document.documentElement;
 if(_th==='dusk'||(_th==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches))_r.setAttribute('data-theme','dusk');
 if(_ts==='lg')_r.style.fontSize='115%';if(_ts==='xl')_r.style.fontSize='130%';}catch(e){}</script>
@@ -79,6 +79,41 @@ if(_ts==='lg')_r.style.fontSize='115%';if(_ts==='xl')_r.style.fontSize='130%';}c
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--txt);display:flex;flex-direction:column;height:100dvh;overflow:hidden;}
+
+/* ═══ eID tag reader (v15) ═══ */
+.rdr{display:flex;align-items:center;gap:9px;min-height:48px;padding:8px 13px;border-radius:12px;font-weight:800;font-size:1rem;background:var(--t-unk);color:var(--mut);}
+.rdr .dot{width:12px;height:12px;border-radius:50%;background:#9a9a88;flex-shrink:0;}
+.rdr.ok{background:var(--t-grn);color:var(--x-grn);}
+.rdr.ok .dot{background:var(--ac);}
+.lm-tag.scanned{outline:4px solid #6fd65a;outline-offset:-4px;}
+.lm-tag .eid{margin-top:6px;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border-radius:10px;padding:6px 11px;font-size:.9375rem;font-weight:800;color:#e3ebd6;}
+.lm-tag .eid b{font-family:'Courier Prime',monospace;color:#fff;letter-spacing:.05em;}
+.eid-warn{border-radius:14px;padding:13px;background:var(--t-red);border:2.5px solid var(--c-red);display:grid;gap:9px;}
+.eid-warn .t{font-weight:900;font-size:1.125rem;color:var(--x-red);}
+.eid-warn .s{font-weight:700;font-size:1rem;line-height:1.4;color:var(--txt);}
+.eid-warn.amb{background:var(--t-amb);border-color:var(--am);margin-bottom:10px;}
+.eid-warn.amb .t{color:var(--x-amb);}
+.eid-btns{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;}
+.eid-btns button{min-height:56px;border-radius:12px;border:2px solid var(--bor);background:var(--card);color:var(--txt);font-family:inherit;font-weight:900;font-size:1rem;cursor:pointer;}
+.eid-clear{min-height:52px;border-radius:13px;border:2px dashed var(--bor);background:transparent;font-family:inherit;font-weight:800;font-size:1rem;color:var(--mut);cursor:pointer;}
+.mono{font-family:'Courier Prime',monospace;font-weight:700;}
+.w-found{font-size:.9375rem;font-weight:800;color:#a8e08f;margin-top:6px;}
+.eidrow{background:var(--t-grn);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.eidrow .vb{flex:1;min-width:0;display:grid;gap:2px;}
+.eidrow .l{font-size:.9375rem;font-weight:900;color:var(--x-grn);}
+.eidrow .v{font-family:'Courier Prime',monospace;font-size:1.125rem;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.eidrow button{min-height:48px;padding:0 12px;border-radius:10px;border:1.5px solid var(--bor);background:var(--card);color:var(--mut);font-family:inherit;font-weight:800;font-size:.9375rem;cursor:pointer;}
+.eid-dupe{font-size:.9375rem;font-weight:800;color:var(--x-red);}
+.noeid{border:2px dashed var(--bor);border-radius:12px;padding:10px;display:grid;gap:8px;}
+.noeid .t{font-weight:800;color:var(--mut);font-size:1rem;}
+.noeid .r{display:flex;gap:8px;}
+.noeid input,.eid-test input{flex:1;min-width:0;height:56px;border-radius:12px;border:2px solid var(--bor);background:var(--card);color:var(--txt);padding:0 12px;font-family:'Courier Prime',monospace;font-size:1.125rem;font-weight:700;width:100%;}
+.noeid button{height:56px;padding:0 16px;border-radius:12px;border:none;background:var(--ac);color:#fff;font-family:inherit;font-weight:900;font-size:1rem;cursor:pointer;}
+.eid-test{display:grid;gap:10px;margin-bottom:12px;}
+.eid-test .res{font-weight:800;font-size:1rem;line-height:1.4;min-height:1.4em;}
+.eid-test .res.ok{color:var(--x-grn);} .eid-test .res.bad{color:var(--x-red);}
+.eid-test p{font-size:.9375rem;line-height:1.45;color:var(--mut);font-weight:700;}
+#scanCatch{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;border:0;padding:0;font-size:16px;pointer-events:none;}
 
 /* ═══ MAIN SCROLL ═══ */
 main{flex:1;overflow-y:auto;background:var(--bg);-webkit-overflow-scrolling:touch;min-height:0;}
@@ -1563,12 +1598,24 @@ label.sr input{display:none;}
   <div style="background:var(--card);border-radius:20px 20px 0 0;padding:22px 18px 34px;max-width:480px;width:100%;max-height:88dvh;overflow-y:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
       <div>
-        <div style="font-size:1.375rem;font-weight:900;color:var(--txt);">Sheep Tracker v14.1</div>
+        <div style="font-size:1.375rem;font-weight:900;color:var(--txt);">Sheep Tracker v15</div>
         <div style="font-size:0.9375rem;color:var(--mut);font-weight:600;margin-top:3px;">November 2026. Here's what's new</div>
       </div>
       <button onclick="closeWhatsNew()" style="background:rgba(0,0,0,.08);border:none;border-radius:20px;padding:7px 15px;font-family:inherit;font-size:0.9375rem;font-weight:800;cursor:pointer;color:var(--txt);">Skip</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
+        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">eID tag reader</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Pair the tag reader with the phone in Bluetooth settings. Scan a tag in Mark lambs and tap the sex: the lamb is saved with its eID. Your numbers like 26001 stay the main number.</div>
+      </div>
+      <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
+        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Scan to weigh</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">In Weigh and sort, scan a sheep and its number fills in. Just type the weight. A tag the app doesn't know yet gets linked to the number you type when you save.</div>
+      </div>
+      <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
+        <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">Typing still works</div>
+        <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">No reader, or a sheep with no eID? Everything works by typing the number, the same as before. Link an eID later from the sheep's card. Settings, Tag reader lets you test the reader.</div>
+      </div>
       <div style="background:var(--bg);border-radius:14px;padding:14px;border:1.5px solid var(--bor);">
         <div style="font-size:1.125rem;font-weight:900;color:var(--ac-d);margin-bottom:4px;">A page for each joining</div>
         <div style="font-size:1rem;color:var(--mut);line-height:1.45;font-weight:700;">Tap a joining in Breeding to open it on its own page. Everything about it is there, and Edit lets you add the rams, dates, ewe count and notes at any time.</div>
@@ -1603,7 +1650,13 @@ label.sr input{display:none;}
 <div class="modal-ov" id="releaseLogModal">
   <div class="modal-box">
     <h3 style="margin-bottom:14px;">Release log</h3>
+    <div class="rl-version">v15 · November 2026</div>
+    <div class="rl-item"><div class="rl-dot"></div>eID tag reader: the reader pairs as a Bluetooth keyboard. Mark lambs links each scanned tag to the lamb when you tap its sex, and warns if a tag is already used</div>
+    <div class="rl-item"><div class="rl-dot"></div>Weigh and sort: scan a sheep to fill in its number; an unknown eID links to the number you type when you save</div>
+    <div class="rl-item"><div class="rl-dot"></div>Sheep cards show the eID, with Remove, or link one by scanning or typing the 15 digits. Settings, Tag reader tests the reader</div>
+    <div class="rl-item"><div class="rl-dot"></div>eIDs go into the backup, the spreadsheet export (with an eID list for NLIS) and the breeding PDF, and sync between phones</div>
     <div class="rl-version">v14.1 · November 2026</div>
+    <div class="rl-item"><div class="rl-dot"></div>Joinings entered before v11 open, edit and take lamb tagging like any other (their record number was stored differently)</div>
     <div class="rl-item"><div class="rl-dot"></div>iPad and computer: Hide menu at the bottom of the side menu gives the screen the full width, and Menu brings it back. Job screens hide the menu by themselves, like the phone</div>
     <div class="rl-item"><div class="rl-dot"></div>Each joining has its own page: tap it in Breeding. Edit the mob, rams (each with in and out dates), joining start, estimated and actual lambing, ewes joined and notes</div>
     <div class="rl-item"><div class="rl-dot"></div>Breeding shows short joining cards that say what is still missing, like the rams or the ewe count</div>
@@ -1877,15 +1930,15 @@ label.sr input{display:none;}
   <div class="set2">
     <div class="set-brand">
       <div class="bn" id="settingsFarmName">Durran Durra</div>
-      <div class="bs" id="settingsFarmSub">Charleyong NSW · Sheep Tracker v14.1</div>
+      <div class="bs" id="settingsFarmSub">Charleyong NSW · Sheep Tracker v15</div>
       <button class="bh" onclick="calcStorageHealth()"><div class="r"><span>Storage health</span><b id="shUsed">Tap to check</b></div><div class="bar"><div id="shBar" style="width:0%"></div></div><div class="r" style="margin-top:4px"><span></span><span id="shPct" style="font-weight:900"></span></div></button>
     </div>
     <div class="sec-lbl">Farm setup</div>
-    <div class="list-card"><button class="sr" onclick="openFarmDetails()"><div class="sbar" style="background:#283868"></div><div class="sbd"><div class="stt">Property details</div><div class="sss" id="farmNameSub">Durran Durra · Charleyong NSW</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="openPaddockManager()"><div class="sbar" style="background:#2f7d14"></div><div class="sbd"><div class="stt">Paddocks</div><div class="sss" id="paddockSub">Manage paddocks and pasture</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="openMobManager()"><div class="sbar" style="background:#0a7860"></div><div class="sbd"><div class="stt">Mobs</div><div class="sss" id="mobCountSub">Manage your mobs</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="openPrefixManager()"><div class="sbar" style="background:#d4920a"></div><div class="sbd"><div class="stt">Year prefixes</div><div class="sss" id="prefixSub">Tag year prefixes</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="openPenManager()"><div class="sbar" style="background:#3f5bc4"></div><div class="sbd"><div class="stt">Pens</div><div class="sss" id="penSub">Sorting pens for weighing</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="runSetupWizard()"><div class="sbar" style="background:#6820a0"></div><div class="sbd"><div class="stt">Re-run setup wizard</div><div class="sss">Walk through property setup again</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
+    <div class="list-card"><button class="sr" onclick="openFarmDetails()"><div class="sbar" style="background:#283868"></div><div class="sbd"><div class="stt">Property details</div><div class="sss" id="farmNameSub">Durran Durra · Charleyong NSW</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="openPaddockManager()"><div class="sbar" style="background:#2f7d14"></div><div class="sbd"><div class="stt">Paddocks</div><div class="sss" id="paddockSub">Manage paddocks and pasture</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="openMobManager()"><div class="sbar" style="background:#0a7860"></div><div class="sbd"><div class="stt">Mobs</div><div class="sss" id="mobCountSub">Manage your mobs</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="openPrefixManager()"><div class="sbar" style="background:#d4920a"></div><div class="sbd"><div class="stt">Year prefixes</div><div class="sss" id="prefixSub">Tag year prefixes</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="openPenManager()"><div class="sbar" style="background:#3f5bc4"></div><div class="sbd"><div class="stt">Pens</div><div class="sss" id="penSub">Sorting pens for weighing</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="eidReaderOpen()"><div class="sbar" style="background:#0a7860"></div><div class="sbd"><div class="stt">Tag reader</div><div class="sss" id="eidSub">Test the eID reader</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="runSetupWizard()"><div class="sbar" style="background:#6820a0"></div><div class="sbd"><div class="stt">Re-run setup wizard</div><div class="sss">Walk through property setup again</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
     <div class="sec-lbl">Cloud sync and data</div>
     <div class="list-card"><button class="sr" onclick="openSync()"><div class="sbar" style="background:#2f7d14"></div><div class="sbd"><div class="stt">Cloud sync</div><div class="sss" id="cloudSetSub">Sign in to share with the other phone</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="exportBackup()"><div class="sbar" style="background:#283868"></div><div class="sbd"><div class="stt">Backup</div><div class="sss">Download a full JSON backup</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><label class="sr"><div class="sbar" style="background:#1a58a0"></div><div class="sbd"><div class="stt">Restore from backup</div><div class="sss">Import a JSON backup file</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg><input type="file" accept=".json" onchange="importBackup(event)"></label><button class="sr" onclick="exportAllData()"><div class="sbar" style="background:#0a7860"></div><div class="sbd"><div class="stt">Export to spreadsheet</div><div class="sss">Weights, drench and costs as CSV</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
     <div class="sec-lbl">App</div>
-    <div class="list-card"><div class="pref"><div><div class="stt">Text size</div><div class="sss">Makes every word bigger</div></div><div class="seg3" data-pref="textSize"><button data-v="std" onclick="setPref('textSize','std')">Standard</button><button data-v="lg" onclick="setPref('textSize','lg')">Large</button><button data-v="xl" onclick="setPref('textSize','xl')">Extra large</button></div></div><div class="pref"><div><div class="stt">Appearance</div><div class="sss">Dawn and dusk is easier on the eyes in low light</div></div><div class="seg3" data-pref="theme"><button data-v="day" onclick="setPref('theme','day')">Day</button><button data-v="dusk" onclick="setPref('theme','dusk')">Dawn / dusk</button><button data-v="auto" onclick="setPref('theme','auto')">Auto</button></div></div><div class="pref"><div><div class="stt">Number keypad</div><div class="sss">Big on-screen keys for tags and weights</div></div><div class="seg3" data-pref="kpMode"><button data-v="auto" onclick="setPref('kpMode','auto')">Auto</button><button data-v="on" onclick="setPref('kpMode','on')">On</button><button data-v="off" onclick="setPref('kpMode','off')">Off</button></div></div><button class="sr" onclick="shareAppUrl()"><div class="sbar" style="background:#1a58a0"></div><div class="sbd"><div class="stt">Share app</div><div class="sss">Send the app link to another phone</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="showAbout()"><div class="sbar" style="background:#5d6656"></div><div class="sbd"><div class="stt">About</div><div class="sss">Sheep Tracker v14.1 · Durran Durra</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
+    <div class="list-card"><div class="pref"><div><div class="stt">Text size</div><div class="sss">Makes every word bigger</div></div><div class="seg3" data-pref="textSize"><button data-v="std" onclick="setPref('textSize','std')">Standard</button><button data-v="lg" onclick="setPref('textSize','lg')">Large</button><button data-v="xl" onclick="setPref('textSize','xl')">Extra large</button></div></div><div class="pref"><div><div class="stt">Appearance</div><div class="sss">Dawn and dusk is easier on the eyes in low light</div></div><div class="seg3" data-pref="theme"><button data-v="day" onclick="setPref('theme','day')">Day</button><button data-v="dusk" onclick="setPref('theme','dusk')">Dawn / dusk</button><button data-v="auto" onclick="setPref('theme','auto')">Auto</button></div></div><div class="pref"><div><div class="stt">Number keypad</div><div class="sss">Big on-screen keys for tags and weights</div></div><div class="seg3" data-pref="kpMode"><button data-v="auto" onclick="setPref('kpMode','auto')">Auto</button><button data-v="on" onclick="setPref('kpMode','on')">On</button><button data-v="off" onclick="setPref('kpMode','off')">Off</button></div></div><button class="sr" onclick="shareAppUrl()"><div class="sbar" style="background:#1a58a0"></div><div class="sbd"><div class="stt">Share app</div><div class="sss">Send the app link to another phone</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button><button class="sr" onclick="showAbout()"><div class="sbar" style="background:#5d6656"></div><div class="sbd"><div class="stt">About</div><div class="sss">Sheep Tracker v15 · Durran Durra</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
     <div class="sec-lbl">Danger zone</div>
     <div class="list-card"><button class="sr" onclick="clearAll()"><div class="sbar" style="background:#982018"></div><div class="sbd"><div class="stt" style="color:var(--x-red)">Clear all data</div><div class="sss">Export a backup first. This cannot be undone</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button></div>
   </div>
@@ -1906,6 +1959,7 @@ label.sr input{display:none;}
       <div class="ms-prog"><div class="ms-bar" id="msBar" style="width:0%"></div></div>
       <button class="ms-end" onclick="endMobSession()">← End session &amp; review unweighed</button>
     </div>
+    <div class="eid-warn amb" id="banEid" style="display:none"><div class="t">New eID, not linked yet</div><div class="s" id="banEidTxt"></div><div class="eid-btns"><button onclick="wEidDont()">Don't link</button></div></div>
     <!-- tag area -->
     <div class="ta">
       <div class="ta-lbl">Tag · year, then last 3 digits</div>
@@ -1916,6 +1970,7 @@ label.sr input{display:none;}
       </div>
       <div class="tprev">Full tag: <b id="wTagVal">—</b></div>
       <div class="winfo" id="wInfo" style="display:none"></div>
+      <div class="w-found" id="wFound" style="display:none"></div>
     </div>
     <!-- sex row — only shown when sex is unknown for this tag -->
       <div class="sx-row" id="wSexRow" style="display:none;">
@@ -2239,9 +2294,12 @@ label.sr input{display:none;}
 
     <!-- MARKING SCREEN (hidden until session started) -->
     <div id="lmMarking" style="display:none;gap:12px;">
-      <div class="lm-tag">
+      <div class="rdr" id="lmRdr"><span class="dot"></span><span id="lmRdrTxt">Scan a tag, or tap the sex to mark by number</span></div>
+      <div class="eid-warn" id="lmEidWarn" style="display:none"><div class="t">This tag is already used</div><div class="s" id="lmEidWarnTxt"></div><div class="eid-btns"><button onclick="lmEidWarnClose()">OK</button></div></div>
+      <div class="lm-tag" id="lmTagBox">
         <div class="l" id="lmTagWho">Tag this lamb</div>
         <div class="tg" id="lmCurrentTag">—</div>
+        <div class="eid" id="lmEidLine" style="display:none">eID <b id="lmEidVal"></b></div>
         <div class="t" id="lmTotal">0 lambs marked</div>
       </div>
       <div class="lm-big">
@@ -2249,6 +2307,7 @@ label.sr input{display:none;}
         <button class="lm-ewe" onclick="lmAddLamb('ewe')"><span class="w">Ewe</span><span class="c" id="lmCountEwe">0</span></button>
         <button class="lm-weth" onclick="lmAddLamb('wether')"><span class="w">Wether</span><span class="c" id="lmCountWeth">0</span></button>
       </div>
+      <button class="eid-clear" id="lmEidClear" style="display:none" onclick="lmEidClear()">Clear this scan</button>
       <button class="lm-undo" id="lmUndoBtn" onclick="lmUndoLast()" disabled><span id="lmUndoLbl">Nothing to undo yet</span></button>
       <div class="sl">Recent</div>
       <div class="lm-strip" id="lmRecentStrip"></div>
@@ -2347,6 +2406,7 @@ label.sr input{display:none;}
     </div>
   </div>
 </div>
+<input id="scanCatch" type="text" inputmode="none" tabindex="-1" aria-hidden="true" autocomplete="off">
 </main>
 <button class="sb-menu sb-fab" onclick="sbMenuTap()" aria-label="Open the menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>Menu</button>
 <div class="sb-back" onclick="sbPeek(false)"></div>
@@ -2674,7 +2734,7 @@ function obFinish(){
   updateFarmDisplay();
   updateSettingsDisplay();
   renderPaddockList();
-  toast('Welcome to Sheep Tracker v14.1');
+  toast('Welcome to Sheep Tracker v15');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2907,7 +2967,7 @@ function updateFarmDisplay(){
   hdPaint();
   // Settings hero
   const sName= document.getElementById('settingsFarmName'); if(sName) sName.textContent=name;
-  const sSub = document.getElementById('settingsFarmSub');  if(sSub)  sSub.textContent=(loc?loc+' · ':'')+'Sheep Tracker v14.1';
+  const sSub = document.getElementById('settingsFarmSub');  if(sSub)  sSub.textContent=(loc?loc+' · ':'')+'Sheep Tracker v15';
   // Sidebar brand (wide screens)
   const sbName= document.getElementById('sbFarmName'); if(sbName) sbName.textContent=name;
   // Sidebar footer (wide screens)
@@ -2920,6 +2980,7 @@ function updateSettingsDisplay(){
   const mobs = _mem.mobs||[];
   const mSub = document.getElementById('mobCountSub');
   if(mSub) mSub.textContent = mobs.length ? mobs.length+' mob'+(mobs.length!==1?'s':'')+' active' : 'Manage your mobs';
+  const eS = document.getElementById('eidSub'); if(eS){ const n=Object.keys(_mem.eid||{}).length; eS.textContent='Test the eID reader · '+n+(n===1?' sheep':' sheep')+' linked'; }
   const penS = document.getElementById('penSub'); if(penS) penS.textContent = getPens().length ? getPens().map(p=>p.name).join(' · ') : 'None set up';
   const fsub = document.getElementById('farmNameSub');
   if(fsub) fsub.textContent = (_mem.farmName||'—') + (_mem.farmLoc?' · '+_mem.farmLoc:'');
@@ -3104,6 +3165,7 @@ async function loadAllIntoMemory(){
   if(!_mem.drenchEvents) _mem.drenchEvents = [];
   if(!_mem.mobMoves) _mem.mobMoves = [];
   if(!Array.isArray(_mem.joining)) _mem.joining = [];
+  if(joiningIdFix()) idbWrite('joining', _mem.joining);
   if(!Array.isArray(_mem.paddocks)) _mem.paddocks = [];
   if(!_mem.eid || typeof _mem.eid!=='object' || Array.isArray(_mem.eid)) _mem.eid = {};
 }
@@ -3167,7 +3229,19 @@ const saveStatusData = s => { _mem.status=s;          idbWrite('status',s);     
 const saveDrenchData = d => { _mem.drench=d;          idbWrite('drench',d); };
 const saveCostsData  = c => { _mem.costs=c;           idbWrite('costs',c); };
 const saveNotesData  = n => { _mem.notes=n;           idbWrite('notes',n); };
-const loadJoining    = () => (_mem.joining||[]).filter(j=>!j.unlinked);
+// Joinings made in v10 have a number id (Date.now()), and a few may have none. Every lookup compares with the
+// text id from a button or drop down, so those joinings could not be opened, edited or tagged against.
+// Text ids keep the same cloud document (cloudDocId uses String(id)); a missing id gets a new one.
+function joiningIdFix(){
+  let changed=false;
+  (_mem.joining||[]).forEach(j=>{
+    if(!j || typeof j!=='object') return;
+    if(j.id===undefined || j.id===null || j.id===''){ j.id=genId(); changed=true; }
+    else if(typeof j.id!=='string'){ j.id=String(j.id); changed=true; }
+  });
+  return changed;
+}
+const loadJoining    = () => { joiningIdFix(); return (_mem.joining||[]).filter(j=>!j.unlinked); }; // also covers records synced in from an older phone
 const loadUnlinked   = () => (_mem.joining||[]).filter(j=>j.unlinked);
 const saveJoiningData= j => { _mem.joining=[...j,...loadUnlinked()]; idbWrite('joining',_mem.joining); };
 const saveMobsData   = m => { _mem.mobs=m;            idbWrite('mobs',m); };
@@ -3317,9 +3391,11 @@ function sheepJobsFor(tag){
 
 function lmRenderWho(){
   const el=document.getElementById('lmWho'); if(!el) return;
+  // A joining with no id (very old records) could never be picked: give it one, so it can.
+  if(loadJoining().some(j=>j && (j.id===undefined||j.id===null||j.id===''))){ const all=loadJoining(); all.forEach(j=>{ if(j && (j.id===undefined||j.id===null||j.id==='')){ j.id=genId(); j.updatedAt=nowStamp(); } }); saveJoiningData(all); }
   const list=loadJoining().slice().sort((a,b)=>(b.startDate||'').localeCompare(a.startDate||''));
   const lab=j=>(j.startDate||'').slice(0,4)+' joining'+(j.eweCount?' · '+j.eweCount+' ewes':'');
-  if(_lm.locked && _lm.joiningId){ const j=list.find(x=>x.id===_lm.joiningId); el.innerHTML='<div class="lm-chip"><b>'+(j?j.mob:'')+'</b><span>'+(j?lab(j):'')+'</span></div>'; return; }
+  if(_lm.locked && _lm.joiningId){ const j=list.find(x=>x.id===_lm.joiningId); el.innerHTML='<div class="lm-chip"><b>'+(j?escH(j.mob):'')+'</b><span>'+(j?lab(j):'')+'</span></div>'; return; }
   if(_lm.locked && _lm.noJoin){ el.innerHTML='<div class="lm-chip"><b>No joining yet</b><span>Saved on its own. Link it to a joining in Breeding</span></div>'; return; }
   if(!list.length){
     el.innerHTML='<div class="hint">No joining yet.'+(_lm.mode==='tag'?' Tagging needs one, because the lambs go into the ewe mob.':'')+'</div>'
@@ -3327,11 +3403,13 @@ function lmRenderWho(){
       +'<button class="ghost-btn" onclick="lmAddJoiningFirst()">Add a joining</button>'; return;
   }
   el.innerHTML='<select id="lmJoinSel" onchange="lmPickJoining(this.value)"><option value="">Pick a joining</option>'
-    +list.map(j=>'<option value="'+j.id+'"'+(_lm.joiningId===j.id?' selected':'')+'>'+j.mob+' · '+lab(j)+'</option>').join('')
+    +list.map(j=>'<option value="'+escH(String(j.id))+'"'+(_lm.joiningId!=null&&String(_lm.joiningId)===String(j.id)?' selected':'')+'>'+escH(j.mob)+' · '+lab(j)+'</option>').join('')
     +(_lm.mode==='tally'?'<option value="__none"'+(_lm.noJoin?' selected':'')+'>No joining yet. Link it later in Breeding</option>':'')+'</select>';
 }
 function lmPickJoining(id){
-  const j=(id&&id!=='__none')?loadJoining().find(x=>x.id===id):null;
+  // The picker hands back text; older joinings can have a number id, so compare as text.
+  const j=(id&&id!=='__none')?loadJoining().find(x=>String(x.id)===String(id)):null;
+  if(id && id!=='__none' && !j) toast('That joining could not be found. Reopen Mark lambs and try again');
   _lm.joiningId=j?j.id:null; _lm.noJoin=(id==='__none'||(!j&&!id&&_lm.locked)); _lm.mob=j?j.mob:''; lmRenderWho();
 }
 function lmAddJoiningFirst(){ closeFabEntry(); goTab('breeding'); setTimeout(openAddJoining,60); }
@@ -3359,12 +3437,12 @@ function lmStartSession() {
   const mob=(_mem.mobs||[]).find(m=>m.name===_lm.mob);
   _lm.paddock=mob?.loc||''; _lm.paddockId=mob?.paddockId||'';
   _lm.startNum=parseInt(startRaw); _lm.currentNum=_lm.startNum;
-  _lm.counts={ram:0,ewe:0,wether:0}; _lm.tagged=[];
+  _lm.counts={ram:0,ewe:0,wether:0}; _lm.tagged=[]; _lm.pendingEid=''; _lm.scans=0;
   document.getElementById('lmTagWho').textContent='Tag this lamb · '+_lm.mob;
   document.getElementById('lmSetup').style.display='none';
   document.getElementById('lmMarking').style.display='grid';
   document.getElementById('lmSummary').style.display='none';
-  lmUpdateMarkingDisplay();
+  lmEidWarnClose(); lmUpdateMarkingDisplay(); scanCatchFocus();
 }
 function lmTallyStart(){
   if(!_lm.joiningId && !_lm.noJoin){ toast('Pick a joining, or No joining yet'); return; }
@@ -3536,6 +3614,12 @@ function saveWeigh(opts) {
   if(wt>0){ addedRow={id:genId(),updatedAt:nowStamp(),tag,weight:wt,date,notes}; }
   else if(!_mem.data.some(r=>r.tag===tag)){ addedRow={id:genId(),updatedAt:nowStamp(),tag,weight:0,date,notes:''}; }
   if(addedRow){ _mem.data.push(addedRow); saveData(_mem.data); }
+  let eidMsg='';
+  if(_wEid){
+    const had=eidOf(tag), r=(had&&had!==_wEid)?{ok:false,why:'has'}:eidLink(tag,_wEid);
+    eidMsg=r.ok?' · eID linked':(r.why==='taken'?' · eID not linked, it is on '+r.other:' · eID not linked, '+tag+' already has one');
+    _wEid=''; wEidPaint();
+  }
   if(wt>0){
     if(activeMob && !activeMob.done.includes(tag)) { activeMob.done.push(tag); updMobProg(); }
     sessW.push({tag,wt}); sessTotal+=wt;
@@ -3545,10 +3629,10 @@ function saveWeigh(opts) {
   if(navigator.vibrate) navigator.vibrate(40);
   if(opts.status){
     const prev=_mem.status[tag]; _mem.status[tag]={status:opts.status,date,cause:''}; saveStatusData(_mem.status);
-    toastUndo(tag+' marked '+opts.status+(wt>0?', '+wt+' kg saved':''), ()=>{ if(prev) _mem.status[tag]=prev; else delete _mem.status[tag]; saveStatusData(_mem.status); if(addedRow){ const i=_mem.data.indexOf(addedRow); if(i>=0) _mem.data.splice(i,1); saveData(_mem.data); } refreshCount(); renderFlock(); renderHome(); });
+    toastUndo(tag+' marked '+opts.status+(wt>0?', '+wt+' kg saved':'')+eidMsg, ()=>{ if(prev) _mem.status[tag]=prev; else delete _mem.status[tag]; saveStatusData(_mem.status); if(addedRow){ const i=_mem.data.indexOf(addedRow); if(i>=0) _mem.data.splice(i,1); saveData(_mem.data); } refreshCount(); renderFlock(); renderHome(); });
   } else if(opts.pen){
-    wAddToPen(tag,wt,opts.pen); toast(tag+' · '+wt+' kg to '+penName(opts.pen));
-  } else toast(`${tag} — ${wt}kg saved`);
+    wAddToPen(tag,wt,opts.pen); toast(tag+' · '+wt+' kg to '+penName(opts.pen)+eidMsg);
+  } else toast(`${tag} — ${wt}kg saved`+eidMsg);
   flashOk();
   document.getElementById('wSeq').value=''; document.getElementById('wWt').value=''; document.getElementById('wTagVal').textContent='—';
   dismissBanners(); hideSexUI(); document.getElementById('noMobNudge').style.display='none';
@@ -3713,7 +3797,7 @@ function kpPress(btn){
 document.addEventListener('focusin', e=>{ if(e.target.classList&&e.target.classList.contains('kp-t')) kpSet(e.target); });
 document.addEventListener('click', e=>{ const t=e.target.closest&&e.target.closest('.kp-t'); if(t) kpSet(t); });
 
-// ── eID tag reader (v14.1) ──
+// ── eID tag reader (v15) ──
 // The table reader is a Bluetooth keyboard: each scan types 15 digits then Enter, fast.
 // The management number (26001) stays every sheep's ID. _mem.eid maps it to the 15-digit eID,
 // e.g. {'26001':'982000123456789'}. It syncs like sex/status/flags (CLOUD_COLS.eid).
@@ -3816,6 +3900,210 @@ function eidScanDefault(eid){
   if(onMain && !(ov&&ov.classList.contains('open'))){ openLamb(tag); toast('Scanned '+tag); }
   else toast('That eID belongs to '+tag);   // mid-entry: don't pull you off the screen you're on
 }
+
+// ── eID screens (v15) ──
+function pnlOn(id){ const p=document.getElementById('pnl-'+id); return !!(p&&p.classList.contains('on')); }
+function modalOpen(){ const o=document.getElementById('modalOv'); return !!(o&&o.classList.contains('open')); }
+// A hidden field with no on-screen keyboard, focused during marking, so the reader's
+// keystrokes always reach the page even when nothing else is selected.
+function scanCatchFocus(){
+  const c=document.getElementById('scanCatch'); if(!c) return;
+  const a=document.activeElement;
+  if(a && a!==c && a!==document.body && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+  c.value=''; try{ c.focus({preventScroll:true}); }catch(e){ c.focus(); }
+}
+function eidRoute(eid){
+  if(modalOpen()){ if(document.getElementById('eidTestBox')){ eidTestShow(eid); return true; } return false; }
+  if(pnlOn('lambmark')) return lmScan(eid);
+  if(pnlOn('weigh')) return wScan(eid);
+  if(pnlOn('flock')) return eidCardScan(eid);
+  return false;
+}
+eidScanHook=eidRoute;
+function sexName(x){ return {ram:'Ram',ewe:'Ewe',wether:'Wether'}[x]||''; }
+function eidWho(tag){
+  const sx=sexName(_mem.sex[tag]), mh=_mem.mobhist.find(h=>h.tag===tag), st=_mem.status[tag];
+  return '<span class="mono">'+tag+'</span>'+(sx?' · '+sx:'')+(mh&&mh.currentMob?' · '+escH(mh.currentMob):'')+(st?' · '+(st.status==='sold'?'sold':'dead'):'');
+}
+
+// Mark lambs: a scan holds the eID; the Ram/Ewe/Wether tap saves the lamb and links it.
+function lmScan(eid){
+  const m=document.getElementById('lmMarking'); if(!m || m.style.display==='none') return false;
+  _lm.scans=(_lm.scans||0)+1;
+  if(_lm.pendingEid===eid){ lmEidPaint(); return true; }   // the same tag read twice
+  const owner=eidTagOf(eid);
+  if(owner){ _lm.pendingEid=''; lmEidWarnShow(owner); lmEidPaint(); return true; }
+  lmEidWarnClose(); _lm.pendingEid=eid; flashOk(); if(navigator.vibrate) navigator.vibrate(40);
+  lmEidPaint(); scanCatchFocus(); return true;
+}
+function lmEidPaint(){
+  if(typeof _lm==='undefined' || !_lm) return;
+  const pend=_lm.pendingEid||'', r=document.getElementById('lmRdr'); if(!r) return;
+  r.classList.toggle('ok', !!pend || (_lm.scans||0)>0);
+  document.getElementById('lmRdrTxt').textContent= pend?'Tag scanned · now tap the sex':((_lm.scans||0)>0?'Reader ready · scan the next tag':'Scan a tag, or tap the sex to mark by number');
+  const box=document.getElementById('lmTagBox'); if(box) box.classList.toggle('scanned', !!pend);
+  document.getElementById('lmEidLine').style.display=pend?'inline-flex':'none';
+  document.getElementById('lmEidVal').textContent=pend?eidShort(pend):'';
+  document.getElementById('lmEidClear').style.display=pend?'':'none';
+}
+function lmEidClear(){ _lm.pendingEid=''; lmEidPaint(); scanCatchFocus(); }
+function lmEidWarnShow(owner, numHasEid){
+  const w=document.getElementById('lmEidWarn'); if(!w) return;
+  w.querySelector('.t').textContent=numHasEid?'This number already has an eID':'This tag is already used';
+  document.getElementById('lmEidWarnTxt').innerHTML=numHasEid
+    ? eidWho(owner)+' is already in the flock with eID <span class="mono">'+eidShort(eidOf(owner))+'</span>. Nothing was saved. Check the starting number, or tap Clear this scan to mark it by number.'
+    : 'It belongs to '+eidWho(owner)+'. Nothing was saved. Grab a fresh tag and scan again.';
+  w.style.display='grid'; if(navigator.vibrate) navigator.vibrate([80,60,80]);
+}
+function lmEidWarnClose(){ const w=document.getElementById('lmEidWarn'); if(w) w.style.display='none'; scanCatchFocus(); }
+
+// Weigh: a known eID fills in the sheep's number; an unknown one waits and links on save.
+let _wEid='';
+function wScan(eid){
+  const owner=eidTagOf(eid);
+  if(owner){
+    _wEid=''; quickFillW(owner); wEidPaint();
+    const f=document.getElementById('wFound'); if(f){ f.textContent='✓ Found by scan · eID '+eidShort(eid); f.style.display=''; }
+    flashOk(); return true;
+  }
+  _wEid=eid; wEidPaint();
+  const s=document.getElementById('wSeq'); if(s && s.classList.contains('kp-t')) kpSet(s);
+  return true;
+}
+function wEidPaint(){
+  const b=document.getElementById('banEid'), btn=document.getElementById('wSaveBtn'); if(!b) return;
+  if(!_wEid){ b.style.display='none'; if(btn) btn.textContent='Save weight'; return; }
+  const tag=wCurTag(), had=tag?eidOf(tag):'';
+  document.getElementById('banEidTxt').innerHTML='eID <span class="mono">'+eidFmt(_wEid)+'</span>. '+(had&&had!==_wEid?'<b>'+tag+' already has an eID</b>, so this one will not be linked to it.':'Type this sheep\'s number below, or a new number for a new sheep. The eID is linked to it when you save.');
+  b.style.display='grid'; if(btn) btn.textContent=(had&&had!==_wEid)?'Save weight':'Save weight & link eID';
+}
+function wEidDont(){ _wEid=''; wEidPaint(); }
+
+// Sheep card: show the eID, or a box to link one by scan or by typing.
+function eidCardHtml(tag){
+  const e=eidOf(tag);
+  if(e){
+    const d=eidDupes().find(x=>x.eid===e);
+    return '<div class="eidrow"><div class="vb"><span class="l">eID (NLIS)</span><span class="v">'+eidFmt(e)+'</span>'
+      +(d?'<span class="eid-dupe">Also on '+d.tags.filter(t=>t!==tag).join(', ')+'. Remove it from the wrong one.</span>':'')
+      +'</div><button onclick="eidCardRemove(\''+tag+'\')">Remove</button></div>';
+  }
+  return '<div class="noeid"><div class="t">No eID linked. Scan the tag now, or type it in.</div><div class="r">'
+    +'<input type="text" inputmode="numeric" autocomplete="off" data-eid-in="1" placeholder="982 000…" aria-label="eID number for '+tag+'" onkeydown="if(event.key===\'Enter\'){event.preventDefault();eidCardTyped(\''+tag+'\',this)}">'
+    +'<button onclick="eidCardTyped(\''+tag+'\',this.previousElementSibling)">Link eID</button></div></div>';
+}
+function eidCardLinkTo(tag, eid){
+  const r=eidLink(tag, eid);
+  if(!r.ok){ toast(r.why==='taken'?'That eID is already on '+r.other:'An eID is 15 digits'); return false; }
+  flashOk(); reopenCard(tag); renderFlockAfterEid(tag);
+  toastUndo('eID linked to '+tag, ()=>{ if(r.prev){ const m=Object.assign({},_mem.eid); m[tag]=r.prev; saveEidData(m); } else eidUnlink(tag); reopenCard(tag); renderFlockAfterEid(tag); });
+  return true;
+}
+function eidCardTyped(tag, inp){
+  const e=eidClean(inp&&inp.value);
+  if(!e){ toast('An eID is 15 digits. Check the number printed on the tag'); return; }
+  eidCardLinkTo(tag, e);
+}
+function eidCardRemove(tag){
+  const prev=eidUnlink(tag); if(!prev) return;
+  reopenCard(tag); renderFlockAfterEid(tag);
+  toastUndo('eID removed from '+tag, ()=>{ eidLink(tag,prev); reopenCard(tag); renderFlockAfterEid(tag); });
+}
+function renderFlockAfterEid(tag){ if(flWide()) renderFlockDetail(tag); }
+function eidOpenCardTag(){
+  if(flWide()) return flSel||'';
+  const c=document.querySelector('.sc2.open'); return c?c.dataset.tag:'';
+}
+function eidCardScan(eid){
+  const owner=eidTagOf(eid); if(owner) return false;   // known: open that sheep (default)
+  const open=eidOpenCardTag();
+  if(open && !eidOf(open)) return eidCardLinkTo(open, eid);
+  return false;
+}
+
+// Settings → Tag reader: a test box that changes nothing.
+function eidReaderOpen(){
+  const m=_mem.eid||{}, n=Object.keys(m).length, st=_mem.status;
+  const active=[...new Set(_mem.data.map(r=>r.tag))].filter(t=>!['sold','dead'].includes(st[t]?.status));
+  const withE=active.filter(t=>m[t]).length, d=eidDupes();
+  showModal('<h3>Tag reader</h3><div class="eid-test" id="eidTestBox">'
+    +'<div class="rdr" id="eidTestRdr"><span class="dot"></span><span id="eidTestRdrTxt">'+(_scan.lastAt?'Last scan '+agoSecs(_scan.lastAt):'No scan yet')+'</span></div>'
+    +'<div><div class="stt" style="font-weight:900">Test a scan</div><p>Scan any tag, or type its 15 digits. Nothing is saved.</p></div>'
+    +'<input type="text" inputmode="numeric" autocomplete="off" data-eid-in="1" id="eidTestIn" placeholder="Scan or type" oninput="eidTestTyped(this)">'
+    +'<div class="res" id="eidTestRes"></div>'
+    +'<div><div class="stt" style="font-weight:900">eIDs linked</div><p>'+withE+' of '+active.length+' active sheep have an eID'+(n>withE?' (plus '+(n-withE)+' sold, dead or not yet weighed)':'')+'.</p></div>'
+    +(d.length?'<div class="eid-warn"><div class="t">'+d.length+' eID'+(d.length===1?' is':'s are')+' on two sheep</div><div class="s">'+d.map(x=>'<span class="mono">'+eidShort(x.eid)+'</span>: '+x.tags.join(' and ')).join('<br>')+'<br>Open the wrong sheep and remove its eID.</div></div>':'')
+    +'<div><div class="stt" style="font-weight:900">Typing with the reader on</div><p>With the reader connected, the iPhone hides its keyboard. The app\'s own number keypad still works for tags and weights.</p></div>'
+    +'</div><div class="modal-btns"><button onclick="closeModal()" style="background:var(--ac);color:white;flex:2;">Done</button></div>');
+}
+// Test aid, local test server only (localhost): a floating "Test scan" button that acts like the
+// reader, since typing 15 digits by hand is too slow to count as a scan. Never shows on the real site.
+(function(){
+  if(!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
+  const go=()=>{
+    const b=document.createElement('button');
+    b.textContent='Test scan'; b.type='button';
+    b.style.cssText='position:fixed;right:12px;bottom:96px;z-index:3000;min-height:52px;padding:0 16px;border-radius:26px;border:none;background:#6820a0;color:#fff;font:900 1rem Nunito,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.3);cursor:pointer;';
+    b.addEventListener('mousedown',e=>e.preventDefault());   // keep focus where it is, like the real reader
+    b.onclick=()=>{
+      const old=document.getElementById('tsPanel'); if(old){ old.remove(); return; }
+      const m=_mem.eid||{}, tags=Object.keys(m).sort();
+      const last=(_scan.lastEid&&eidTagOf(_scan.lastEid))?_scan.lastEid:'';
+      const pick=tags.length?m[tags[Math.floor(Math.random()*tags.length)]]:'';
+      const opts=[['New tag (not used yet)', ()=>'982000'+String(Math.floor(Math.random()*1e9)).padStart(9,'0')]];
+      if(last) opts.push(['Same tag again ('+eidTagOf(last)+')', ()=>last]);
+      if(pick) opts.push(['A tagged sheep ('+eidTagOf(pick)+')', ()=>pick]);
+      opts.push(['Type an eID…', ()=>{ const v=prompt('15-digit eID'); return v==null?'':v; }]);
+      opts.push(['Load test flock (replaces test data)', async ()=>{
+        if(typeof cloudSignedIn==='function' && cloudSignedIn()){ toast('Sign out of sync first. The test flock is for this browser only'); return ''; }
+        if(!confirm('Replace everything in this test copy with the made-up test flock?')) return '';
+        try{ const code=await (await fetch('/tools/seed_eid_test.js?'+Date.now())).text(); toast((0,eval)(code)); goTab('home'); }
+        catch(err){ toast('Could not load the test flock'); }
+        return '';
+      }, true]);
+      const p=document.createElement('div'); p.id='tsPanel';
+      p.style.cssText='position:fixed;right:12px;bottom:156px;z-index:3000;display:grid;gap:8px;padding:10px;border-radius:16px;background:#fffdf8;border:2px solid #6820a0;box-shadow:0 4px 18px rgba(0,0,0,.3);max-width:280px;';
+      opts.forEach(([label,fn,noScan])=>{
+        const o=document.createElement('button'); o.type='button'; o.textContent=label;
+        o.style.cssText='min-height:48px;padding:0 14px;border-radius:12px;border:1.5px solid #ddd5c2;background:#fff;color:#0e1a08;font:800 1rem Nunito,sans-serif;text-align:left;cursor:pointer;';
+        o.addEventListener('mousedown',e=>e.preventDefault());
+        o.onclick=async ()=>{ p.remove(); const v=await fn(); if(noScan) return; const e=eidClean(v); if(!e){ if(v!=='') toast('Needs 15 digits'); return; } eidOnScan(e); };
+        p.appendChild(o);
+      });
+      document.body.appendChild(p);
+    };
+    document.body.appendChild(b);
+  };
+  if(document.body) go(); else document.addEventListener('DOMContentLoaded',go);
+  // An empty test copy (a fresh browser) loads the test flock by itself, instead of the setup wizard.
+  window.addEventListener('load', ()=>setTimeout(async ()=>{
+    try{
+      if(!location.pathname.startsWith('/test/')) return;
+      if(typeof cloudSignedIn==='function' && cloudSignedIn()) return;
+      if((_mem.data||[]).length || (_mem.mobs||[]).length) return;
+      const code=await (await fetch('/tools/seed_eid_test.js?'+Date.now())).text();
+      const msg=(0,eval)(code);
+      const ob=document.getElementById('obOv'); if(ob) ob.classList.remove('open');
+      idbWrite('__obDone', true);
+      goTab('home'); toast(msg+' (test copy)');
+    }catch(err){ console.warn('test flock load failed', err); }
+  }, 1500));
+})();
+function agoSecs(ms){ const s=Math.round((Date.now()-ms)/1000); return s<60?s+' seconds ago':Math.round(s/60)+' minutes ago'; }
+function eidTestShow(eid){
+  const res=document.getElementById('eidTestRes'), rd=document.getElementById('eidTestRdr'), tx=document.getElementById('eidTestRdrTxt'), inp=document.getElementById('eidTestIn');
+  if(!res) return;
+  if(inp && inp.value!==eid) inp.value=eid;
+  const owner=eidTagOf(eid);
+  res.className='res ok'; res.innerHTML='✓ 15 digits · '+(owner?'belongs to '+eidWho(owner):'not linked to a sheep yet');
+  if(rd) rd.classList.add('ok'); if(tx) tx.textContent='Last scan just now';
+  flashOk();
+}
+function eidTestTyped(inp){
+  const raw=String(inp.value||'').replace(/\D/g,''), res=document.getElementById('eidTestRes'); if(!res) return;
+  if(raw.length===EID_LEN){ _scan.lastEid=raw; _scan.lastAt=Date.now(); eidTestShow(raw); }
+  else { res.className='res'+(raw.length>EID_LEN?' bad':''); res.textContent=raw.length?raw.length+' digits'+(raw.length>EID_LEN?', too many':''):''; }
+}
 document.addEventListener('keydown', e=>{
   const t=e.target; if(!t.classList||!t.classList.contains('kp-t')||!kpEnabled()) return;   // an iPad with a keyboard still works
   if(/^[0-9]$/.test(e.key)) { e.preventDefault(); kpKey(t,e.key); }
@@ -3890,7 +4178,7 @@ window.addEventListener('load', async () => {
   (async () => {
     const idbSeen = _db ? await idbGet(STORE_HOT,'__wnSeen').catch(()=>null) : null;
     const seen = (idbSeen!==null && idbSeen!==undefined) ? idbSeen : lsRead('__wnSeen');
-    if(seen!=='v14.1'){
+    if(seen!=='v15'){
       const wn=document.getElementById('whatsNewModal');
       if(wn) setTimeout(()=>{ wn.style.display='flex'; },800);
     }
@@ -3912,7 +4200,7 @@ window.addEventListener('load', async () => {
 function closeWhatsNew(){
   const m=document.getElementById('whatsNewModal');
   if(m) m.style.display='none';
-  idbWrite('__wnSeen','v14.1');
+  idbWrite('__wnSeen','v15');
 }
 function showWhatsNew(){
   const m=document.getElementById('whatsNewModal');
@@ -3923,7 +4211,7 @@ function showAbout(){
     <div style="text-align:center;padding:8px 0 16px;">
       
       <div style="font-size:1.125rem;font-weight:900;color:var(--txt);">Sheep Tracker</div>
-      <div style="font-size:0.9375rem;font-weight:700;color:var(--mut);margin-top:4px;">Version 14.1 · November 2026</div>
+      <div style="font-size:0.9375rem;font-weight:700;color:var(--mut);margin-top:4px;">Version 15 · November 2026</div>
       <div style="font-size:0.9375rem;color:var(--mut);margin-top:10px;line-height:1.6;">Built for Durran Durra, Charleyong NSW.<br>Works with no signal. Syncs when there is.</div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px;">
@@ -4006,7 +4294,7 @@ function sbSub(key){
   document.querySelectorAll('.sb-item.sub').forEach(b=>b.classList.toggle('on', b.dataset.sub===key));
 }
 function goTab(tab) {
-  closeFabOv(); _entryBack=null;
+  scanCatchBlur(); closeFabOv(); _entryBack=null;
   if(tab==='set'){ openEntry('set'); navSetActive('set'); updateSettingsDisplay(); return; }
   hdSetMode('main');
   document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
@@ -4023,6 +4311,7 @@ function openMore(){ fabOpen=true; document.getElementById('fabOv').classList.ad
 function closeFabOv(e){ fabOpen=false; const o=document.getElementById('fabOv'); if(o) o.classList.remove('open'); }
 function moreAddJoining(){ closeFabOv(); goTab('breeding'); setTimeout(openAddJoining, 50); }
 function closeFabEntry() {
+  scanCatchBlur();
   if(_entryBack==='joining' && jpCur()){ _entryBack=null; openJoining(_jpId); return; }
   _entryBack=null;
   document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
@@ -4330,6 +4619,7 @@ function sheepBody(tag) {
   const reason=_mem.flags[tag]?.reason||'';
   let h='';
   if(st) h+='<div class="sc2-info">'+(isSold?'Sold':'Dead')+' on '+fmtD(st.date)+(st.cause?' · '+st.cause:'')+'</div>';
+  h+=eidCardHtml(tag);
   if(!hasMob&&!inactive) h+='<div class="nudge nudge-mob"><span>No mob assigned</span><button onclick="openAssignMobModal(\''+tag+'\')">Add to mob</button></div>';
   if(!sex&&!inactive) h+='<div class="nudge nudge-sex"><div class="nt">Sex not recorded. Set it</div><div class="nb"><button style="color:var(--x-blue)" onclick="doSetSex(\''+tag+'\',\'ram\')">Ram</button><button style="color:var(--x-pur)" onclick="doSetSex(\''+tag+'\',\'ewe\')">Ewe</button><button style="color:var(--x-teal)" onclick="doSetSex(\''+tag+'\',\'wether\')">Wether</button></div></div>';
   h+= isFlag
@@ -4752,15 +5042,16 @@ function renderYearStats() {
 // ═══════════════════════════════════
 // FAB
 // ═══════════════════════════════════
+function scanCatchBlur(){ const c=document.getElementById('scanCatch'); if(c && document.activeElement===c) c.blur(); }
 function openEntry(screen) {
-  closeFabOv(); setTimeout(()=>kpStart('pnl-'+screen),0);
+  scanCatchBlur(); closeFabOv(); setTimeout(()=>kpStart('pnl-'+screen),0);
   _entryBack = (screen!=='joining' && document.getElementById('pnl-joining')?.classList.contains('on')) ? 'joining' : null;
   prevTab = curTab;
   document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
   document.getElementById('pnl-'+screen).classList.add('on');
   hdSetMode(screen); if(screen==='movemob') initMoveMob(); if(screen==='mobjobs'){ _mj=null; mjRender(); }
   document.getElementById('mainScroll').scrollTop = 0;
-  if(screen==='weigh') { wResetDate(); paintSort(); renderChips('w'); updateWRecent(); dismissBanners(); wMetaUpd(); wDeltaUpd(); wInfoUpd(); }
+  if(screen==='weigh') { _wEid=''; wEidPaint(); wResetDate(); paintSort(); renderChips('w'); updateWRecent(); dismissBanners(); wMetaUpd(); wDeltaUpd(); wInfoUpd(); }
   if(screen==='sheepjobs') { renderChips('j'); document.getElementById('jSeq').value=''; document.getElementById('jTagVal').textContent='—'; document.getElementById('jSummary').style.display='none'; document.getElementById('jDt').value=todayISO(); }
   if(screen==='status') { renderChips('s'); activeStatusChoice=null; document.getElementById('btnSold').classList.remove('sel-sold'); document.getElementById('btnDead').classList.remove('sel-dead'); document.getElementById('causeGrp').style.display='none'; document.getElementById('sSummary').style.display='none'; document.getElementById('sSeq').value=''; document.getElementById('sTagVal').textContent='—'; updateSRecent(); }
   if(screen==='newsheep') { renderChips('ns'); initNewSheep(); }
@@ -4809,7 +5100,7 @@ function updateTagPrev(ctx) {
 // ═══════════════════════════════════
 function onWSeqCore() {
   updateTagPrev('w');
-  dismissBanners();
+  dismissBanners(); { const f=document.getElementById('wFound'); if(f) f.style.display='none'; } wEidPaint();
   const raw = document.getElementById('wSeq').value.trim();
   if(!raw) { hideSexUI(); document.getElementById('noMobNudge').style.display='none'; return; }
   const tag = _mem.activeYr + raw.padStart(3,'0');
@@ -5174,11 +5465,18 @@ function lmUpdateMarkingDisplay() {
   const last=_lm.tagged.at(-1), u=document.getElementById('lmUndoBtn');
   if(u){ u.disabled=!last; document.getElementById('lmUndoLbl').innerHTML=last?'Undo last <span class="mono">'+last.tag+'</span> · '+({ram:'Ram',ewe:'Ewe',wether:'Wether'}[last.sex]):'Nothing to undo yet'; }
   const strip=document.getElementById('lmRecentStrip');
+  lmEidPaint();
   if(strip) strip.innerHTML=_lm.tagged.slice(-6).reverse().map(t=>`<span class="tagchip">${t.tag} <small style="color:#c9d2bc">${{ram:'Ram',ewe:'Ewe',wether:'Wether'}[t.sex]}</small></span>`).join('');
 }
 function lmAddLamb(sex) {
   const tag=_mem.activeYr+String(_lm.currentNum).padStart(3,'0');
-  const date=_lm.date;
+  const date=_lm.date, pend=_lm.pendingEid||'';
+  if(pend){
+    const owner=eidTagOf(pend);
+    if(owner && owner!==tag){ lmEidWarnShow(owner); _lm.pendingEid=''; lmEidPaint(); return; }
+    const had=eidOf(tag);
+    if(had && had!==pend){ lmEidWarnShow(tag, true); return; }   // never swap an existing sheep's eID
+  }
   const mob=(_mem.mobs||[]).find(m=>m.name===_lm.mob);
   const undo={prevSex:_mem.sex[tag], row:null, mhNew:false, mhPrev:null, move:null};
   _mem.sex[tag]=sex; saveSex(_mem.sex);
@@ -5198,11 +5496,12 @@ function lmAddLamb(sex) {
   if(sex==='ram') _lm.counts.ram++;
   else if(sex==='ewe') _lm.counts.ewe++;
   else _lm.counts.wether++;
+  if(pend){ const r=eidLink(tag,pend); if(r.ok) undo.eid={prev:r.prev}; _lm.pendingEid=''; }
   _lm.tagged.push({tag,sex,date,undo}); flashOk();
   _lm.currentNum++;
   if(_lm.currentNum>999) _lm.currentNum=999;
   refreshCount();
-  lmUpdateMarkingDisplay();
+  lmUpdateMarkingDisplay(); scanCatchFocus();
 }
 function lmUndoLast() {
   const t=_lm.tagged.pop(); if(!t) return;
@@ -5213,6 +5512,7 @@ function lmUndoLast() {
   if(u.mhNew){ const h=_mem.mobhist.find(x=>x.tag===t.tag); if(h) drop(_mem.mobhist,h); }
   else if(u.mhPrev){ const h=_mem.mobhist.find(x=>x.tag===t.tag); if(h){ h.currentMob=u.mhPrev.currentMob; h.currentLoc=u.mhPrev.currentLoc; } }
   if(u.move){ drop(_mem.mobMoves,u.move); saveMobHist(_mem.mobhist); saveMobMoves(_mem.mobMoves); }
+  if(u.eid){ if(u.eid.prev){ const m=Object.assign({},_mem.eid); m[t.tag]=u.eid.prev; saveEidData(m); } else eidUnlink(t.tag); }
   if(t.sex==='ram') _lm.counts.ram--; else if(t.sex==='ewe') _lm.counts.ewe--; else _lm.counts.wether--;
   _lm.currentNum=Math.max(1,_lm.currentNum-1);
   refreshCount(); lmUpdateMarkingDisplay();
@@ -5244,6 +5544,7 @@ function lmEndSession() {
   document.getElementById('lmSumMeta').textContent=_lm.mob+' · '+fmtD(_lm.date);
   const firstTag=_lm.tagged[0]?.tag||'—', lastTag=_lm.tagged.at(-1)?.tag||'—';
   let rows=lmRow('Tags','<span class="mono">'+firstTag+' to '+lastTag+'</span>')+lmRow('Mob',_lm.mob)+(_lm.paddock?lmRow('Paddock',_lm.paddock):'')+lmRow('Joining record',_lm.joiningId?'Linked':'Not linked');
+  const eidN=_lm.tagged.filter(t=>t.undo&&t.undo.eid).length; rows+=lmRow('eIDs linked',eidN+' of '+_lm.tagged.length);
   if(_lm.joiningId){
     const j=loadJoining().find(x=>x.id===_lm.joiningId);
     if(j){
@@ -6939,7 +7240,10 @@ async function cloudSync(opts){
     if(opts.restore){ cloudBase={}; cloudMeta.cursor=0; baseDirty=true; }
     const token=await cloudToken();
     const first=!!opts.first || !!opts.restore;
-    const since=first ? 0 : Math.max(0, cloudMeta.cursor-120000);
+    // A phone on an older version skipped data types it didn't know (eIDs before v15) but still moved its cursor past them,
+    // so the first sync after the app learns a new type pulls everything once. Docs that match the base are skipped in cloudMerge.
+    const colsKey=Object.keys(CLOUD_COLS).sort().join(',');
+    const since=(first || cloudMeta.colsKey!==colsKey) ? 0 : Math.max(0, cloudMeta.cursor-120000);
     const remote=await cloudPull(token, since);
     // From here to the end of apply there is no await, so no local edit can slip in between.
     const snap=cloudSnapshot();
@@ -6958,6 +7262,7 @@ async function cloudSync(opts){
     if(remote.length) cloudMeta.cursor=Math.max(cloudMeta.cursor, ...remote.map(r=>r.pushedMs));
     pushed=await cloudPush(token, changes);
     if(first) cloudMeta.firstSyncDone=true;
+    cloudMeta.colsKey=colsKey;
     cloudMeta.lastOk=Date.now(); cloudMeta.lastCount=applied+pushed;
     if(cloudState.seq===seqAtStart){ cloudDirty.pending=false; cloudDirty.cols={}; cloudSaveDirty(); }
     cloudSetStatus('idle');
@@ -7133,7 +7438,7 @@ async function exportBackup(){
     mobhist:loadMobHist(),mobmoves:[...loadMobMoves(),...arcMM],
     drenchevents:[...loadDrenchEvts(),...arcDE],flags:loadFlags(),eid:loadEid(),
     paddocks:_mem.paddocks||[],joining:loadJoining(),farmName:_mem.farmName||'',farmLoc:_mem.farmLoc||''},null,2);
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v14.1-'+todayISO()+'.json'});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([json],{type:'application/json'})),download:'sheep-backup-v15-'+todayISO()+'.json'});
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   toast('Backup saved!');
 }
